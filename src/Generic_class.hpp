@@ -4,7 +4,7 @@
 #include <list>
 #include <utility>
 #include <string>
-#include <tuple>
+#include <unordered_map>
 
 #define INF std::numeric_limits<int>::max()
 
@@ -30,6 +30,8 @@ typedef struct __connection{
   }
 }Connection; // a connection represent a "station" connected to a "list of other stations with a cost" to join it
 
+
+// finalement changer pour une struct ?
 typedef std::tuple<Station*, int, int> Node; // a node is a triplet formed by a "station" and the "dynamic cost" to join it from a "previous station"
 
 std::ostream& operator<<(std::ostream& _os, const Node& _node){
@@ -40,26 +42,135 @@ std::ostream& operator<<(std::ostream& _os, const Node& _node){
 class Generic_class{
 
 public:
+  Generic_class(): stations(0), connections(0), graph(0), travel(std::pair<int,int>(-1,-1)){
+  }
+
+  Generic_class(int _start, int _end): stations(0), connections(0), graph(0), travel(std::pair<int,int>(_start, _end)){
+  }
+
+  ~Generic_class(){
+  }
+
+  void set_travel(int _start, int _end){
+    this->travel = std::pair<int, int>(_start, _end);
+  }
+  void set_start(int _start){
+    this->travel.first = _start;
+  }
+  void set_end(int _end){
+    this->travel.second = _end;
+  }
+
+  void display_stations(){
+    std::cout << std::endl << "List Stations:" << std::endl;
+    for(auto it: this->stations){
+      std::cout << it << std::endl;
+    }
+  }
+
+  void display_connections(){
+    std::cout << std::endl << "List Connections:" << std::endl;
+    for(auto it: this->connections){
+      std::cout << it << std::endl;
+    }
+  }
+
+  void display_graph(){
+    for(auto&& it: this->graph){
+      std::cout << it << std::endl;
+    }
+  }
+
+  void read_stations(char* _filename);
+  void read_stations(std::string _filename);
+  void read_connections(char* _filename);
+  void read_connections(std::string _filename);
+  void compute_travel(){
+    compute_travel(this->travel.first, this->travel.second);
+  }
+
+  void compute_travel(int _start, int _end){
+    this->travel = std::pair<int,int>(_start, _end);
+    this->dijkstra();
+    this->display_graph();
+    this->display_travel();
+  }
+
+  void display_travel(){
+    Node* cursor1;
+    Node* cursor2;
+
+    cursor1 = graph_hashmap.at(this->travel.first);
+    cursor2 = graph_hashmap.at(this->travel.second);
+
+    std::cout << "\n\nBest way to " << std::get<0>(*cursor1)->name << " => " << std::get<0>(*cursor2)->name << " is:\n\t";
+    std::list<Station*> way;
+    way.push_front(std::get<0>(*cursor2));
+    while(cursor1 != cursor2){
+      cursor2 = this->graph_hashmap.at(std::get<2>(*cursor2));
+      way.push_front(std::get<0>(*cursor2));
+    }
+
+    for(auto&& it: way){
+      std::cout << it->name << " => ";
+    }
+    std::cout << "Vous êtes arrivé!" << std::endl;
+  }
 
 protected:
+  void dijkstra();
+
+public:
+  std::list<Station> stations;
+  std::unordered_map<int, Station*> stations_hashmap;
+  std::list<Connection> connections;
+  std::unordered_map<int, Connection*> connections_hashmap;
+  std::list<Node> graph;
+  std::unordered_map<int, Node*> graph_hashmap;
+  std::pair<int,int> travel;
+  // std::map<Station> stations_tree;
 };
 
 
-void readStations(char* _filename, std::list<Station>& _list){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void Generic_class::read_stations(std::string _filename){
+  read_stations(_filename.c_str());
+}
+void Generic_class::read_stations(char* _filename){
   std::ifstream ifs(_filename, std::ifstream::in);
+  this->stations.clear();
+  this->stations_hashmap.clear();
+  this->connections.clear();
+  this->connections_hashmap.clear();
+  this->graph.clear();
+  this->graph_hashmap.clear();
 
   while(ifs.good() && !ifs.eof()){
-    Station newStation;
+    Station new_station;
     char tmp[256];
 
     ifs.getline(tmp, 256, ';');
     if(strcmp(tmp, "") != 0){
-      newStation.name = tmp;
+      new_station.name = tmp;
       ifs.getline(tmp, 256, '\n');
       if(strcmp(tmp, "") != 0){
-        newStation.id = std::stoi(std::string(tmp));
-        // newStation.affiche();
-        _list.push_back(newStation);
+        new_station.id = std::stoi(std::string(tmp));
+        this->stations.push_back(new_station);
+        this->stations_hashmap.insert(std::make_pair<int, Station*>(this->stations.back().id, &this->stations.back()));
       }
     }else{
       ifs.getline(tmp,256,'\n');
@@ -69,8 +180,15 @@ void readStations(char* _filename, std::list<Station>& _list){
   ifs.close();
 }
 
-void readConnections(char* _filename, std::list<Station>& _Stations, std::list<Connection>& _Connections){
+void Generic_class::read_connections(std::string _filename){
+  this->read_connections(_filename.c_str());
+}
+void Generic_class::read_connections(char* _filename){
   std::ifstream ifs(_filename, std::ifstream::in);
+  this->connections.clear();
+  this->connections_hashmap.clear();
+  this->graph.clear();
+  this->graph_hashmap.clear();
 
   while(ifs.good() && !ifs.eof()){
     char a[256],b[256],w[256];
@@ -79,38 +197,22 @@ void readConnections(char* _filename, std::list<Station>& _Stations, std::list<C
     ifs.getline(b, 256, ';');
     ifs.getline(w, 256, '\n');
     if(strcmp(a, "") != 0 && strcmp(b, "") != 0 && strcmp(w, "") != 0){
-      Station* first = NULL;
-      Station* second = NULL;
-      for(auto&& it: _Stations){
-        if(it.id == std::stoi(std::string(a))){
-          first = &it;
-          break;
-        }
-      }
+      auto first = this->stations_hashmap.find(std::stoi(std::string(a)));
+      auto second = this->stations_hashmap.find(std::stoi(std::string(b)));
 
-      for(auto&& it: _Stations){
-        if(it.id == std::stoi(std::string(b))){
-          second = &it;
-          break;
-        }
-      }
-
-      if(first == NULL || second == NULL){
+      if(first == this->stations_hashmap.end() || second == this->stations_hashmap.end()){
         throw("Unknown Station");
       }else{
-        bool found = false;
-        for(auto&& it: _Connections){
-          if(it.stop->id == first->id){
-            found = true;
-            it.neighbors.push_back(std::pair<Station*,int>(second,std::stoi(w)));
-            break;
-          }
-        }
-        if(found == false){
-          Connection newConnection;
-          newConnection.stop = first;
-          newConnection.neighbors.push_back(std::pair<Station*,int>(second,std::stoi(w)));
-          _Connections.push_back(newConnection);
+        auto currentConnection = this->connections_hashmap.find(first->second->id);
+
+        if(currentConnection == this->connections_hashmap.end()){
+          Connection new_connection;
+          new_connection.stop = first->second;
+          new_connection.neighbors.push_back(std::pair<Station*,int>(second->second,std::stoi(w)));
+          this->connections.push_back(new_connection);
+          this->connections_hashmap.insert(std::make_pair<int, Connection*>(this->connections.back().stop->id, &this->connections.back()));
+        }else{
+          currentConnection->second->neighbors.push_back(std::pair<Station*,int>(second->second,std::stoi(w)));
         }
       }
     }
@@ -119,54 +221,55 @@ void readConnections(char* _filename, std::list<Station>& _Stations, std::list<C
   ifs.close();
 }
 
-std::list<Node > dijkstra(const std::list<Connection>& _connections, int _start){
-  std::list<Node > graph;
-  std::list<Node > blackList;
+void Generic_class::dijkstra(){
+  std::list<Node > tmp_graph;
+  this->graph_hashmap.clear();
+  this->graph.clear();
 
-  for(auto&& it: _connections){
-    Node newNode;
-    std::get<0>(newNode) = it.stop;
+  for(auto&& it: this->connections){
+    Node new_node;
+    std::get<0>(new_node) = it.stop;
 
-    if(it.stop->id == _start){
-      std::get<1>(newNode) = 0;
-      std::get<2>(newNode) = std::get<0>(newNode)->id;
+    // a checker si le trajet n'est pas possible
+    if(it.stop->id == this->travel.first){
+      std::get<1>(new_node) = 0;
+      std::get<2>(new_node) = std::get<0>(new_node)->id;
     }else{
-      std::get<1>(newNode) = INF;
-      std::get<2>(newNode) = std::get<0>(newNode)->id;
+      std::get<1>(new_node) = INF;
+      std::get<2>(new_node) = std::get<0>(new_node)->id;
     }
-    graph.push_back(newNode);
+    tmp_graph.push_back(new_node);
   }
 
-  while(!graph.empty()){
-    auto minElem = std::min_element(graph.begin(),
-                                    graph.end(),
-                                    [](Node a, Node b){
-                                      return std::get<1>(a) < std::get<1>(b);
-                                    });
+  while(!tmp_graph.empty()){
+    auto min_elem = std::min_element(tmp_graph.begin(),
+                                     tmp_graph.end(),
+                                     [](Node a, Node b){
+                                       return std::get<1>(a) < std::get<1>(b);
+                                     });
 
-    Connection curConnection;
-    for(auto&& it: _connections){
-      if(it.stop->id == std::get<0>(*minElem)->id){
-        curConnection = it;
+    Connection cur_connection;
+    for(auto&& it: this->connections){
+      if(it.stop->id == std::get<0>(*min_elem)->id){
+        cur_connection = it;
         break;
       }
     }
 
-    for(auto&& it: graph){
-      for(auto&& it2: curConnection.neighbors){
+    for(auto&& it: tmp_graph){
+      for(auto&& it2: cur_connection.neighbors){
         if(std::get<0>(it)->id == it2.first->id){
-          auto weight = std::get<1>(*minElem)+it2.second;
+          auto weight = std::get<1>(*min_elem)+it2.second;
           if(std::get<1>(it) > weight){
             std::get<1>(it) = weight;
-            std::get<2>(it) = std::get<0>(*minElem)->id;
+            std::get<2>(it) = std::get<0>(*min_elem)->id;
           }
         }
       }
     }
 
-    blackList.push_back(*minElem);
-    graph.erase(minElem);
+    this->graph.push_back(*min_elem);
+    this->graph_hashmap.insert(std::make_pair<int, Node*>(std::get<0>(this->graph.back())->id, &this->graph.back()));
+    tmp_graph.erase(min_elem);
   }
-
-  return blackList;
 }
