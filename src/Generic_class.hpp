@@ -9,6 +9,9 @@
 #define INF std::numeric_limits<int>::max()
 
 namespace travel{
+  /**********************************************
+     UTILS
+   */
   typedef struct __station{
     std::string name; // how is called the station
     unsigned int id; // identify the station with a unique number
@@ -24,10 +27,18 @@ namespace travel{
   // finalement changer pour une struct ?
   typedef std::tuple<Station*, int, int> Node; // a node is a triplet formed by a "station" and the "dynamic cost" to join it from a "previous station"
 
+  /**********************************************
+     Generic_class class
+   */
   class Generic_class{
 
-  public: // public methods
-    // Constructor & destructor
+    /**********************************************
+      Public methods
+     */
+  public:
+    /**********************************************
+      Constructor & destructor
+     */
     Generic_class(): stations(0), connections(0), graph(0), travel(std::pair<int,int>(-1,-1)){
     }
 
@@ -37,7 +48,9 @@ namespace travel{
     virtual ~Generic_class(){
     }
 
-    // Setters
+    /**********************************************
+      Setters
+     */
     virtual void set_travel(int _start, int _end) = 0;
     virtual void set_start(int _start) = 0;
     virtual void set_end(int _end) = 0;
@@ -46,21 +59,31 @@ namespace travel{
     virtual void read_connections(char* _filename) = 0;
     virtual void read_connections(std::string _filename) = 0;
 
-    // Display
+    /**********************************************
+      Display
+     */
     virtual void display_stations() = 0;
     virtual void display_connections() = 0;
     virtual void display_graph() = 0;
     virtual void display_travel() = 0;
 
-    // Compute algorithms
+    /**********************************************
+      Compute algorithms
+     */
     virtual void compute_travel() = 0;
     virtual void compute_travel(int _start, int _end) = 0;
 
-  protected: // protected methods
+    /**********************************************
+      Protected methods
+     */
+  protected:
     // compute the dijkstra algorithm
     virtual void dijkstra() = 0;
 
-  protected: // protected variables
+    /**********************************************
+      Protected variables
+     */
+  protected:
     std::list<Station> stations; // list of the known stations
     std::unordered_map<int, Station*> stations_hashmap; // hashmap able to search a station in the list
     std::list<Connection> connections; // list of the connections of each station

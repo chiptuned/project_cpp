@@ -3,6 +3,9 @@
 #include "Generic_class.hpp"
 
 namespace travel{
+  /**********************************************
+     UTILS
+   */
   // overload operator<< for a Station
   std::ostream& operator<<(std::ostream& _os, travel::Station& _stop){
     _os << "Station: " << _stop.name << " labeled " << _stop.id << " (Line: " << _stop.line_id << ")";
@@ -24,10 +27,17 @@ namespace travel{
     return _os;
   }
 
+  /**********************************************
+     Network class
+   */
   class Network: public travel::Generic_class{
-
-  public: // public methods
-    // Constructor & destructor
+    /**********************************************
+      Public methods
+     */
+  public:
+    /**********************************************
+      Constructor & destructor
+     */
     Network(): Generic_class(){
     }
 
@@ -37,7 +47,10 @@ namespace travel{
     virtual ~Network(){
     }
 
-    // Setters
+    /**********************************************
+      Setters
+     */
+    Constructor & destructor
     virtual void set_travel(int _start, int _end){
       this->travel = std::pair<int, int>(_start, _end);
     }
@@ -82,7 +95,6 @@ namespace travel{
       }
 
       ifs.close();
-      // this->display_stations();
     }
 
     virtual void read_connections(std::string _filename){
@@ -127,7 +139,9 @@ namespace travel{
       ifs.close();
     }
 
-    // Display
+    /**********************************************
+      Display
+     */
     virtual void display_stations(){
       std::cout << std::endl << "List Stations:" << std::endl;
       for(auto it: this->stations){
@@ -163,10 +177,12 @@ namespace travel{
       for(auto&& it: way){
         std::cout << it->name << " => ";
       }
-      std::cout << "Vous êtes arrivé!" << std::endl;
+      std::cout << "You have reached your destination!" << std::endl << std::endl;
     }
 
-    // Compute algorithms
+    /**********************************************
+      Compute algorithms
+     */
     virtual void compute_travel(){
       this->compute_travel(this->travel.first, this->travel.second);
     }
@@ -178,7 +194,10 @@ namespace travel{
       this->display_travel();
     }
 
-  protected: // protected methods
+    /**********************************************
+      Protected methods
+     */
+  protected:
     // compute the dijkstra algorithm
     virtual void dijkstra(){
       std::list<Node > tmp_graph;
