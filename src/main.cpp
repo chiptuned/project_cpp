@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <list>
 #include <utility>
@@ -8,7 +7,7 @@
 #include <limits>
 #include <algorithm>
 
-#include "Generic_class.hpp"
+#include "Network.hpp"
 
 int main(int argc, char** argv){
 
@@ -16,8 +15,8 @@ int main(int argc, char** argv){
   // std::list<Station> Stations;
   // std::list<Connection> Connections;
 
-  Generic_class network;
-  Generic_class* ptr_network = &network;
+  travel::Network network;
+  travel::Generic_class* ptr_network = &network;
 
   bool set_connections = false;
   bool set_stations = false;

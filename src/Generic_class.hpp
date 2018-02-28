@@ -8,268 +8,65 @@
 
 #define INF std::numeric_limits<int>::max()
 
-typedef struct __station{
-  std::string name; // how is called the station
-  unsigned int id; // identify the station with a unique number
-  unsigned int line_id; // identify the line of the station
-  friend std::ostream& operator<<(std::ostream& _os, const struct __station& _stop){
-    _os << "Station: " << _stop.name << " labeled " << _stop.id << " (Line: " << _stop.line_id << ")";
-    return _os;
-  }
-}Station; // a station is a stop for the net represented by a "name", an "id" and a "line"
+namespace travel{
+  typedef struct __station{
+    std::string name; // how is called the station
+    unsigned int id; // identify the station with a unique number
+    unsigned int line_id; // identify the line of the station
+  }Station; // a station is a stop for the net represented by a "name", an "id" and a "line"
 
-typedef struct __connection{
-  Station* stop; // reference station of the connection
-  std::list<std::pair<Station*, int> > neighbors; // list of pair of station and static cost to join this station from the reference station
-  friend std::ostream& operator<<(std::ostream& _os, const struct __connection& _connection){
-    _os << "The stations: " << *(_connection.stop) << " is connected to:\n";
-    for(auto&& it: _connection.neighbors){
-      _os << "\t" << *(it.first) << " with a weight of " << it.second << " secs" << std::endl;
-    }
-    return _os;
-  }
-}Connection; // a connection represent a "station" connected to a "list of other stations with a cost" to join it
+  typedef struct __connection{
+    Station* stop; // reference station of the connection
+    std::list<std::pair<Station*, int> > neighbors; // list of pair of station and static cost to join this station from the reference station
+  }Connection; // a connection represent a "station" connected to a "list of other stations with a cost" to join it
 
 
-// finalement changer pour une struct ?
-typedef std::tuple<Station*, int, int> Node; // a node is a triplet formed by a "station" and the "dynamic cost" to join it from a "previous station"
+  // finalement changer pour une struct ?
+  typedef std::tuple<Station*, int, int> Node; // a node is a triplet formed by a "station" and the "dynamic cost" to join it from a "previous station"
 
-std::ostream& operator<<(std::ostream& _os, const Node& _node){
-  _os << "Node " << std::get<0>(_node)->name << " (" << std::get<0>(_node)->id << "): cost " << std::get<1>(_node) << " from " << std::get<2>(_node);
-  return _os;
-}
+  class Generic_class{
 
-class Generic_class{
-
-public:
-  Generic_class(): stations(0), connections(0), graph(0), travel(std::pair<int,int>(-1,-1)){
-  }
-
-  Generic_class(int _start, int _end): stations(0), connections(0), graph(0), travel(std::pair<int,int>(_start, _end)){
-  }
-
-  ~Generic_class(){
-  }
-
-  void set_travel(int _start, int _end){
-    this->travel = std::pair<int, int>(_start, _end);
-  }
-  void set_start(int _start){
-    this->travel.first = _start;
-  }
-  void set_end(int _end){
-    this->travel.second = _end;
-  }
-
-  void display_stations(){
-    std::cout << std::endl << "List Stations:" << std::endl;
-    for(auto it: this->stations){
-      std::cout << it << std::endl;
-    }
-  }
-
-  void display_connections(){
-    std::cout << std::endl << "List Connections:" << std::endl;
-    for(auto it: this->connections){
-      std::cout << it << std::endl;
-    }
-  }
-
-  void display_graph(){
-    for(auto&& it: this->graph){
-      std::cout << it << std::endl;
-    }
-  }
-
-  void read_stations(char* _filename);
-  void read_stations(std::string _filename);
-  void read_connections(char* _filename);
-  void read_connections(std::string _filename);
-  void compute_travel(){
-    compute_travel(this->travel.first, this->travel.second);
-  }
-
-  void compute_travel(int _start, int _end){
-    this->travel = std::pair<int,int>(_start, _end);
-    this->dijkstra();
-    this->display_graph();
-    this->display_travel();
-  }
-
-  void display_travel(){
-    Node* cursor1;
-    Node* cursor2;
-
-    cursor1 = graph_hashmap.at(this->travel.first);
-    cursor2 = graph_hashmap.at(this->travel.second);
-
-    std::cout << "\n\nBest way to " << std::get<0>(*cursor1)->name << " => " << std::get<0>(*cursor2)->name << " is:\n\t";
-    std::list<Station*> way;
-    way.push_front(std::get<0>(*cursor2));
-    while(cursor1 != cursor2){
-      cursor2 = this->graph_hashmap.at(std::get<2>(*cursor2));
-      way.push_front(std::get<0>(*cursor2));
+  public: // public methods
+    // Constructor & destructor
+    Generic_class(): stations(0), connections(0), graph(0), travel(std::pair<int,int>(-1,-1)){
     }
 
-    for(auto&& it: way){
-      std::cout << it->name << " => ";
+    Generic_class(int _start, int _end): stations(0), connections(0), graph(0), travel(std::pair<int,int>(_start, _end)){
     }
-    std::cout << "Vous êtes arrivé!" << std::endl;
-  }
 
-protected:
-  void dijkstra();
+    virtual ~Generic_class(){
+    }
 
-public:
-  std::list<Station> stations;
-  std::unordered_map<int, Station*> stations_hashmap;
-  std::list<Connection> connections;
-  std::unordered_map<int, Connection*> connections_hashmap;
-  std::list<Node> graph;
-  std::unordered_map<int, Node*> graph_hashmap;
-  std::pair<int,int> travel;
-  // std::map<Station> stations_tree;
+    // Setters
+    virtual void set_travel(int _start, int _end) = 0;
+    virtual void set_start(int _start) = 0;
+    virtual void set_end(int _end) = 0;
+    virtual void read_stations(char* _filename) = 0;
+    virtual void read_stations(std::string _filename) = 0;
+    virtual void read_connections(char* _filename) = 0;
+    virtual void read_connections(std::string _filename) = 0;
+
+    // Display
+    virtual void display_stations() = 0;
+    virtual void display_connections() = 0;
+    virtual void display_graph() = 0;
+    virtual void display_travel() = 0;
+
+    // Compute algorithms
+    virtual void compute_travel() = 0;
+    virtual void compute_travel(int _start, int _end) = 0;
+
+  protected: // protected methods
+    // compute the dijkstra algorithm
+    virtual void dijkstra() = 0;
+
+  protected: // protected variables
+    std::list<Station> stations; // list of the known stations
+    std::unordered_map<int, Station*> stations_hashmap; // hashmap able to search a station in the list
+    std::list<Connection> connections; // list of the connections of each station
+    std::unordered_map<int, Connection*> connections_hashmap;  // hashmap able to search a connection in the list
+    std::list<Node> graph; // a list of stations that save the weight to arrive here starting from a unique station
+    std::unordered_map<int, Node*> graph_hashmap; // hashmap able to search a station in the graph to build the best way from A to B
+    std::pair<int,int> travel; // pair of a starting station id and a end station id
+  };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void Generic_class::read_stations(std::string _filename){
-  read_stations(_filename.c_str());
-}
-void Generic_class::read_stations(char* _filename){
-  std::ifstream ifs(_filename, std::ifstream::in);
-  this->stations.clear();
-  this->stations_hashmap.clear();
-  this->connections.clear();
-  this->connections_hashmap.clear();
-  this->graph.clear();
-  this->graph_hashmap.clear();
-
-  while(ifs.good() && !ifs.eof()){
-    Station new_station;
-    char tmp[256];
-
-    ifs.getline(tmp, 256, ';');
-    if(strcmp(tmp, "") != 0){
-      new_station.name = tmp;
-      ifs.getline(tmp, 256, '\n');
-      if(strcmp(tmp, "") != 0){
-        new_station.id = std::stoi(std::string(tmp));
-        this->stations.push_back(new_station);
-        this->stations_hashmap.insert(std::make_pair<int, Station*>(this->stations.back().id, &this->stations.back()));
-      }
-    }else{
-      ifs.getline(tmp,256,'\n');
-    }
-  }
-
-  ifs.close();
-}
-
-void Generic_class::read_connections(std::string _filename){
-  this->read_connections(_filename.c_str());
-}
-void Generic_class::read_connections(char* _filename){
-  std::ifstream ifs(_filename, std::ifstream::in);
-  this->connections.clear();
-  this->connections_hashmap.clear();
-  this->graph.clear();
-  this->graph_hashmap.clear();
-
-  while(ifs.good() && !ifs.eof()){
-    char a[256],b[256],w[256];
-
-    ifs.getline(a, 256, ';');
-    ifs.getline(b, 256, ';');
-    ifs.getline(w, 256, '\n');
-    if(strcmp(a, "") != 0 && strcmp(b, "") != 0 && strcmp(w, "") != 0){
-      auto first = this->stations_hashmap.find(std::stoi(std::string(a)));
-      auto second = this->stations_hashmap.find(std::stoi(std::string(b)));
-
-      if(first == this->stations_hashmap.end() || second == this->stations_hashmap.end()){
-        throw("Unknown Station");
-      }else{
-        auto currentConnection = this->connections_hashmap.find(first->second->id);
-
-        if(currentConnection == this->connections_hashmap.end()){
-          Connection new_connection;
-          new_connection.stop = first->second;
-          new_connection.neighbors.push_back(std::pair<Station*,int>(second->second,std::stoi(w)));
-          this->connections.push_back(new_connection);
-          this->connections_hashmap.insert(std::make_pair<int, Connection*>(this->connections.back().stop->id, &this->connections.back()));
-        }else{
-          currentConnection->second->neighbors.push_back(std::pair<Station*,int>(second->second,std::stoi(w)));
-        }
-      }
-    }
-  }
-
-  ifs.close();
-}
-
-void Generic_class::dijkstra(){
-  std::list<Node > tmp_graph;
-  this->graph_hashmap.clear();
-  this->graph.clear();
-
-  for(auto&& it: this->connections){
-    Node new_node;
-    std::get<0>(new_node) = it.stop;
-
-    // a checker si le trajet n'est pas possible
-    if(it.stop->id == this->travel.first){
-      std::get<1>(new_node) = 0;
-      std::get<2>(new_node) = std::get<0>(new_node)->id;
-    }else{
-      std::get<1>(new_node) = INF;
-      std::get<2>(new_node) = std::get<0>(new_node)->id;
-    }
-    tmp_graph.push_back(new_node);
-  }
-
-  while(!tmp_graph.empty()){
-    auto min_elem = std::min_element(tmp_graph.begin(),
-                                     tmp_graph.end(),
-                                     [](Node a, Node b){
-                                       return std::get<1>(a) < std::get<1>(b);
-                                     });
-
-    Connection cur_connection;
-    for(auto&& it: this->connections){
-      if(it.stop->id == std::get<0>(*min_elem)->id){
-        cur_connection = it;
-        break;
-      }
-    }
-
-    for(auto&& it: tmp_graph){
-      for(auto&& it2: cur_connection.neighbors){
-        if(std::get<0>(it)->id == it2.first->id){
-          auto weight = std::get<1>(*min_elem)+it2.second;
-          if(std::get<1>(it) > weight){
-            std::get<1>(it) = weight;
-            std::get<2>(it) = std::get<0>(*min_elem)->id;
-          }
-        }
-      }
-    }
-
-    this->graph.push_back(*min_elem);
-    this->graph_hashmap.insert(std::make_pair<int, Node*>(std::get<0>(this->graph.back())->id, &this->graph.back()));
-    tmp_graph.erase(min_elem);
-  }
-}
