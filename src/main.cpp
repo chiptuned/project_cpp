@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "Network.hpp"
+#include "grade.hpp"
 
 int main(int argc, char** argv){
   travel::Network network;
@@ -19,24 +20,26 @@ int main(int argc, char** argv){
   bool end_station = false;
 
   try{
+    std::string stations_filename;
+    std::string connections_filename;
     if(argc % 2 == 1){
       for(int i = 1; i < argc; i+=2){
         if(strcmp(argv[i], "stations") == 0){
           std::cout << "Arg " << i << ": " << argv[i] << std::endl;
           set_stations = true;
-          ptr_network->read_stations(argv[i+1]);//, Stations);
-        }else if(set_stations == true && strcmp(argv[i], "connections") == 0){
+          stations_filename = std::string(argv[i+1]);
+        }else if(strcmp(argv[i], "connections") == 0){
           std::cout << "Arg " << i << ": " << argv[i] << std::endl;
           set_connections = true;
-          ptr_network->read_connections(argv[i+1]);//, Stations, Connections);
+          connections_filename = std::string(argv[i+1]);
         }else if(strcmp(argv[i], "start") == 0){
           std::cout << "Arg " << i << ": " << argv[i] << std::endl;
           start_station = true;
-          ptr_network->set_start(std::stoi(std::string(argv[i+1])));
+          ptr_network->set_start(static_cast<unsigned int>(std::stoi(std::string(argv[i+1]))));
         }else if(strcmp(argv[i], "end") == 0){
           std::cout << "Arg " << i << ": " << argv[i] << std::endl;
           end_station = true;
-          ptr_network->set_end(std::stoi(std::string(argv[i+1])));
+          ptr_network->set_end(static_cast<unsigned int>(std::stoi(std::string(argv[i+1]))));
         }
       }
     }
@@ -45,11 +48,52 @@ int main(int argc, char** argv){
       throw("usage (case sensitive): ./prog stations \"StationsFile.csv\" connections \"ConnectionsFile.csv\" start \"StartStation\" end \"EndStation\"");
     }else{
       std::cout << "\nnice\n" << std::endl;
+      std::list<travel::Station> l;
+      std::unordered_map<unsigned int, travel::Station*> ml;
+      std::list<travel::Connection> c;
+      std::unordered_map<unsigned int, travel::Connection*> mc;
 
-      ptr_network->display_stations();
-      ptr_network->display_connections();
+      ptr_network->read_stations(stations_filename.c_str());
+      ptr_network->read_connections(connections_filename.c_str());
       ptr_network->compute_travel();
-      ptr_network->compute_travel(5,2);
+      ptr_network->display_travel();
+
+      ptr_network->read_stations(stations_filename.c_str(),&l,&ml);
+      ptr_network->read_connections(connections_filename.c_str(),ml,&c,&mc);
+      ptr_network->compute_travel();
+      ptr_network->display_travel();
+
+      ptr_network->read_stations(stations_filename);
+      ptr_network->read_connections(connections_filename);
+      ptr_network->compute_travel();
+      ptr_network->display_travel();
+
+      ptr_network->read_stations(stations_filename,&l,&ml);
+      ptr_network->read_connections(connections_filename,ml,&c,&mc);
+      ptr_network->compute_travel();
+      ptr_network->display_travel();
+
+      network.read_stations(stations_filename.c_str());
+      network.read_connections(connections_filename.c_str());
+      network.compute_travel();
+      network.display_travel();
+
+      network.read_stations(stations_filename.c_str(),&l,&ml);
+      network.read_connections(connections_filename.c_str(),ml,&c,&mc);
+      network.compute_travel();
+      network.display_travel();
+
+      network.read_stations(stations_filename);
+      network.read_connections(connections_filename);
+      network.compute_travel();
+      network.display_travel();
+
+      network.read_stations(stations_filename,&l,&ml);
+      network.read_connections(connections_filename,ml,&c,&mc);
+      network.compute_travel();
+      network.display_travel();
+
+      grade_max(ptr_network);
     }
   }catch(const char* err_mess){
     std::cerr << "ERROR:\n\t" << err_mess << std::endl;

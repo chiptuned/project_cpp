@@ -5,7 +5,7 @@
 namespace travel{
   /**********************************************
      UTILS
-   */
+  */
   // overload operator<< for a Station
   std::ostream& operator<<(std::ostream& _os, travel::Station& _stop){
     _os << "Station: " << _stop.name << " labeled " << _stop.id << " (Line: " << _stop.line_id << ")";
@@ -29,15 +29,15 @@ namespace travel{
 
   /**********************************************
      Network class
-   */
+  */
   class Network: public travel::Generic_class{
     /**********************************************
       Public methods
-     */
+    */
   public:
     /**********************************************
       Constructor & destructor
-     */
+    */
     Network(): Generic_class(){
     }
 
@@ -49,31 +49,45 @@ namespace travel{
 
     /**********************************************
       Setters
-     */
-    virtual void set_travel(int _start, int _end){
-      this->travel = std::pair<int, int>(_start, _end);
+    */
+    virtual void set_travel(unsigned int _start, unsigned int _end){
+      this->travel = std::pair<unsigned int, unsigned int>(_start, _end);
     }
 
-    virtual void set_start(int _start){
+    virtual void set_travel(std::pair<unsigned int, unsigned int> _travel){
+      this->travel = _travel;
+    }
+
+    virtual void set_start(unsigned int _start){
       this->travel.first = _start;
     }
 
-    virtual void set_end(int _end){
+    virtual void set_end(unsigned int _end){
       this->travel.second = _end;
     }
 
-    virtual void read_stations(std::string _filename){
-      this->read_stations(_filename.c_str());
+    virtual void read_stations(const std::string& _filename){
+      this->read_stations(_filename.c_str(), &this->stations, &this->stations_hashmap);
     }
 
-    virtual void read_stations(char* _filename){
+    virtual void read_stations(const char* _filename){
+      this->read_stations(_filename, &this->stations, &this->stations_hashmap);
+    }
+
+    virtual void read_stations(const std::string& _filename, std::list<Station>* _stations, std::unordered_map<unsigned int, travel::Station*>* _stations_hashmap){
+      this->read_stations(_filename.c_str(), _stations, _stations_hashmap);
+    }
+
+    virtual void read_stations(const char* _filename, std::list<Station>* _stations, std::unordered_map<unsigned int, travel::Station*>* _stations_hashmap){
       std::ifstream ifs(_filename, std::ifstream::in);
-      this->stations.clear();
-      this->stations_hashmap.clear();
-      this->connections.clear();
-      this->connections_hashmap.clear();
-      this->graph.clear();
-      this->graph_hashmap.clear();
+      _stations->clear();
+      _stations_hashmap->clear();
+      if(_stations == &this->stations){
+        this->connections.clear();
+        this->connections_hashmap.clear();
+        this->graph.clear();
+        this->graph_hashmap.clear();
+      }
 
       while(ifs.good() && !ifs.eof()){
         travel::Station new_station;
@@ -84,9 +98,9 @@ namespace travel{
           new_station.name = tmp;
           ifs.getline(tmp, 256, '\n');
           if(strcmp(tmp, "") != 0){
-            new_station.id = std::stoi(std::string(tmp));
-            this->stations.push_back(new_station);
-            this->stations_hashmap.insert(std::make_pair<int, Station*>(this->stations.back().id, &this->stations.back()));
+            new_station.id = static_cast<unsigned int>(std::stoi(std::string(tmp)));
+            _stations->push_back(new_station);
+            _stations_hashmap->insert(std::pair<unsigned int, travel::Station*>(_stations->back().id, &_stations->back()));
           }
         }else{
           ifs.getline(tmp,256,'\n');
@@ -96,16 +110,26 @@ namespace travel{
       ifs.close();
     }
 
-    virtual void read_connections(std::string _filename){
-      this->read_connections(_filename.c_str());
+    virtual void read_connections(const std::string& _filename){
+      this->read_connections(_filename.c_str(), this->stations_hashmap, &this->connections, &this->connections_hashmap);
     }
 
-    virtual void read_connections(char* _filename){
+    virtual void read_connections(const char* _filename){
+      this->read_connections(_filename, this->stations_hashmap, &this->connections, &this->connections_hashmap);
+    }
+
+    virtual void read_connections(const std::string& _filename, const std::unordered_map<unsigned int, travel::Station*>& _stations_hashmap, std::list<travel::Connection>* _connections, std::unordered_map<unsigned int, travel::Connection*>* _connections_hashmap){
+      this->read_connections(_filename.c_str(), _stations_hashmap, _connections, _connections_hashmap);
+    }
+
+    virtual void read_connections(const char* _filename, const std::unordered_map<unsigned int, travel::Station*>& _stations_hashmap, std::list<travel::Connection>* _connections, std::unordered_map<unsigned int, travel::Connection*>* _connections_hashmap){
       std::ifstream ifs(_filename, std::ifstream::in);
-      this->connections.clear();
-      this->connections_hashmap.clear();
-      this->graph.clear();
-      this->graph_hashmap.clear();
+      _connections->clear();
+      _connections_hashmap->clear();
+      if(_connections == &this->connections){
+        this->graph.clear();
+        this->graph_hashmap.clear();
+      }
 
       while(ifs.good() && !ifs.eof()){
         char a[256],b[256],w[256];
@@ -114,22 +138,22 @@ namespace travel{
         ifs.getline(b, 256, ';');
         ifs.getline(w, 256, '\n');
         if(strcmp(a, "") != 0 && strcmp(b, "") != 0 && strcmp(w, "") != 0){
-          auto first = this->stations_hashmap.find(std::stoi(std::string(a)));
-          auto second = this->stations_hashmap.find(std::stoi(std::string(b)));
+          auto first = _stations_hashmap.find(static_cast<unsigned int>(std::stoi(std::string(a))));
+          auto second = _stations_hashmap.find(static_cast<unsigned int>(std::stoi(std::string(b))));
 
-          if(first == this->stations_hashmap.end() || second == this->stations_hashmap.end()){
+          if(first == _stations_hashmap.end() || second == _stations_hashmap.end()){
             throw("Unknown Station");
           }else{
-            auto currentConnection = this->connections_hashmap.find(first->second->id);
+            auto knownConnection = _connections_hashmap->find(first->second->id);
 
-            if(currentConnection == this->connections_hashmap.end()){
+            if(knownConnection == _connections_hashmap->end()){
               travel::Connection new_connection;
               new_connection.stop = first->second;
-              new_connection.neighbors.push_back(std::pair<Station*,int>(second->second,std::stoi(w)));
-              this->connections.push_back(new_connection);
-              this->connections_hashmap.insert(std::make_pair<int, Connection*>(this->connections.back().stop->id, &this->connections.back()));
+              new_connection.neighbors.push_back(std::pair<Station*,int>(second->second, std::stoi(w)));
+              _connections->push_back(new_connection);
+              _connections_hashmap->insert(std::pair<unsigned int, Connection*>(this->connections.back().stop->id, &this->connections.back()));
             }else{
-              currentConnection->second->neighbors.push_back(std::pair<Station*,int>(second->second,std::stoi(w)));
+              knownConnection->second->neighbors.push_back(std::pair<Station*,int>(second->second, std::stoi(w)));
             }
           }
         }
@@ -140,7 +164,7 @@ namespace travel{
 
     /**********************************************
       Display
-     */
+    */
     virtual void display_stations(){
       std::cout << std::endl << "List Stations:" << std::endl;
       for(auto it: this->stations){
@@ -165,7 +189,7 @@ namespace travel{
       Node* cursor1 = graph_hashmap.at(this->travel.first);
       Node* cursor2 = graph_hashmap.at(this->travel.second);
 
-      std::cout << "\n\nBest way to " << std::get<0>(*cursor1)->name << " => " << std::get<0>(*cursor2)->name << " is:\n\t";
+      std::cout << "Best way to " << std::get<0>(*cursor1)->name << " => " << std::get<0>(*cursor2)->name << " is:\n\t";
       std::list<Station*> way;
       way.push_front(std::get<0>(*cursor2));
       while(cursor1 != cursor2){
@@ -176,29 +200,37 @@ namespace travel{
       for(auto&& it: way){
         std::cout << it->name << " => ";
       }
-      std::cout << "You have reached your destination!" << std::endl << std::endl;
+      std::cout << "You have reached your destination!" << std::endl;
     }
 
     /**********************************************
       Compute algorithms
-     */
+    */
     virtual void compute_travel(){
       this->compute_travel(this->travel.first, this->travel.second);
     }
 
-    virtual void compute_travel(int _start, int _end){
+    virtual void compute_travel(unsigned int _start, unsigned int _end){
+      this->travel = std::pair<int,int>(_start, _end);
+      this->dijkstra();
+    }
+
+    virtual void compute_and_display_travel(){
+      this->compute_travel(this->travel.first, this->travel.second);
+    }
+
+    virtual void compute_and_display_travel(unsigned int _start, unsigned int _end){
       this->travel = std::pair<int,int>(_start, _end);
       this->dijkstra();
       this->display_graph();
       this->display_travel();
     }
-
     /**********************************************
       Protected methods
-     */
+    */
   protected:
     // compute the dijkstra algorithm
-    virtual void dijkstra(){
+    void dijkstra(){
       std::list<Node > tmp_graph;
       this->graph_hashmap.clear();
       this->graph.clear();
