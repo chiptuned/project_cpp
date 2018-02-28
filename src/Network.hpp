@@ -50,7 +50,6 @@ namespace travel{
     /**********************************************
       Setters
      */
-    Constructor & destructor
     virtual void set_travel(int _start, int _end){
       this->travel = std::pair<int, int>(_start, _end);
     }
