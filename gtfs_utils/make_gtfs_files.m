@@ -99,9 +99,6 @@ all_stops_from_connections = all_stops_from_connections(1:curr_c+cpt,:);
 all_stops = all_stops_from_connections(idx_unique,:);
 t_generation_connections = toc(t_start_t_connections)
 
-
-
-
 %% Compute same stops as an instant connection
 t_start_t_same_stops = tic;
 stops_gps_str = join(arrayfun(@(a) num2str(a, '%02.16f\n'), ...
@@ -147,11 +144,14 @@ t_generation_same_stops = toc(t_start_t_same_stops)
 %% Export files
 delete(fn1)
 fid = fopen(fn1,'w');
-fprintf(fid,'%s, %s\n', '# uint_s_id, string_short_line, string_name_station', ...
-'string_adress_station, string_desc_line');
+% fprintf(fid,'%s, %s\n', '# uint_s_id, string_short_line, string_name_station', ...
+% 'string_adress_station, string_desc_line'); % all_stops
+fprintf(fid,'%s\n', '# string_name_station, uint_s_id, uint_line');
 
-% remove commas
+% remove commas and adapt to cpp code format
 all_stops(:,2:end) = strrep(all_stops(:,2:end),',', '');
+[~, ~, loc_unique] = unique(all_stops(:,3));
+all_stops = [all_stops(:,[3,1]), num2cell(loc_unique)];
 
 formatSpec = '%d,%s,%s,%s,%s\n';
 for ind = 1:size(all_stops,1)
