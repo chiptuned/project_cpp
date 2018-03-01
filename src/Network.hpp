@@ -89,10 +89,20 @@ namespace travel{
         this->graph_hashmap.clear();
       }
 
+      // Discard header's lines
+      while(ifs.good() && !ifs.eof()){
+        char check = ifs.peek();
+        if(check == '#'){
+          char header_line[1024];
+          ifs.getline(header_line,1024,'\n');
+        }else{
+          break;
+        }
+      }
+
       while(ifs.good() && !ifs.eof()){
         travel::Station new_station;
         char tmp[256];
-
         ifs.getline(tmp, 256, ';');
         if(strcmp(tmp, "") != 0){
           new_station.name = tmp;
@@ -134,10 +144,20 @@ namespace travel{
         this->graph.clear();
         this->graph_hashmap.clear();
       }
+      
+      // Discard header's lines
+      while(ifs.good() && !ifs.eof()){
+        char check = ifs.peek();
+        if(check == '#'){
+          char header_line[1024];
+          ifs.getline(header_line,1024,'\n');
+        }else{
+          break;
+        }
+      }
 
       while(ifs.good() && !ifs.eof()){
         char a[256],b[256],w[256];
-
         ifs.getline(a, 256, ';');
         ifs.getline(b, 256, ';');
         ifs.getline(w, 256, '\n');
@@ -237,21 +257,21 @@ namespace travel{
         previous_node = *it;
       }
       /*
-      for(auto&& it: way){
+        for(auto&& it: way){
         if(first){
-          first = false;
-          std::cout << "\t<Take line " << it->connection->stop->line_id << ">" << std::endl;
-          std::cout << "\t\tFrom " << it->connection->stop->name;
+        first = false;
+        std::cout << "\t<Take line " << it->connection->stop->line_id << ">" << std::endl;
+        std::cout << "\t\tFrom " << it->connection->stop->name;
         }else if(previous_node->connection->stop->line_id != it->connection->stop->line_id){
-          std::cout << " to " << previous_node->connection->stop->name << " (" << previous_node->cost-last_cost << " secs)" << std::endl;
-          last_cost = previous_node->cost;
-          std::cout << "\tWalk " << it->cost-last_cost << " secs" << std::endl;
-          last_cost = it->cost;
-          std::cout << "\t<Take line " << it->connection->stop->line_id << ">" << std::endl;
-          std::cout << "\t\tFrom " << it->connection->stop->name;
+        std::cout << " to " << previous_node->connection->stop->name << " (" << previous_node->cost-last_cost << " secs)" << std::endl;
+        last_cost = previous_node->cost;
+        std::cout << "\tWalk " << it->cost-last_cost << " secs" << std::endl;
+        last_cost = it->cost;
+        std::cout << "\t<Take line " << it->connection->stop->line_id << ">" << std::endl;
+        std::cout << "\t\tFrom " << it->connection->stop->name;
         }
         previous = it;
-      }
+        }
       */
       // std::cout << " to " << previous_node->connection->stop->name << " (" << previous_node->cost-last_cost << " secs)" << std::endl;
       std::cout << "After " << previous_node->cost << " secs, you have reached your destination!" << std::endl;
