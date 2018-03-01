@@ -42,8 +42,8 @@ void grade_max(travel::Generic_class* ptr){ // si on veut le rendre constant il 
   int N = 1e6;
   auto start = std::chrono::steady_clock::now();
   for(int i = 0; i < N; i++){
-    auto start = dice(), end = dice();
-    ptr->compute_travel(start, end);
+    auto start = dice(); //, end = dice();
+    ptr->compute_travel(start);
   }
   auto duration = std::chrono::duration_cast< std::chrono::microseconds >(std::chrono::steady_clock::now() - start);
   std::cout << "\n" << N/1000. << "K loops in " <<

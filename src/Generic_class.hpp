@@ -1,10 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include <list>
-#include <utility>
-#include <string>
-#include <unordered_map>
+#include <list> // container list
+#include <utility> // pair
+#include <string> // string of char
+#include <unordered_map> // hashmap
 
 #define INF std::numeric_limits<int>::max()
 
@@ -24,14 +23,11 @@ namespace travel{
     std::list<std::pair<Station*, int> > neighbors; // list of pair of station and static cost to join this station from the reference station
   }Connection; // a connection represent a "station" connected to a "list of other stations with a cost" to join it
 
-
-  // finalement changer pour une struct ?
-  // typedef std::tuple<Station*, int, unsigned int> Node; // a node is a triplet formed by a "station" and the "dynamic cost" to join it from a "previous station"
   typedef struct __node{
-    Connection* connection;
-    int cost;
-    unsigned int from_id;
-  }Node;
+    Connection* connection; // the connection of the node
+    int cost; // the cumulative cost of this node
+    unsigned int from_id; // id of the station that generated this cost
+  }Node; // a node represent a connection with a cost to join it from a dedicated station
 
   /**********************************************
      Generic_class class
@@ -79,14 +75,24 @@ namespace travel{
     virtual void display_connections() = 0;
     virtual void display_graph() = 0;
     virtual void display_travel() = 0;
+    virtual void display_travel(unsigned int _end) = 0;
+
+    // to evaluate students' objects
+    virtual void display_travel(unsigned int _end, const std::unordered_map<unsigned int, Node*>& _graph_hashmap) = 0;
 
     /**********************************************
       Compute algorithms
     */
     virtual void compute_travel() = 0;
-    virtual void compute_travel(unsigned int _start, unsigned int _end) = 0;
+    virtual void compute_travel(unsigned int _start) = 0;
     virtual void compute_and_display_travel() = 0;
     virtual void compute_and_display_travel(unsigned int _start, unsigned int _end) = 0;
+
+    // to evaluate students' objects
+    virtual void compute_travel(std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap) = 0;
+    virtual void compute_travel(unsigned int _start, std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap) = 0;
+    virtual void compute_and_display_travel(std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap) = 0;
+    virtual void compute_and_display_travel(unsigned int _start, unsigned int _end, std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap) = 0;
 
     /**********************************************
       Protected methods

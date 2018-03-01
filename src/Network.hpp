@@ -1,5 +1,8 @@
 #pragma once
 
+#include <iostream> // cout
+#include <fstream> // ifstream
+
 #include "Generic_class.hpp"
 
 namespace travel{
@@ -144,7 +147,7 @@ namespace travel{
         this->graph.clear();
         this->graph_hashmap.clear();
       }
-      
+
       // Discard header's lines
       while(ifs.good() && !ifs.eof()){
         char check = ifs.peek();
@@ -211,14 +214,26 @@ namespace travel{
     }
 
     virtual void display_travel(){
-      Node* cursor1 = graph_hashmap.at(this->travel.first);
-      Node* cursor2 = graph_hashmap.at(this->travel.second);
+      this->display_travel(this->travel.second, this->graph_hashmap);
+    }
+
+    virtual void display_travel(unsigned int _end){
+      this->display_travel(_end, this->graph_hashmap);
+    }
+
+    virtual void display_travel(unsigned int _end, const std::unordered_map<unsigned int, Node*>& _graph_hashmap){
+      Node* cursor1 = std::min_element(_graph_hashmap.begin(),
+                                       _graph_hashmap.end(),
+                                       [](const std::pair<unsigned int, Node*>& a, const std::pair<unsigned int, Node*>& b){
+                                         return (a.second->cost < b.second->cost);
+                                       })->second;
+      Node* cursor2 = _graph_hashmap.at(_end);
 
       std::cout << "\nBest way from " << cursor1->connection->stop->name << " to " << cursor2->connection->stop->name << " is:\n";
       std::list<Node*> way;
       way.push_front(cursor2);
       while(cursor1 != cursor2){
-        cursor2 = this->graph_hashmap.at(cursor2->from_id);
+        cursor2 = _graph_hashmap.at(cursor2->from_id);
         way.push_front(cursor2);
       }
 
@@ -256,24 +271,6 @@ namespace travel{
 
         previous_node = *it;
       }
-      /*
-        for(auto&& it: way){
-        if(first){
-        first = false;
-        std::cout << "\t<Take line " << it->connection->stop->line_id << ">" << std::endl;
-        std::cout << "\t\tFrom " << it->connection->stop->name;
-        }else if(previous_node->connection->stop->line_id != it->connection->stop->line_id){
-        std::cout << " to " << previous_node->connection->stop->name << " (" << previous_node->cost-last_cost << " secs)" << std::endl;
-        last_cost = previous_node->cost;
-        std::cout << "\tWalk " << it->cost-last_cost << " secs" << std::endl;
-        last_cost = it->cost;
-        std::cout << "\t<Take line " << it->connection->stop->line_id << ">" << std::endl;
-        std::cout << "\t\tFrom " << it->connection->stop->name;
-        }
-        previous = it;
-        }
-      */
-      // std::cout << " to " << previous_node->connection->stop->name << " (" << previous_node->cost-last_cost << " secs)" << std::endl;
       std::cout << "After " << previous_node->cost << " secs, you have reached your destination!" << std::endl;
     }
 
@@ -281,39 +278,54 @@ namespace travel{
       Compute algorithms
     */
     virtual void compute_travel(){
-      this->compute_travel(this->travel.first, this->travel.second);
+      this->compute_travel(this->travel.first, &this->connections, &this->graph, &this->graph_hashmap);
     }
 
-    virtual void compute_travel(unsigned int _start, unsigned int _end){
-      this->travel = std::pair<int,int>(_start, _end);
-      this->dijkstra();
+    virtual void compute_travel(unsigned int _start){
+      this->compute_travel(_start, &this->connections, &this->graph, &this->graph_hashmap);
+    }
+
+    virtual void compute_travel(std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap){
+      this->compute_travel(this->travel.first, _connections, _graph, _graph_hashmap);
+    }
+
+    virtual void compute_travel(unsigned int _start, std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap){
+      this->dijkstra(_start, _connections, _graph, _graph_hashmap);
     }
 
     virtual void compute_and_display_travel(){
-      this->compute_and_display_travel(this->travel.first, this->travel.second);
+      this->compute_and_display_travel(this->travel.first, this->travel.second, &this->connections, &this->graph, &this->graph_hashmap);
     }
 
     virtual void compute_and_display_travel(unsigned int _start, unsigned int _end){
-      this->travel = std::pair<int,int>(_start, _end);
-      this->dijkstra();
-      this->display_graph();
-      this->display_travel();
+      this->compute_and_display_travel(_start, _end, &this->connections, &this->graph, &this->graph_hashmap);
     }
+
+    virtual void compute_and_display_travel(std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap){
+      this->compute_and_display_travel(this->travel.first, this->travel.second, _connections, _graph, _graph_hashmap);
+    }
+
+    virtual void compute_and_display_travel(unsigned int _start, unsigned int _end, std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap){
+      this->dijkstra(_start, _connections, _graph, _graph_hashmap);
+      this->display_graph();
+      this->display_travel(_end, *_graph_hashmap);
+    }
+
     /**********************************************
       Protected methods
     */
   protected:
     // compute the dijkstra algorithm
-    void dijkstra(){
+    void dijkstra(unsigned int _start, std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap){
       std::list<Node > tmp_graph;
-      this->graph_hashmap.clear();
-      this->graph.clear();
+      _graph_hashmap->clear();
+      _graph->clear();
 
       // a checker si le trajet n'est pas possible aka first nexiste pas.... (dans set travel ? mais probleme a la construction)
-      for(auto&& it: this->connections){
+      for(auto&& it: *_connections){
         Node new_node;
         new_node.connection = &it;
-        new_node.cost = ((it.stop->id == this->travel.first) ? 0 : INF);
+        new_node.cost = ((it.stop->id == _start) ? 0 : INF);
         new_node.from_id = new_node.connection->stop->id;
         tmp_graph.push_back(new_node);
       }
@@ -339,8 +351,8 @@ namespace travel{
           }
         }
 
-        this->graph.push_back(*min_elem);
-        this->graph_hashmap.insert(std::pair<unsigned int, Node*>(this->graph.back().connection->stop->id, &this->graph.back()));
+        _graph->push_back(*min_elem);
+        _graph_hashmap->insert(std::pair<unsigned int, Node*>(_graph->back().connection->stop->id, &_graph->back()));
         tmp_graph.erase(min_elem);
       }
     }
