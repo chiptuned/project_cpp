@@ -96,11 +96,15 @@ namespace travel{
         ifs.getline(tmp, 256, ';');
         if(strcmp(tmp, "") != 0){
           new_station.name = tmp;
-          ifs.getline(tmp, 256, '\n');
+          ifs.getline(tmp, 256, ';');
           if(strcmp(tmp, "") != 0){
             new_station.id = static_cast<unsigned int>(std::stoi(std::string(tmp)));
-            _stations->push_back(new_station);
-            _stations_hashmap->insert(std::pair<unsigned int, travel::Station*>(_stations->back().id, &_stations->back()));
+            ifs.getline(tmp, 256, '\n');
+            if(strcmp(tmp, "") != 0){
+              new_station.line_id = static_cast<unsigned int>(std::stoi(std::string(tmp)));
+              _stations->push_back(new_station);
+              _stations_hashmap->insert(std::pair<unsigned int, travel::Station*>(_stations->back().id, &_stations->back()));
+            }
           }
         }else{
           ifs.getline(tmp,256,'\n');
@@ -180,6 +184,7 @@ namespace travel{
     }
 
     virtual void display_graph(){
+      std::cout << std::endl << "List Nodes:" << std::endl;
       for(auto&& it: this->graph){
         std::cout << it << std::endl;
       }
@@ -189,18 +194,34 @@ namespace travel{
       Node* cursor1 = graph_hashmap.at(this->travel.first);
       Node* cursor2 = graph_hashmap.at(this->travel.second);
 
-      std::cout << "Best way to " << cursor1->connection->stop->name << " => " << cursor2->connection->stop->name << " is:\n\t";
-      std::list<Station*> way;
-      way.push_front(cursor2->connection->stop);
+      std::cout << "\nBest way from " << cursor1->connection->stop->name << " to " << cursor2->connection->stop->name << " is:\n";
+      std::list<Node*> way;
+      way.push_front(cursor2);
       while(cursor1 != cursor2){
         cursor2 = this->graph_hashmap.at(cursor2->from_id);
-        way.push_front(cursor2->connection->stop);
+        way.push_front(cursor2);
       }
 
+      Node* previous;
+      bool first = true;
+      int lastCost = 0;
       for(auto&& it: way){
-        std::cout << it->name << " => ";
+        if(first){
+          first = false;
+          std::cout << "\t<Take line " << it->connection->stop->line_id << ">" << std::endl;
+          std::cout << "\t\tFrom " << it->connection->stop->name;
+        }else if(previous->connection->stop->line_id != it->connection->stop->line_id){
+          std::cout << " to " << previous->connection->stop->name << " (" << previous->cost-lastCost << " secs)" << std::endl;
+          lastCost = previous->cost;
+          std::cout << "\tWalk " << it->cost-lastCost << " secs" << std::endl;
+          lastCost = it->cost;
+          std::cout << "\t<Take line " << it->connection->stop->line_id << ">" << std::endl;
+          std::cout << "\t\tFrom " << it->connection->stop->name;
+        }
+        previous = it;
       }
-      std::cout << "You have reached your destination!" << std::endl;
+      std::cout << " to " << previous->connection->stop->name << " (" << previous->cost-lastCost << " secs)" << std::endl;
+      std::cout << "After " << previous->cost << " secs, you have reached your destination!" << std::endl;
     }
 
     /**********************************************
@@ -216,7 +237,7 @@ namespace travel{
     }
 
     virtual void compute_and_display_travel(){
-      this->compute_travel(this->travel.first, this->travel.second);
+      this->compute_and_display_travel(this->travel.first, this->travel.second);
     }
 
     virtual void compute_and_display_travel(unsigned int _start, unsigned int _end){

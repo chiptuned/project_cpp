@@ -55,9 +55,11 @@ int main(int argc, char** argv){
 
       ptr_network->read_stations(stations_filename.c_str());
       ptr_network->read_connections(connections_filename.c_str());
-      ptr_network->compute_travel();
-      ptr_network->display_travel();
-
+      ptr_network->display_stations();
+      ptr_network->display_connections();
+      ptr_network->compute_and_display_travel();
+      // ptr_network->display_travel();
+      /*
       ptr_network->read_stations(stations_filename.c_str(),&l,&ml);
       ptr_network->read_connections(connections_filename.c_str(),ml,&c,&mc);
       ptr_network->compute_travel();
@@ -91,9 +93,9 @@ int main(int argc, char** argv){
       network.read_stations(stations_filename,&l,&ml);
       network.read_connections(connections_filename,ml,&c,&mc);
       network.compute_travel();
-      network.display_travel();
+      network.display_travel();*/
 
-      grade_max(ptr_network);
+      // grade_max(ptr_network);
     }
   }catch(const char* err_mess){
     std::cerr << "ERROR:\n\t" << err_mess << std::endl;

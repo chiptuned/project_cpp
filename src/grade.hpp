@@ -36,6 +36,8 @@ void grade_max(travel::Generic_class* ptr){ // si on veut le rendre constant il 
   std::uniform_int_distribution<int> distribution(1,10);
 
   auto dice = std::bind ( distribution, generator );
+  ptr->display_stations();
+  ptr->display_connections();
 
   int N = 1e6;
   auto start = std::chrono::steady_clock::now();
