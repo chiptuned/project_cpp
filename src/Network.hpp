@@ -169,18 +169,18 @@ namespace travel{
           auto second = _stations_hashmap.find(static_cast<unsigned int>(std::stoi(std::string(b))));
 
           if(first == _stations_hashmap.end() || second == _stations_hashmap.end()){
-            throw("Unknown Station");
+            continue; //throw("Unknown Station");
           }else{
             auto knownConnection = _connections_hashmap->find(first->second->id);
 
             if(knownConnection == _connections_hashmap->end()){
               travel::Connection new_connection;
               new_connection.stop = first->second;
-              new_connection.neighbors.push_back(std::pair<Station*,int>(second->second, std::stoi(w)));
+              new_connection.neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(w)));
               _connections->push_back(new_connection);
               _connections_hashmap->insert(std::pair<unsigned int, Connection*>(this->connections.back().stop->id, &this->connections.back()));
             }else{
-              knownConnection->second->neighbors.push_back(std::pair<Station*,int>(second->second, std::stoi(w)));
+              knownConnection->second->neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(w)));
             }
           }
         }

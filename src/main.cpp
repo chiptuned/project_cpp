@@ -55,10 +55,12 @@ int main(int argc, char** argv){
 
       ptr_network->read_stations(stations_filename.c_str());
       ptr_network->read_connections(connections_filename.c_str());
-      ptr_network->display_stations();
-      ptr_network->display_connections();
-      ptr_network->compute_and_display_travel();
-      // ptr_network->display_travel();
+      // ptr_network->display_stations();
+      // ptr_network->display_connections();
+      ptr_network->compute_travel();
+      // ptr_network->display_graph();
+      ptr_network->display_travel();
+
       /*
       ptr_network->read_stations(stations_filename.c_str(),&l,&ml);
       ptr_network->read_connections(connections_filename.c_str(),ml,&c,&mc);

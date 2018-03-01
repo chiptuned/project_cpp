@@ -25,7 +25,7 @@ namespace travel{
 
   typedef struct __node{
     Connection* connection; // the connection of the node
-    int cost; // the cumulative cost of this node
+    unsigned long cost; // the cumulative cost of this node
     unsigned int from_id; // id of the station that generated this cost
   }Node; // a node represent a connection with a cost to join it from a dedicated station
 
