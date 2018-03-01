@@ -19,13 +19,19 @@ namespace travel{
   }Station; // a station is a stop for the net represented by a "name", an "id" and a "line"
 
   typedef struct __connection{
+    std::string name; // name of the connection according to the line
     Station* stop; // reference station of the connection
     std::list<std::pair<Station*, int> > neighbors; // list of pair of station and static cost to join this station from the reference station
   }Connection; // a connection represent a "station" connected to a "list of other stations with a cost" to join it
 
 
   // finalement changer pour une struct ?
-  typedef std::tuple<Station*, int, unsigned int> Node; // a node is a triplet formed by a "station" and the "dynamic cost" to join it from a "previous station"
+  // typedef std::tuple<Station*, int, unsigned int> Node; // a node is a triplet formed by a "station" and the "dynamic cost" to join it from a "previous station"
+  typedef struct __node{
+    Connection* connection;
+    int cost;
+    unsigned int from_id;
+  }Node;
 
   /**********************************************
      Generic_class class

@@ -23,7 +23,7 @@ namespace travel{
 
   // overload operator<< for a Node
   std::ostream& operator<<(std::ostream& _os, const travel::Node& _node){
-    _os << "Node " << std::get<0>(_node)->name << " (" << std::get<0>(_node)->id << "): cost " << std::get<1>(_node) << " from " << std::get<2>(_node);
+    _os << "Node " << _node.connection->stop->name << " (" << _node.connection->stop->id << "): cost " << _node.cost << " from " << _node.from_id;
     return _os;
   }
 
@@ -189,12 +189,12 @@ namespace travel{
       Node* cursor1 = graph_hashmap.at(this->travel.first);
       Node* cursor2 = graph_hashmap.at(this->travel.second);
 
-      std::cout << "Best way to " << std::get<0>(*cursor1)->name << " => " << std::get<0>(*cursor2)->name << " is:\n\t";
+      std::cout << "Best way to " << cursor1->connection->stop->name << " => " << cursor2->connection->stop->name << " is:\n\t";
       std::list<Station*> way;
-      way.push_front(std::get<0>(*cursor2));
+      way.push_front(cursor2->connection->stop);
       while(cursor1 != cursor2){
-        cursor2 = this->graph_hashmap.at(std::get<2>(*cursor2));
-        way.push_front(std::get<0>(*cursor2));
+        cursor2 = this->graph_hashmap.at(cursor2->from_id);
+        way.push_front(cursor2->connection->stop);
       }
 
       for(auto&& it: way){
@@ -235,44 +235,38 @@ namespace travel{
       this->graph_hashmap.clear();
       this->graph.clear();
 
+      // a checker si le trajet n'est pas possible aka first nexiste pas.... (dans set travel ? mais probleme a la construction)
       for(auto&& it: this->connections){
         Node new_node;
-        std::get<0>(new_node) = it.stop;
-
-        // a checker si le trajet n'est pas possible
-        if(it.stop->id == this->travel.first){
-          std::get<1>(new_node) = 0;
-          std::get<2>(new_node) = std::get<0>(new_node)->id;
-        }else{
-          std::get<1>(new_node) = INF;
-          std::get<2>(new_node) = std::get<0>(new_node)->id;
-        }
+        new_node.connection = &it;
+        new_node.cost = ((it.stop->id == this->travel.first) ? 0 : INF);
+        new_node.from_id = new_node.connection->stop->id;
         tmp_graph.push_back(new_node);
       }
 
       while(!tmp_graph.empty()){
         auto min_elem = std::min_element(tmp_graph.begin(),
                                          tmp_graph.end(),
-                                         [](Node a, Node b){
-                                           return std::get<1>(a) < std::get<1>(b);
+                                         [](const Node& a, const Node& b){
+                                           return a.cost < b.cost;
                                          });
 
-        auto current_connection = connections_hashmap.find(std::get<0>(*min_elem)->id);
+        // auto current_connection = connections_hashmap.find(min_elem->connecton->stop->id);
 
         for(auto&& it: tmp_graph){
-          for(auto&& it2: current_connection->second->neighbors){
-            if(std::get<0>(it)->id == it2.first->id){
-              auto weight = std::get<1>(*min_elem)+it2.second;
-              if(std::get<1>(it) > weight){
-                std::get<1>(it) = weight;
-                std::get<2>(it) = std::get<0>(*min_elem)->id;
+          for(auto&& it2: min_elem->connection->neighbors){//current_connection->second->neighbors){
+            if(it.connection->stop->id == it2.first->id){
+              auto weight = min_elem->cost+it2.second;
+              if(it.cost > weight){
+                it.cost = weight;
+                it.from_id = min_elem->connection->stop->id;
               }
             }
           }
         }
 
         this->graph.push_back(*min_elem);
-        this->graph_hashmap.insert(std::make_pair<int, Node*>(std::get<0>(this->graph.back())->id, &this->graph.back()));
+        this->graph_hashmap.insert(std::pair<unsigned int, Node*>(this->graph.back().connection->stop->id, &this->graph.back()));
         tmp_graph.erase(min_elem);
       }
     }
