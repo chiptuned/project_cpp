@@ -205,17 +205,18 @@ namespace travel{
       Node* previous_node;
       int last_cost = 0;
       bool first = true;
+
       for(auto it = way.begin(); it != way.end(); ++it){
-        if(first){
+        if(first && std::next(it) != way.end()){
           if((*it)->connection->stop->line_id == (*(std::next(it)))->connection->stop->line_id){
             first = false;
             std::cout << "\t<Take line " << (*it)->connection->stop->line_id << ">" << std::endl;
             std::cout << "\t\tFrom " << (*it)->connection->stop->name;
             last_cost = (*it)->cost;
           }else{
-            std::cout << "\tWalk to " << (*it)->connection->stop->name << " " << (*(std::next(it)))->cost << " secs" << std::endl;
+            std::cout << "\tWalk to " << (*(std::next(it)))->connection->stop->name << " " << (*(std::next(it)))->cost << " secs" << std::endl;
           }
-        }else if(previous_node->connection->stop->line_id != (*it)->connection->stop->line_id){
+        }else if(!first && previous_node->connection->stop->line_id != (*it)->connection->stop->line_id){
           std::cout << " to " << previous_node->connection->stop->name << " (" << previous_node->cost-last_cost << " secs)" << std::endl;
           last_cost = previous_node->cost;
           std::cout << "\tWalk " << (*it)->cost-last_cost << " secs" << std::endl;
@@ -228,7 +229,7 @@ namespace travel{
               std::cout << "\tWalk to " << (*it)->connection->stop->name << " " << (*(std::next(it)))->cost << " secs" << std::endl;
             }
           }
-        }else if(std::next(it) == way.end()){
+        }else if(!first && std::next(it) == way.end()){
           std::cout << " to " << (*it)->connection->stop->name << " (" << (*it)->cost-last_cost << " secs)" << std::endl;
           last_cost = (*it)->cost;
         }
