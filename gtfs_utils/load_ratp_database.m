@@ -1,5 +1,5 @@
 function db = load_ratp_database()
-
+  tstart = tic;
   %% Getting files
   folder_db = 'db';
   db_name = 'RATP_GTFS_FULL.zip';
@@ -43,3 +43,5 @@ function db = load_ratp_database()
   % db.frequencies = [];
   db.transfers = readtable(fullfile(folder_db, 'transfers.txt'));
   % db.feed_info = [];
+
+  fprintf('Database loaded in %.0f seconds.\n', toc(tstart))

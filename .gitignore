@@ -1,0 +1,4 @@
+# Gtfs database
+gtfs_utils/RATP_GTFS_FULL.zip
+gtfs_utils/db/
+gtfs_utils/*.csv

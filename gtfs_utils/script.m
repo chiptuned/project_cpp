@@ -8,3 +8,9 @@ if ~exist('db', 'var')
 end
 
 make_gtfs_files(db, 'stations.csv', 'connections.csv');
+
+pts = [table2array(db.stops(:,'stop_lat')), table2array(db.stops(:,'stop_lon'))];
+plot(pts(:,2), pts(:,1), '.')
+hold on;
+plot(pts(575,2), pts(575,1), '.r') %campo
+axis equal
