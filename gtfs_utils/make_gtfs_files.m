@@ -153,7 +153,7 @@ all_stops(:,2:end) = strrep(all_stops(:,2:end),',', '');
 [~, ~, loc_unique] = unique(all_stops(:,3));
 all_stops = [all_stops(:,[3,1]), num2cell(loc_unique)];
 
-formatSpec = '%d,%s,%s,%s,%s\n';
+formatSpec = '%s, %d, %d\n';
 for ind = 1:size(all_stops,1)
     fprintf(fid,formatSpec,all_stops{ind,:});
 end
