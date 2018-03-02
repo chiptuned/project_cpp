@@ -6,8 +6,8 @@ close all;
 if ~exist('db', 'var')
   db = load_ratp_database;
 end
-date = ['mar2_15h58_'];
-make_gtfs_files(db, [date, 'stations.csv'], [date, 'connections.csv']);
+date = ['mar2_17h09_'];
+make_gtfs_files(db, [date, 'stations.csv'], [date, 'connections.csv'], 0);
 
 pts = [table2array(db.stops(:,'stop_lat')), table2array(db.stops(:,'stop_lon'))];
 plot(pts(:,2), pts(:,1), '.')

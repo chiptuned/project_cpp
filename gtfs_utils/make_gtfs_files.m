@@ -1,4 +1,4 @@
-function [] = make_gtfs_files(db, fn1, fn2);
+function [] = make_gtfs_files(db, fn1, fn2, cmode);
 
 %% All connections from trips
 t_start_t_connections = tic;
@@ -6,22 +6,28 @@ t_start_t_connections = tic;
 % there is at least two adjacent lines with the same trip, let's
 % do connections that way
 nb_connect = size(db.stop_times,1)-1;
-connect = zeros(nb_connect, 5, 'uint64');
+connect = zeros(nb_connect, 6, 'uint64');
 connect(:,1:2) = [db.stop_times{1:end-1,4}, db.stop_times{2:end,4}];
 connect(:,3) = db.stop_times{2:end,3} - db.stop_times{1:end-1,3};
 connect(:,4:5) = [db.stop_times{1:end-1,1}, db.stop_times{2:end,1}];
+connect(:,6) = db.stop_times{1:end-1,3};
 % remove connections that don't have the same trip
 connect(connect(:,4)~=connect(:,5),:) = [];
 
-% unique connections and their different trips
-[~, iB, iA] = unique(connect(:,1:2), 'rows');
-idx_times_to_merge = accumarray(iA, (1:numel(iA)).', [], @(r){sort(r)});
+if cmode == 2
+  all_connections = uint32(connect(:,[1:3, 6]));
+else
+  % unique connections and their different trips
+  [~, iB, iA] = unique(connect(:,1:2), 'rows');
+  idx_times_to_merge = accumarray(iA, (1:numel(iA)).', [], @(r){sort(r)});
 
-% connection time by averaging connection time of all differents trips
-all_connections = uint32(connect(iB,1:3));
-for ind = 1:numel(idx_times_to_merge)
-  all_connections(ind,3) = round(mean(connect(idx_times_to_merge{ind},3)));
+  % connection time by averaging connection time of all differents trips
+  all_connections = uint32(connect(iB,1:3));
+  for ind = 1:numel(idx_times_to_merge)
+    all_connections(ind,3) = round(mean(connect(idx_times_to_merge{ind},3)));
+  end
 end
+
 % seconds added for each duration of connections to avoid some zeros
 offset_connect = 30;
 all_connections(:,3) = all_connections(:,3) + offset_connect;
@@ -53,6 +59,10 @@ all_stops(:,[2,5]) = table2cell(db.routes(loc,3:4));
 all_stops(:,3:4) = table2cell(db.stops(loc,3:4));
 t_generation_stops = toc(t_start_t_stops)
 
+if cmode == 0
+  all_stops = all_stops(:,[3,1,2]);
+end
+
 %% Same stops as instant connections FIXME(vincent): not fully tested
 t_start_t_same_stops = tic;
 stops_id = table2array(db.stops(:,1));
@@ -62,7 +72,15 @@ stops_id = table2array(db.stops(:,1));
 % stops, for preallocation purposes
 % NOTE: this can grow geometrically if a lot of the same stop occurs, could
 % be not enough. If n same stop, n*n-1 instant connections have to be done.
-all_same_stops = zeros(100*size(db.stops,1), 3, 'uint32');
+all_same_stops = zeros(100*size(db.stops,1), 4, 'uint32');
+
+if cmode == 2
+  % this does nothing, because nan is a floating point concept :
+  all_same_stops(:,4) = nan;
+else
+  all_same_stops = all_same_stops(:,1:3);
+end
+
 
 cpt = 0;
 for ind = 1:(numel(idx_sort) - 1)
@@ -95,32 +113,44 @@ all_same_stops = unique(all_same_stops, 'rows');
 t_generation_same_stops = toc(t_start_t_same_stops)
 
 
+%% Transfers
+all_transfers = zeros(size(db.transfers,1), 4, 'uint32');
+if cmode == 2
+  all_transfers(:,1:3) = uint32(table2array(db.transfers(:,[1, 2, 4])));
+  % this does nothing, because nan is a floating point concept :
+  all_transfers(:,4) = nan;
+else
+  all_transfers = uint32(table2array(db.transfers(:,[1, 2, 4])));
+end
+
 %% Export files
 
-% remove all_stop commas
-all_stops(:,2:end) = strrep(all_stops(:,2:end),',', '');
+if cmode ~= 0
+  % remove all_stop commas
+  all_stops(:,2:end) = strrep(all_stops(:,2:end),',', '');
+end
+
+table_stops = cell2table(all_stops);
+table_connections = array2table([all_connections; all_same_stops; all_transfers]);
+
+if cmode == 2
+  table_stops.Properties.VariableNames = {'uint_s_id', 'string_short_line', ...
+  'string_name_station', 'string_adress_station', 'string_desc_line'};
+  table_connections.Properties.VariableNames = {'uint_from_stop_id', ...
+    'uint_to_stop_id', 'uint_min_transfer_time', 'uint_connection_date'};
+elseif cmode == 1
+  table_stops.Properties.VariableNames = {'uint_s_id', 'string_short_line', ...
+  'string_name_station', 'string_adress_station', 'string_desc_line'};
+  table_connections.Properties.VariableNames = {'uint_from_stop_id', ...
+    'uint_to_stop_id', 'uint_min_transfer_time'};
+else
+  table_stops.Properties.VariableNames = {'string_name_station', ...
+    'uint_s_id', 'string_short_line'};
+  table_connections.Properties.VariableNames = {'uint_from_stop_id', ...
+    'uint_to_stop_id', 'uint_min_transfer_time'};
+end
 
 delete(fn1)
-fid = fopen(fn1,'w');
-
-% adapt all_stops to cpp code format
-fprintf(fid,'%s, %s\n', 'uint_s_id, string_short_line, string_name_station', ...
-'string_adress_station, string_desc_line'); % all_stops
-formatSpec = '%u32, %s, %s, %s, %s\n';
-% fprintf(fid,'%s\n', '# string_name_station, uint_s_id, string_short_line');
-% all_stops = [all_stops(:,[3,1,2])];
-% formatSpec = '%s, %d, %s\n';
-
-for ind = 1:size(all_stops,1)
-    fprintf(fid,formatSpec,all_stops{ind,:});
-end
-fclose(fid);
-
 delete(fn2)
-fid = fopen(fn2,'w');
-fprintf(fid,'from_stop_id, to_stop_id, min_transfer_time\n');
-fclose(fid);
-dlmwrite(fn2, all_connections, '-append', 'precision','%d')
-dlmwrite(fn2, all_same_stops, '-append', 'precision','%d')
-dlmwrite(fn2, uint32(table2array(db.transfers(:,[1, 2, 4]))), ...
-  '-append', 'precision','%d')
+writetable(table_stops, fn1)
+writetable(table_connections, fn2)
