@@ -206,7 +206,7 @@ namespace travel{
                 }
               }
               if(found == false){
-                knownConnection->second->neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(ls.at(1))));
+                knownConnection->second->neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(ls.at(2))));
               }
             }
           }

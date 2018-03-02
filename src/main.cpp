@@ -53,14 +53,14 @@ int main(int argc, char** argv){
       std::list<travel::Connection> c;
       std::unordered_map<unsigned int, travel::Connection*> mc;
 
-      // ptr_network->read_stations(stations_filename.c_str());
-      // ptr_network->read_connections(connections_filename.c_str());
+      ptr_network->read_stations(stations_filename.c_str());
+      ptr_network->read_connections(connections_filename.c_str());
       // ptr_network->display_stations();
       // ptr_network->display_connections();
-      // ptr_network->compute_travel();
+      ptr_network->compute_travel();
       // ptr_network->display_graph();
-      // ptr_network->display_travel();
-      
+      ptr_network->display_travel();
+
       /*
       int N = 1;//1e4;
       auto start = std::chrono::steady_clock::now();
@@ -148,15 +148,15 @@ int main(int argc, char** argv){
       network.display_travel();*/
 
       std::cout << std::endl << "========================> Grade 1 <========================" << std::endl;
-      grade_1();
+      // grade_1();
       std::cout << std::endl << "========================> Grade 2 <========================" << std::endl;
-      grade_2(ptr_network);
+      // grade_2(ptr_network);
       std::cout << std::endl << "========================> Grade 3 <========================" << std::endl;
-      grade_3(ptr_network);
+      // grade_3(ptr_network);
       std::cout << std::endl << "========================> Grade 4 <========================" << std::endl;
-      grade_4(ptr_network);
+      // grade_4(ptr_network);
       std::cout << std::endl << "========================> Grade F <========================" << std::endl;
-      grade_max(ptr_network);
+      // grade_max(ptr_network);
     }
   }catch(const char* err_mess){
     std::cerr << "ERROR:\n\t" << err_mess << std::endl;
