@@ -1,0 +1,122 @@
+\documentclass[9pts]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\title{[4AI02] Projet C++: algorithme de dijkstra}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Le but de ce projet est de vous montrer de manière sommaire mais réaliste une utilisation réelle de la Standard Template Librairy (\emph{STL}).
+Pour ce faire, nous avons choisit de vous faire implémenter l'algorithm de dijkstra,
+un algorithme qui vise à évaluer le coût minimal pour aller d'un point A à un point B.
+C'est un algorithme célèbre car extrémement utilisé (au moins comme base) pour la planification d'itinéraire.
+Un exemple facile serait l'itinéraire proposé par google maps, la ratp ou la sncf pour les transports en commun.\\
+C'est algorithme est également une porte d'entrée pour le domaine de la théorie des graphes.
+
+La programmation est dans la plus part des cas simplement un moyen de faire fonctionner une idée simple au travers d'un programme,
+ou bien complexe au travers d'une association de programme.
+La plus grande difficulté d'un programmation vient donc plus du fait de trouver l'environnement le mieux adapté pour faire fonctionner cette idée que l'idée elle même,
+qui est souvent déjà présente et fonctionnelle (cas évident des mathématiques).
+Par analogie, il faut poser le sol avant de pouvoir marcher.
+Ici nous parlerons d'avantage de structures.
+
+Si vous souhaitez contextualiser le projet vous pouvez vous mettre dans la situation suivante.
+Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente de données du trafic.
+Pour ce faire il vous faut implémenter une algorithme capable de planifier des temps de parcours au moyen d'une heuristique fixe ou dynamique.
+De plus une base de données réaliste et fiable pour le tester est réquit pour établir la validité de son implémentation.
+Dijkstra et la base libre de la RATP sont des choix logiques car robustes.
+Après concertation, un contrat est écrit pour juger des fonctionnalités minimums ne fréinant pas l'évolutivité de la solution.
+%Vous recevez le cahier des charges des commerciaux qui vous demande les fonctionnalités minimum du projet que vous traduisez en contrat de programmation.
+
+\section{Objectifs}
+Un contrat en programmation est le fait qu'une classe hérite d'une classe mère virtuel pure sans implémentation.
+Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant sont appel via un pointeur sur le contrat.
+Si la class respecte le contrat, peu importe ses autres fonctionnalités, elle garantit d'avoir implémenter les fonctionnalités du contrat. \\
+
+La class \emph{Generic\_class} aura cet objectif pour vous évaluer (voir annexes).
+Vous devrez dériver de cette class pour créer la votre, peut importe le nom que vous lui donnez même s'il serait préférable qu'il soit logique.
+
+
+\section{Notations}
+Dans le but d'évaluer vos connaissances le mieux possible, ce projet sera décomposé en étapes clefs.
+Une charte d'écriture vous sera imposé comme dans les entreprises et les projets communs de manière générale.
+Celle que nous imposons est un exemple de ce qu'on pourrait exiger mais légérement allégé:\\
+\begin{itemize}
+\item Compilation en -Wall -Wextra -Werror -O3
+\item Utilisation des outils du C++ 11 maximum
+\item Proscription de l'utilisation de \emph{new} et \emph{delete}
+\item Mémoire dynamique via les containers \emph{STL} ou les outils de \emph{memory} comme \emph{unique\_ptr} (normalement inutile dans le cadre du projet)
+\item Indentation parfaite
+\item Limitation maximum de duplicat de code
+\item Implémentation en snake\_case
+\item Tout type créé commence par une majuscule
+\item Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules
+\item Membres de class appelés via \emph{this}
+\item Varibles d'entrées précédées d'un underscore \emph{\_}
+\item Variables locales neutres
+\item Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée
+\item Utilisation systématique de référence ou de pointeur lors du passage d'un objet.
+\item Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire
+\end{itemize}
+
+Vous avez 4 séances de 4H chacune pour réaliser ce projet.
+Lors de chaque séance nous metterons l'accent sur une nouvelle étape à réaliser,
+cependant le rythme n'est pas imposé.
+Si vous souhaitez aller plus vite ou plus lentement rien ne vous en empêche, car vous pouvez soumettre à tout moment lors de la période du projet.
+Des programmes de test vous seront fournit afin d'évaluer votre code et d'hésiter son niveau d'accomplissement.
+Les étapes seront:
+\begin{itemize}
+\item Surcharge des operateurs de flux pour les données et la dérivation du contrat ($+$3pts $=>$ 3$/$20)
+\item Lecture \& affichage des stations ($+$4pts $=>$ 7$/$20)
+\item Lecture \& affichage des connections ($+$4pts $=>$ 11$/$20)
+\item Génération \& affichage du graphe ($+$4pts $=>$ 15$/$20)
+\item Estimation du meilleur chemin ($+$6pts $=>$ 22$/$20)
+\item (BONUS) heuristique dynamique ($+$6pts $=>$ 28$/$20)
+\end{itemize}
+
+Un malus de 4pts maximum sera ensuite appliqué en accord avec la lisibilité et le respect de la charte d'écriture du code.
+Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs. \\
+
+\appendix
+\clearpage
+\section{Generic\_class.hpp}
+\lstinputlisting[language=C++]{../src/Generic_class.hpp}
+
+\end{document}
