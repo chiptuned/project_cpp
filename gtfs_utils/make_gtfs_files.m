@@ -104,7 +104,7 @@ delete(fn1)
 fid = fopen(fn1,'w');
 
 % adapt all_stops to cpp code format
-fprintf(fid,'%s, %s\n', '# uint_s_id, string_short_line, string_name_station', ...
+fprintf(fid,'%s, %s\n', 'uint_s_id, string_short_line, string_name_station', ...
 'string_adress_station, string_desc_line'); % all_stops
 formatSpec = '%u32, %s, %s, %s, %s\n';
 % fprintf(fid,'%s\n', '# string_name_station, uint_s_id, string_short_line');
@@ -118,7 +118,7 @@ fclose(fid);
 
 delete(fn2)
 fid = fopen(fn2,'w');
-fprintf(fid,'# from_stop_id, to_stop_id, min_transfer_time\n');
+fprintf(fid,'from_stop_id, to_stop_id, min_transfer_time\n');
 fclose(fid);
 dlmwrite(fn2, all_connections, '-append', 'precision','%d')
 dlmwrite(fn2, all_same_stops, '-append', 'precision','%d')
