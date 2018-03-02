@@ -15,9 +15,9 @@
    To evaluate overload operator<< of the 3 structs and the squeleton of network
 */
 void grade_1(){
-  travel::Station s1 = {"A", 1, "2"};
-  travel::Station s2 = {"B", 3, "4"};
-  travel::Station s3 = {"C", 5, "6"};
+  travel::Station s1 = {"addr", "A", 1, "lname", "2"};
+  travel::Station s2 = {"addr", "B", 3, "lname", "4"};
+  travel::Station s3 = {"addr", "C", 5, "lname", "6"};
   travel::Connection c1, c2, c3;
   travel::Node n1 = {&c1, 1, 1};
   travel::Node n2 = {&c2, 10, 3};
@@ -49,7 +49,6 @@ void grade_2(travel::Generic_class* ptr){
   ptr->read_stations(f1, &network.get_stations(), &network.get_stations_hashmap());
   ptr->read_stations(std::string(f1), &network.get_stations(), &network.get_stations_hashmap());
 
-
   std::cout << "Step 2" << std::endl;
   network.read_connections(f2);
 
@@ -70,7 +69,6 @@ void grade_3(travel::Generic_class* ptr){
   ptr->read_stations(f1, &network.get_stations(), &network.get_stations_hashmap());
   ptr->read_stations(std::string(f1), &network.get_stations(), &network.get_stations_hashmap());
 
-  network.read_connections(f2);
   std::cout << "Step 2" << std::endl;
   ptr->read_connections(f2, network.get_stations_hashmap(), &(network.get_connections()), &(network.get_connections_hashmap()));
   ptr->read_connections(std::string(f2), network.get_stations_hashmap(), &network.get_connections(), &network.get_connections_hashmap());

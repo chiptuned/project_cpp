@@ -3,6 +3,7 @@
 #include <iostream> // cout
 #include <fstream> // ifstream
 #include <algorithm> // min_element
+#include <vector> // parse files need vector
 
 #include "Generic_class.hpp"
 
@@ -106,25 +107,31 @@ namespace travel{
 
       while(ifs.good() && !ifs.eof()){
         travel::Station new_station;
-        char tmp[256];
-        ifs.getline(tmp, 256, ',');
-        if(strcmp(tmp, "") != 0){
-          new_station.name = tmp;
-          ifs.getline(tmp, 256, ',');
-          if(strcmp(tmp, "") != 0){
-            new_station.id = static_cast<unsigned int>(std::stoi(std::string(tmp)));
-            ifs.getline(tmp, 256, '\n');
-            if(strcmp(tmp, "") != 0){
-              new_station.line_id = std::string(std::string(tmp));
-              _stations->push_back(new_station);
-              _stations_hashmap->insert(std::pair<unsigned int, travel::Station*>(_stations->back().id, &_stations->back()));
-            }
+        char line[1024];
+        ifs.getline(line, 1024, '\n');
+        if(strcmp(line, "") != 0){
+          std::string str(line);
+          std::vector<std::string> ls;
+          std::string::size_type cur1 = 0;
+          auto cur2 = str.find(",",cur1);
+          while(cur2!=std::string::npos){
+            ls.push_back(str.substr(cur1, cur2-cur1));
+            cur1 = cur2+1;
+            cur2 = str.find(",", cur1);
           }
-        }else{
-          ifs.getline(tmp,256,'\n');
+          ls.push_back(str.substr(cur1, str.size()-cur1));
+
+          new_station.name = ls.at(0);
+          new_station.id = static_cast<unsigned int>(std::stoi(ls.at(1)));
+          new_station.line_id = ls.at(2);
+          if(ls.size() == 5){
+            new_station.address = ls.at(3);
+            new_station.line_name = ls.at(4);
+          }
+          _stations->push_back(new_station);
+          _stations_hashmap->insert(std::pair<unsigned int, travel::Station*>(_stations->back().id, &_stations->back()));
         }
       }
-
       ifs.close();
     }
 
@@ -162,13 +169,22 @@ namespace travel{
       }
 
       while(ifs.good() && !ifs.eof()){
-        char a[256],b[256],w[256];
-        ifs.getline(a, 256, ',');
-        ifs.getline(b, 256, ',');
-        ifs.getline(w, 256, '\n');
-        if(strcmp(a, "") != 0 && strcmp(b, "") != 0 && strcmp(w, "") != 0){
-          auto first = _stations_hashmap.find(static_cast<unsigned int>(std::stoi(std::string(a))));
-          auto second = _stations_hashmap.find(static_cast<unsigned int>(std::stoi(std::string(b))));
+        char line[1024];
+        ifs.getline(line, 1024, '\n');
+        if(strcmp(line, "") != 0){
+          std::string str(line);
+          std::vector<std::string> ls;
+          std::string::size_type cur1 = 0;
+          auto cur2 = str.find(",",cur1);
+          while(cur2!=std::string::npos){
+            ls.push_back(str.substr(cur1, cur2-cur1));
+            cur1 = cur2+1;
+            cur2 = str.find(",", cur1);
+          }
+          ls.push_back(str.substr(cur1, str.size()-cur1));
+
+          auto first = _stations_hashmap.find(static_cast<unsigned int>(std::stoi(ls.at(0))));
+          auto second = _stations_hashmap.find(static_cast<unsigned int>(std::stoi(ls.at(1))));
 
           if(first == _stations_hashmap.end() || second == _stations_hashmap.end()){
             continue; //throw("Unknown Station");
@@ -178,7 +194,7 @@ namespace travel{
             if(knownConnection == _connections_hashmap->end()){
               travel::Connection new_connection;
               new_connection.stop = first->second;
-              new_connection.neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(w)));
+              new_connection.neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(ls.at(2))));
               _connections->push_back(new_connection);
               _connections_hashmap->insert(std::pair<unsigned int, Connection*>(_connections->back().stop->id, &_connections->back()));
             }else{
@@ -190,7 +206,7 @@ namespace travel{
                 }
               }
               if(found == false){
-                knownConnection->second->neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(w)));
+                knownConnection->second->neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(ls.at(1))));
               }
             }
           }

@@ -12,8 +12,10 @@ namespace travel{
      UTILS
   */
   typedef struct __station{
+    std::string address; // to locate the station
     std::string name; // how is called the station
     unsigned int id; // identify the station with a unique number
+    std::string line_name; // verbose name of the line with its direction
     std::string line_id; // identify the line of the station
   }Station; // a station is a stop for the net represented by a "name", an "id" and a "line"
 
