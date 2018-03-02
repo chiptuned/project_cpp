@@ -15,7 +15,8 @@ connect(:,6) = db.stop_times{1:end-1,3};
 connect(connect(:,4)~=connect(:,5),:) = [];
 
 if cmode == 2
-  all_connections = uint32(connect(:,[1:3, 6]));
+  all_connections = uint32(connect(:, 1:3));
+  connection_dates = double(connect(:, 6));
 else
   % unique connections and their different trips
   [~, iB, iA] = unique(connect(:,1:2), 'rows');
@@ -61,6 +62,11 @@ t_generation_stops = toc(t_start_t_stops)
 
 if cmode == 0
   all_stops = all_stops(:,[3,1,2]);
+else
+  % remove all_stop commas
+  all_stops(:,2:end) = strrep(all_stops(:,2:end),',', '');
+
+  all_stops = all_stops(:,[3,1,2,4,5]);
 end
 
 %% Same stops as instant connections FIXME(vincent): not fully tested
@@ -72,15 +78,7 @@ stops_id = table2array(db.stops(:,1));
 % stops, for preallocation purposes
 % NOTE: this can grow geometrically if a lot of the same stop occurs, could
 % be not enough. If n same stop, n*n-1 instant connections have to be done.
-all_same_stops = zeros(100*size(db.stops,1), 4, 'uint32');
-
-if cmode == 2
-  % this does nothing, because nan is a floating point concept :
-  all_same_stops(:,4) = nan;
-else
-  all_same_stops = all_same_stops(:,1:3);
-end
-
+all_same_stops = zeros(100*size(db.stops,1), 3, 'uint32');
 
 cpt = 0;
 for ind = 1:(numel(idx_sort) - 1)
@@ -110,37 +108,41 @@ for ind = 1:(numel(idx_sort) - 1)
 end
 all_same_stops = all_same_stops(1:cpt,:);
 all_same_stops = unique(all_same_stops, 'rows');
+if cmode == 2
+  % this does nothing, because nan is a floating point concept :
+  connection_date_same_stops = nan(size(all_same_stops(:,1)));
+end
 t_generation_same_stops = toc(t_start_t_same_stops)
 
 
 %% Transfers
-all_transfers = zeros(size(db.transfers,1), 4, 'uint32');
+t_start_t_transfers = tic;
+all_transfers = uint32(table2array(db.transfers(:,[1, 2, 4])));
 if cmode == 2
-  all_transfers(:,1:3) = uint32(table2array(db.transfers(:,[1, 2, 4])));
-  % this does nothing, because nan is a floating point concept :
-  all_transfers(:,4) = nan;
-else
-  all_transfers = uint32(table2array(db.transfers(:,[1, 2, 4])));
+  connection_date_transfers = nan(size(db.transfers(:,1)));
 end
+t_generation_transfers = toc(t_start_t_transfers)
 
 %% Export files
-
-if cmode ~= 0
-  % remove all_stop commas
-  all_stops(:,2:end) = strrep(all_stops(:,2:end),',', '');
-end
-
+t_start_t_export_data = tic;
 table_stops = cell2table(all_stops);
 table_connections = array2table([all_connections; all_same_stops; all_transfers]);
 
 if cmode == 2
-  table_stops.Properties.VariableNames = {'uint_s_id', 'string_short_line', ...
-  'string_name_station', 'string_adress_station', 'string_desc_line'};
+  table_dates = array2table([connection_dates; ...
+    connection_date_same_stops; ...
+    connection_date_transfers]);
+  table_dates.Properties.VariableNames = {'string_connection_date'};
+  table_connections = [table_connections, table_dates];
+  table_stops.Properties.VariableNames = {'string_name_station', ...
+    'uint_s_id', 'string_short_line', 'string_adress_station', ...
+    'string_desc_line'};
   table_connections.Properties.VariableNames = {'uint_from_stop_id', ...
-    'uint_to_stop_id', 'uint_min_transfer_time', 'uint_connection_date'};
+    'uint_to_stop_id', 'uint_min_transfer_time', 'string_connection_date'};
 elseif cmode == 1
-  table_stops.Properties.VariableNames = {'uint_s_id', 'string_short_line', ...
-  'string_name_station', 'string_adress_station', 'string_desc_line'};
+  table_stops.Properties.VariableNames = {'string_name_station', ...
+    'uint_s_id', 'string_short_line', 'string_adress_station', ...
+    'string_desc_line'};
   table_connections.Properties.VariableNames = {'uint_from_stop_id', ...
     'uint_to_stop_id', 'uint_min_transfer_time'};
 else
@@ -149,8 +151,11 @@ else
   table_connections.Properties.VariableNames = {'uint_from_stop_id', ...
     'uint_to_stop_id', 'uint_min_transfer_time'};
 end
+t_generation_export_data = toc(t_start_t_export_data)
 
+t_start_t_csv_write = tic;
 delete(fn1)
 delete(fn2)
 writetable(table_stops, fn1)
 writetable(table_connections, fn2)
+t_generation_csv_write = toc(t_start_t_csv_write)
