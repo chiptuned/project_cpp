@@ -104,12 +104,12 @@ delete(fn1)
 fid = fopen(fn1,'w');
 
 % adapt all_stops to cpp code format
-% fprintf(fid,'%s, %s\n', '# uint_s_id, string_short_line, string_name_station', ...
-% 'string_adress_station, string_desc_line'); % all_stops
-% formatSpec = '%u32, %s, %s, %s, %s\n';
-fprintf(fid,'%s\n', '# string_name_station, uint_s_id, string_short_line');
-all_stops = [all_stops(:,[3,1,2])];
-formatSpec = '%s, %d, %s\n';
+fprintf(fid,'%s, %s\n', '# uint_s_id, string_short_line, string_name_station', ...
+'string_adress_station, string_desc_line'); % all_stops
+formatSpec = '%u32, %s, %s, %s, %s\n';
+% fprintf(fid,'%s\n', '# string_name_station, uint_s_id, string_short_line');
+% all_stops = [all_stops(:,[3,1,2])];
+% formatSpec = '%s, %d, %s\n';
 
 for ind = 1:size(all_stops,1)
     fprintf(fid,formatSpec,all_stops{ind,:});
