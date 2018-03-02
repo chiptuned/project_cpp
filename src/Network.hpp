@@ -2,6 +2,7 @@
 
 #include <iostream> // cout
 #include <fstream> // ifstream
+#include <algorithm> // min_element
 
 #include "Generic_class.hpp"
 
@@ -17,7 +18,7 @@ namespace travel{
 
   // overload operator<< for a Connection
   std::ostream& operator<<(std::ostream& _os, travel::Connection& _connection){
-    _os << "The stations: " << *(_connection.stop) << " is connected to:\n";
+    _os << "The station \"" << *(_connection.stop) << "\" is connected to:\n";
     for(auto&& it: _connection.neighbors){
       _os << "\t" << *(it.first) << " with a weight of " << it.second << " secs" << std::endl;
     }
@@ -106,15 +107,15 @@ namespace travel{
       while(ifs.good() && !ifs.eof()){
         travel::Station new_station;
         char tmp[256];
-        ifs.getline(tmp, 256, ';');
+        ifs.getline(tmp, 256, ',');
         if(strcmp(tmp, "") != 0){
           new_station.name = tmp;
-          ifs.getline(tmp, 256, ';');
+          ifs.getline(tmp, 256, ',');
           if(strcmp(tmp, "") != 0){
             new_station.id = static_cast<unsigned int>(std::stoi(std::string(tmp)));
             ifs.getline(tmp, 256, '\n');
             if(strcmp(tmp, "") != 0){
-              new_station.line_id = static_cast<unsigned int>(std::stoi(std::string(tmp)));
+              new_station.line_id = std::string(std::string(tmp));
               _stations->push_back(new_station);
               _stations_hashmap->insert(std::pair<unsigned int, travel::Station*>(_stations->back().id, &_stations->back()));
             }
@@ -141,6 +142,7 @@ namespace travel{
 
     virtual void read_connections(const char* _filename, const std::unordered_map<unsigned int, travel::Station*>& _stations_hashmap, std::list<travel::Connection>* _connections, std::unordered_map<unsigned int, travel::Connection*>* _connections_hashmap){
       std::ifstream ifs(_filename, std::ifstream::in);
+
       _connections->clear();
       _connections_hashmap->clear();
       if(_connections == &this->connections){
@@ -161,8 +163,8 @@ namespace travel{
 
       while(ifs.good() && !ifs.eof()){
         char a[256],b[256],w[256];
-        ifs.getline(a, 256, ';');
-        ifs.getline(b, 256, ';');
+        ifs.getline(a, 256, ',');
+        ifs.getline(b, 256, ',');
         ifs.getline(w, 256, '\n');
         if(strcmp(a, "") != 0 && strcmp(b, "") != 0 && strcmp(w, "") != 0){
           auto first = _stations_hashmap.find(static_cast<unsigned int>(std::stoi(std::string(a))));
@@ -178,9 +180,18 @@ namespace travel{
               new_connection.stop = first->second;
               new_connection.neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(w)));
               _connections->push_back(new_connection);
-              _connections_hashmap->insert(std::pair<unsigned int, Connection*>(this->connections.back().stop->id, &this->connections.back()));
+              _connections_hashmap->insert(std::pair<unsigned int, Connection*>(_connections->back().stop->id, &_connections->back()));
             }else{
-              knownConnection->second->neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(w)));
+              bool found = false;
+              for(auto&& it: knownConnection->second->neighbors){
+                if(it.first == second->second){
+                  found = true;
+                  break;
+                }
+              }
+              if(found == false){
+                knownConnection->second->neighbors.push_back(std::pair<Station*,unsigned long>(second->second, std::stoi(w)));
+              }
             }
           }
         }
@@ -222,11 +233,14 @@ namespace travel{
     }
 
     virtual void display_travel(unsigned int _end, const std::unordered_map<unsigned int, Node*>& _graph_hashmap){
-      Node* cursor1 = std::min_element(_graph_hashmap.begin(),
-                                       _graph_hashmap.end(),
-                                       [](const std::pair<unsigned int, Node*>& a, const std::pair<unsigned int, Node*>& b){
-                                         return (a.second->cost < b.second->cost);
-                                       })->second;
+      Node* cursor1 = NULL;
+      for(auto&& it: _graph_hashmap){
+        if(it.second->cost == 0 && (it.second->connection->stop->id == it.second->from_id)){
+          cursor1 = it.second;
+          break;
+        }
+      }
+
       Node* cursor2 = _graph_hashmap.at(_end);
 
       std::cout << "\nBest way from " << cursor1->connection->stop->name << " to " << cursor2->connection->stop->name << " is:\n";
@@ -237,7 +251,7 @@ namespace travel{
         way.push_front(cursor2);
       }
 
-      Node* previous_node;
+      Node* previous_node = NULL;
       int last_cost = 0;
       bool first = true;
 
@@ -312,12 +326,37 @@ namespace travel{
     }
 
     /**********************************************
+      Not to do for students methods
+    */
+    std::list<Station>& get_stations(){
+      return this->stations;
+    }
+    std::unordered_map<unsigned int, Station*>& get_stations_hashmap(){
+      return this->stations_hashmap;
+    }
+    std::list<Connection>& get_connections(){
+      return this->connections;
+    }
+    std::unordered_map<unsigned int, Connection*>& get_connections_hashmap(){
+      return this->connections_hashmap;
+    }
+    std::list<Node>& get_graph(){
+      return this->graph;
+    }
+    std::unordered_map<unsigned int, Node*>& get_graph_hashmap(){
+      return this->graph_hashmap;
+    }
+    std::pair<unsigned int,unsigned int>& get_travel(){
+      return this->travel;
+    }
+
+    /**********************************************
       Protected methods
     */
   protected:
     // compute the dijkstra algorithm
     void dijkstra(unsigned int _start, std::list<Connection>* _connections, std::list<Node>* _graph, std::unordered_map<unsigned int, Node*>* _graph_hashmap){
-      std::list<Node > tmp_graph;
+      std::list<Node> tmp_graph;
       _graph_hashmap->clear();
       _graph->clear();
 
@@ -337,10 +376,8 @@ namespace travel{
                                            return a.cost < b.cost;
                                          });
 
-        // auto current_connection = connections_hashmap.find(min_elem->connecton->stop->id);
-
         for(auto&& it: tmp_graph){
-          for(auto&& it2: min_elem->connection->neighbors){//current_connection->second->neighbors){
+          for(auto&& it2: min_elem->connection->neighbors){
             if(it.connection->stop->id == it2.first->id){
               auto weight = min_elem->cost+it2.second;
               if(it.cost > weight){

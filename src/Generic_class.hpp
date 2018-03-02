@@ -14,7 +14,7 @@ namespace travel{
   typedef struct __station{
     std::string name; // how is called the station
     unsigned int id; // identify the station with a unique number
-    unsigned int line_id; // identify the line of the station
+    std::string line_id; // identify the line of the station
   }Station; // a station is a stop for the net represented by a "name", an "id" and a "line"
 
   typedef struct __connection{
@@ -63,10 +63,10 @@ namespace travel{
     virtual void read_connections(const std::string& _filename) = 0;
 
     // to evaluate students' objects
-    virtual void read_stations(const std::string& _filename, std::list<Station>* _stations, std::unordered_map<unsigned int, travel::Station*>* _stations_hashmap) = 0;
-    virtual void read_stations(const char* _filename, std::list<Station>* _stations, std::unordered_map<unsigned int, travel::Station*>* _stations_hashmap) = 0;
-    virtual void read_connections(const std::string& _filename, const std::unordered_map<unsigned int, travel::Station*>& _stations_hashmap, std::list<travel::Connection>* _connections, std::unordered_map<unsigned int, travel::Connection*>* _connections_hashmap) = 0;
-    virtual void read_connections(const char* _filename, const std::unordered_map<unsigned int, travel::Station*>& _stations_hashmap, std::list<travel::Connection>* _connections, std::unordered_map<unsigned int, travel::Connection*>* _connections_hashmap) = 0;
+    virtual void read_stations(const std::string& _filename, std::list<Station>* _stations, std::unordered_map<unsigned int, Station*>* _stations_hashmap) = 0;
+    virtual void read_stations(const char* _filename, std::list<Station>* _stations, std::unordered_map<unsigned int, Station*>* _stations_hashmap) = 0;
+    virtual void read_connections(const std::string& _filename, const std::unordered_map<unsigned int, Station*>& _stations_hashmap, std::list<Connection>* _connections, std::unordered_map<unsigned int, Connection*>* _connections_hashmap) = 0;
+    virtual void read_connections(const char* _filename, const std::unordered_map<unsigned int, Station*>& _stations_hashmap, std::list<Connection>* _connections, std::unordered_map<unsigned int, Connection*>* _connections_hashmap) = 0;
 
     /**********************************************
       Display
