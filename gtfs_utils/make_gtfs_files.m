@@ -14,7 +14,7 @@ connect(:,6) = db.stop_times{1:end-1,3};
 % remove connections that don't have the same trip
 connect(connect(:,4)~=connect(:,5),:) = [];
 
-if cmode == 2
+if cmode > 1
   all_connections = uint32(connect(:, 1:3));
   connection_dates = double(connect(:, 6));
 else
@@ -108,7 +108,7 @@ for ind = 1:(numel(idx_sort) - 1)
 end
 all_same_stops = all_same_stops(1:cpt,:);
 all_same_stops = unique(all_same_stops, 'rows');
-if cmode == 2
+if cmode > 1
   % this does nothing, because nan is a floating point concept :
   connection_date_same_stops = nan(size(all_same_stops(:,1)));
 end
@@ -118,7 +118,7 @@ t_generation_same_stops = toc(t_start_t_same_stops)
 %% Transfers
 t_start_t_transfers = tic;
 all_transfers = uint32(table2array(db.transfers(:,[1, 2, 4])));
-if cmode == 2
+if cmode > 1
   connection_date_transfers = nan(size(db.transfers(:,1)));
 end
 t_generation_transfers = toc(t_start_t_transfers)
@@ -128,10 +128,26 @@ t_start_t_export_data = tic;
 table_stops = cell2table(all_stops);
 table_connections = array2table([all_connections; all_same_stops; all_transfers]);
 
-if cmode == 2
+if cmode > 1
   table_dates = array2table([connection_dates; ...
     connection_date_same_stops; ...
     connection_date_transfers]);
+
+  if cmode == 3
+    keeping_lines = [{'1'}; {'2'}; {'3'}; {'4'}; {'5'}; {'6'}; {'7'}; {'8'}; ...
+    {'9'}; {'10'}; {'11'}; {'12'}; {'13'}; {'14'}; {'3B'}; {'7B'}; {'ORLYVAL'}]
+
+    removing_stops = ~ismember(all_stops(:,3), keeping_lines);
+    keeping_ids = cell2mat(all_stops(~removing_stops,2));
+    table_stops(removing_stops,:) = [];
+
+    full_connect = table2array(table_connections);
+    removing_c = ~ismember(full_connect(:,1), keeping_ids) | ...
+      ~ismember(full_connect(:,2), keeping_ids);
+    table_connections(removing_c,:) = [];
+    table_dates(removing_c,:) = [];
+  end
+
   table_dates.Properties.VariableNames = {'string_connection_date'};
   table_connections = [table_connections, table_dates];
   table_stops.Properties.VariableNames = {'string_name_station', ...
