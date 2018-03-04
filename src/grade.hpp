@@ -8,8 +8,8 @@
 #include "Generic_class.hpp"
 #include "Network.hpp" // temporaire (call something)
 
-#define f1 "../sample_data/mar2_15h58_stations.csv"
-#define f2 "../sample_data/mar2_15h58_connections.csv"
+#define f1 "../sample_data/s.csv"
+#define f2 "../sample_data/c.csv"
 
 /******************************************************************************
    To evaluate overload operator<< of the 3 structs and the squeleton of network

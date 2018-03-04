@@ -275,23 +275,23 @@ namespace travel{
         if(first && std::next(it) != way.end()){
           if((*it)->connection->stop->line_id == (*(std::next(it)))->connection->stop->line_id){
             first = false;
-            std::cout << "\t<Take line " << (*it)->connection->stop->line_id << ">" << std::endl;
+            std::cout << "\t<Take line " << (*it)->connection->stop->line_id << "> " << (*it)->connection->stop->line_name << std::endl;
             std::cout << "\t\tFrom " << (*it)->connection->stop->name;
             last_cost = (*it)->cost;
           }else{
-            std::cout << "\tWalk to " << (*(std::next(it)))->connection->stop->name << " (" << (*(std::next(it)))->cost << " secs)" << std::endl;
+            std::cout << "\tWalk to " << (*(std::next(it)))->connection->stop->name << ", line " << (*(std::next(it)))->connection->stop->line_id << " (" << (*(std::next(it)))->cost << " secs)" << std::endl;
           }
         }else if(!first && previous_node->connection->stop->line_id != (*it)->connection->stop->line_id){
           std::cout << " to " << previous_node->connection->stop->name << " (" << previous_node->cost-last_cost << " secs)" << std::endl;
           last_cost = previous_node->cost;
-          std::cout << "\tWalk to " << (*it)->connection->stop->name << " (" << (*it)->cost-last_cost << " secs)" << std::endl;
+          std::cout << "\tWalk to " << (*it)->connection->stop->name << ", line " << (*it)->connection->stop->line_id << " (" << (*it)->cost-last_cost << " secs)" << std::endl;
           last_cost = (*it)->cost;
           if(std::next(it) != way.end()){
             if((*it)->connection->stop->line_id == (*(std::next(it)))->connection->stop->line_id){
-              std::cout << "\t<Take line " << (*it)->connection->stop->line_id << ">" << std::endl;
+              std::cout << "\t<Take line " << (*it)->connection->stop->line_id << "> "<< (*it)->connection->stop->line_name << std::endl;
               std::cout << "\t\tFrom " << (*it)->connection->stop->name;
             }else{
-              std::cout << "\tWalk to " << (*it)->connection->stop->name << " (" << (*(std::next(it)))->cost << " secs)" << std::endl;
+              std::cout << "\tWalk to " << (*it)->connection->stop->name << ", line " << (*it)->connection->stop->line_id << " (" << (*(std::next(it)))->cost << " secs)" << std::endl;
             }
           }
         }else if(!first && std::next(it) == way.end()){
