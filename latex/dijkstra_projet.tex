@@ -4,6 +4,8 @@
 
 \usepackage{listings}
 \usepackage{color}
+\usepackage{graphicx}
+\usepackage{caption}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -37,13 +39,13 @@
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
-\title{[4AI02] Projet C++: algorithme de dijkstra}
+\title{[4AI02] Projet C++: Algorithme de Dijkstra}
 \author{
   Géhère, Kévin\\
   \texttt{kevin.gehere@inserm.fr}
   \and
   Fraillon, Vincent\\
-  \texttt{vincent.fraillon@inserm.fr}
+  \texttt{vincent.fraillon-maison@sorbonne-universite.fr}
 }
 
 \begin{document}
@@ -51,75 +53,90 @@
 
 \section{Introduction}
 Le but de ce projet est de vous montrer de manière sommaire mais réaliste une utilisation réelle de la Standard Template Librairy (\emph{STL}).
-Pour ce faire, nous avons choisit de vous faire implémenter l'algorithm de dijkstra,
+Pour ce faire, vous allez implémenter l'algorithme de Dijkstra,
 un algorithme qui vise à évaluer le coût minimal pour aller d'un point A à un point B.
-C'est un algorithme célèbre car extrémement utilisé (au moins comme base) pour la planification d'itinéraire.
-Un exemple facile serait l'itinéraire proposé par google maps, la ratp ou la sncf pour les transports en commun.\\
-C'est algorithme est également une porte d'entrée pour le domaine de la théorie des graphes.
 
-La programmation est dans la plus part des cas simplement un moyen de faire fonctionner une idée simple au travers d'un programme,
-ou bien complexe au travers d'une association de programme.
-La plus grande difficulté d'un programmation vient donc plus du fait de trouver l'environnement le mieux adapté pour faire fonctionner cette idée que l'idée elle même,
+Cet algorithme peut s'appliquer sur des graphes orientés, modèle auquel plusieurs réseaux de transports sont disponibles (RATP, SNCF, routes, etc). Cet algorithme est également une porte d'entrée pour le domaine de la théorie des graphes, ou pour la résolution du problème du plus court chemin, vu également dans l'unité d'enseignement [4AI04] Intelligence artificielle.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics{directed_graph.pdf}
+   \caption{\label{directed_graph} Exemple de graphe orienté}
+\end{figure}
+
+La développement est dans la plupart des cas simplement un moyen de faire fonctionner une idée simple au travers d'un programme, ou bien complexe au travers d'une association de programmes.
+La plus grande difficulté d'un développeur vient donc plus du fait de trouver l'environnement le mieux adapté pour faire fonctionner cette idée que l'idée elle même,
 qui est souvent déjà présente et fonctionnelle (cas évident des mathématiques).
-Par analogie, il faut poser le sol avant de pouvoir marcher.
-Ici nous parlerons d'avantage de structures.
+Par analogie, il faut poser le sol avant de pouvoir marcher. \\
+
+Dans le cadre de ce projet, l'accent sera mis sur les structures.\\
 
 Si vous souhaitez contextualiser le projet vous pouvez vous mettre dans la situation suivante.
-Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente de données du trafic.
+Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente de données de trafic.
 Pour ce faire il vous faut implémenter une algorithme capable de planifier des temps de parcours au moyen d'une heuristique fixe ou dynamique.
-De plus une base de données réaliste et fiable pour le tester est réquit pour établir la validité de son implémentation.
-Dijkstra et la base libre de la RATP sont des choix logiques car robustes.
+Une base de données réaliste et fiable pour le tester est réquis pour établir la validité de son implémentation et du cadre dans lequel va naître le projet.
+L'algorithme de Dijkstra et la base de données libre de la RATP sont des choix logiques car robustes.
 Après concertation, un contrat est écrit pour juger des fonctionnalités minimums ne fréinant pas l'évolutivité de la solution.
 %Vous recevez le cahier des charges des commerciaux qui vous demande les fonctionnalités minimum du projet que vous traduisez en contrat de programmation.
 
 \section{Objectifs}
-Un contrat en programmation est le fait qu'une classe hérite d'une classe mère virtuel pure sans implémentation.
+Un contrat en programmation est le fait qu'une classe hérite d'une classe mère virtuelle pure sans implémentation.
 Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant sont appel via un pointeur sur le contrat.
-Si la class respecte le contrat, peu importe ses autres fonctionnalités, elle garantit d'avoir implémenter les fonctionnalités du contrat. \\
+Si la classe respecte le contrat, peu importe ses autres fonctionnalités, elle garantit d'avoir implémenter les fonctionnalités du contrat. \\
 
 La class \emph{Generic\_class} aura cet objectif pour vous évaluer (voir annexes).
-Vous devrez dériver de cette class pour créer la votre, peut importe le nom que vous lui donnez même s'il serait préférable qu'il soit logique.
+Vous devrez dériver de cette classe pour créer la votre.
 
 
-\section{Notations}
-Dans le but d'évaluer vos connaissances le mieux possible, ce projet sera décomposé en étapes clefs.
-Une charte d'écriture vous sera imposé comme dans les entreprises et les projets communs de manière générale.
-Celle que nous imposons est un exemple de ce qu'on pourrait exiger mais légérement allégé:\\
+\section{Charte d'écriture}
+Dans le but d'évaluer vos connaissances le mieux possible, ce projet est décomposé en étapes clés.
+Une charte d'écriture vous est imposée, comme dans les entreprises et les projets communs de manière générale. \\
+
+Celle charte, imposée (donc obligatoire) est légère, énoncée dans un ordre quelconque:
 \begin{itemize}
-\item Compilation en -Wall -Wextra -Werror -O3
-\item Utilisation des outils du C++ 11 maximum
-\item Proscription de l'utilisation de \emph{new} et \emph{delete}
-\item Mémoire dynamique via les containers \emph{STL} ou les outils de \emph{memory} comme \emph{unique\_ptr} (normalement inutile dans le cadre du projet)
-\item Indentation parfaite
-\item Limitation maximum de duplicat de code
-\item Implémentation en snake\_case
-\item Tout type créé commence par une majuscule
-\item Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules
-\item Membres de class appelés via \emph{this}
-\item Variables d'entrées précédées d'un underscore \emph{\_}
-\item Variables locales neutres
-\item Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée
-\item Utilisation systématique de référence ou de pointeur lors du passage d'un objet.
-\item Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire
+\item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -O3 de gcc} afin de garantir le respect de l'implémentation dans les normes C++;
+\item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
+\item \textbf{Proscription de l'utilisation de l'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation;
+\item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}} ou les outils de \emph{memory} comme par exemple \emph{std::unique\_ptr}, celui-ci étant inutile dans le cadre du projet;
+\item \textbf{Indentation parfaite du code source du programme} afin de garantir la lisibilité et de prévenir les erreurs d'implémentation;
+\item \textbf{Minimisation de duplication du code source du programme} afin d'éviter le dangereux copier-coller est les graves problèmes de maintenance qui s'y accompagne;
+\item \textbf{Obligation d'utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, afin de garantir la lisibilité du code;
+\item \textbf{Tout type créé commence par une majuscule}; % kézako
+\item \textbf{Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules}; on parlera ici de \emph{SCREAMING\_SNAKE\_CASE};
+\item \textbf{Membres de class appelés via \emph{this}} afin de répèrer facilement ces appels;
+\item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, également pour faciliter la lecture;
+\item \textbf{Variables locales neutres} % kézako
+\item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture.
+\item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, pour des raisons évidentes de passage par référence.
+\item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}
 \end{itemize}
 
-Vous avez 4 séances de 4H chacune pour réaliser ce projet.
-Lors de chaque séance nous metterons l'accent sur une nouvelle étape à réaliser,
-cependant le rythme n'est pas imposé.
-Si vous souhaitez aller plus vite ou plus lentement rien ne vous en empêche, car vous pouvez soumettre à tout moment lors de la période du projet.
-Des programmes de test vous seront fournit afin d'évaluer votre code et d'hésiter son niveau d'accomplissement.
+\pagebreak
+
+\section{Temps et notation}
+
+Quatre séances de 4H chacune sont mis à votre disposition pour réaliser ce projet.
+Lors de chaque séance nous metterons l'accent sur une nouvelle étape à réaliser. Le rythme n'est pas imposé étant donné que vous pouvez soumettre à tout moment lors de la période du projet.
+Des programmes de test vous seront fournis afin d'évaluer votre code et d'estimer son niveau d'accomplissement.
 Les étapes seront:
-\begin{itemize}
+\begin{enumerate}
 \item Surcharge des operateurs de flux pour les données et la dérivation du contrat ($+$3pts $=>$ 3$/$20)
-\item Lecture \& affichage des stations ($+$4pts $=>$ 7$/$20)
-\item Lecture \& affichage des connections ($+$4pts $=>$ 11$/$20)
-\item Génération \& affichage du graphe ($+$4pts $=>$ 15$/$20)
-\item Estimation du meilleur chemin ($+$6pts $=>$ 22$/$20)
-\item (BONUS) heuristique dynamique ($+$6pts $=>$ 28$/$20)
-\end{itemize}
+\item Lecture \& affichage des stations ($+$3pts $=>$ 6$/$20)
+\item Lecture \& affichage des connections ($+$3pts $=>$ 9$/$20)
+\item Génération \& affichage du graphe ($+$4pts $=>$ 13$/$20)
+\item Estimation du meilleur chemin ($+$8pts $=>$ 21$/$20)
+\item (BONUS) heuristique dynamique ($+$6pts $=>$ 27$/$20)
+\end{enumerate}
 
-Un malus de 4pts maximum sera ensuite appliqué en accord avec la lisibilité et le respect de la charte d'écriture du code.
+La non-conformité de votre code à l'un de ces critères de la charte d'écriture pour noter le projet vous fera perdre un nombre conséquent de points, à partir de deux points (2/20) par critère non respecté. Ceux-ci seront vérifiés de manière automatique.\\
+
 Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs. \\
+
+\section{Soumission et autoévaluation}
+
+La soumission du projet se fera sur l'espace Moodle dédié. Vous pourrez y soumettre un nombre illimité de projet, la dernière soumission écrasant les précédentes.
+
+FIXME : Ici la description des outils d'auto-évaluation
 
 \appendix
 \clearpage
