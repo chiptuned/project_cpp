@@ -42,7 +42,7 @@
 \title{[4AI02] Projet C++: Algorithme de Dijkstra}
 \author{
   Géhère, Kévin\\
-  \texttt{kevin.gehere@inserm.fr}
+  \texttt{kevin.gehere@sorbonne-universite.fr}
   \and
   Fraillon, Vincent\\
   \texttt{vincent.fraillon-maison@sorbonne-universite.fr}
@@ -94,21 +94,21 @@ Une charte d'écriture vous est imposée, comme dans les entreprises et les proj
 
 Celle charte, imposée (donc obligatoire) est légère, énoncée dans un ordre quelconque:
 \begin{itemize}
-\item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -O3 de gcc} afin de garantir le respect de l'implémentation dans les normes C++;
+\item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -O3 de g++} afin de garantir le respect de l'implémentation dans les normes C++, et d'optimiser la compilation;
 \item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
-\item \textbf{Proscription de l'utilisation de l'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation;
+\item \textbf{Proscription de l'utilisation des outils d'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation;
 \item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}} ou les outils de \emph{memory} comme par exemple \emph{std::unique\_ptr}, celui-ci étant inutile dans le cadre du projet;
 \item \textbf{Indentation parfaite du code source du programme} afin de garantir la lisibilité et de prévenir les erreurs d'implémentation;
 \item \textbf{Minimisation de duplication du code source du programme} afin d'éviter le dangereux copier-coller est les graves problèmes de maintenance qui s'y accompagne;
 \item \textbf{Obligation d'utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, afin de garantir la lisibilité du code;
 \item \textbf{Tout type créé commence par une majuscule}; % kézako
 \item \textbf{Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules}; on parlera ici de \emph{SCREAMING\_SNAKE\_CASE};
-\item \textbf{Membres de class appelés via \emph{this}} afin de répèrer facilement ces appels;
+\item \textbf{Membres de classes appelés via \emph{this}} afin de répèrer facilement ces appels;
 \item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, également pour faciliter la lecture;
-\item \textbf{Variables locales neutres} % kézako
-\item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture.
-\item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, pour des raisons évidentes de passage par référence.
-\item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}
+\item \textbf{Variables locales neutres}; % kézako
+\item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture;
+\item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, pour des raisons évidentes de passage par référence;
+\item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}.
 \end{itemize}
 
 \pagebreak
