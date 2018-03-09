@@ -42,8 +42,11 @@ function db = load_ratp_database()
   % for stop_times, it is faster to store duration in char array then cast
   db.stop_times = readtable(fullfile(folder_db, 'stop_times.txt'), ...
     'Format', '%u64 %q %q %u32 %u8 %q %q');
+
+  % this duration methods seems not to be supported in Win 2017b
   times = array2table(seconds(duration(db.stop_times{:,2:3})), ...
     'VariableNames',db.stop_times.Properties.VariableNames(2:3));
+
   db.stop_times = [db.stop_times(:,1), times, db.stop_times(:,4:end)];
 
   db.calendar = readtable(fullfile(folder_db, 'calendar.txt'), ...

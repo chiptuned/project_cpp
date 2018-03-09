@@ -117,9 +117,11 @@ t_generation_same_stops = toc(t_start_t_same_stops)
 
 %% Transfers
 t_start_t_transfers = tic;
-all_transfers = uint32(table2array(db.transfers(:,[1, 2, 4])));
+all_transfers = [uint32(table2array(db.transfers(:,[1, 2, 4])));
+    uint32(table2array(db.transfers(:,[2, 1, 4])))];
+all_transfers = unique(all_transfers, 'rows');
 if cmode > 1
-  connection_date_transfers = nan(size(db.transfers(:,1)));
+  connection_date_transfers = nan(2*size(all_transfers(:,1),1),1);
 end
 t_generation_transfers = toc(t_start_t_transfers)
 
@@ -133,9 +135,9 @@ if cmode > 1
     connection_date_same_stops; ...
     connection_date_transfers]);
 
-  if cmode == 3
+  if cmode > 2
     keeping_lines = [{'1'}; {'2'}; {'3'}; {'4'}; {'5'}; {'6'}; {'7'}; {'8'}; ...
-    {'9'}; {'10'}; {'11'}; {'12'}; {'13'}; {'14'}; {'3B'}; {'7B'}; {'ORLYVAL'}]
+    {'9'}; {'10'}; {'11'}; {'12'}; {'13'}; {'14'}; {'3B'}; {'7B'}]
 
     removing_stops = ~ismember(all_stops(:,3), keeping_lines);
     keeping_ids = cell2mat(all_stops(~removing_stops,2));
@@ -148,13 +150,63 @@ if cmode > 1
     table_dates(removing_c,:) = [];
   end
 
+  if cmode > 3
+
+    if cmode == 5
+      % static discard of unwanted connections :
+      % Simplon 1668 2478 - Chateau Rouge 2033 2152
+      % Clignancourt 1742 2420 - Marcadet 1665 2535
+      % Dupleix 1926 2251 - Cambronne 2016 2135
+      % there were identified and TODO() checked it doesn't break the graph
+      full_connect(removing_c,:) = [];
+      connections_to_remove = ...
+          ismember(full_connect(:,1:2), [1668 2033], 'rows') | ...
+          ismember(full_connect(:,1:2), [2478 2152], 'rows') | ...
+          ismember(full_connect(:,1:2), [1742 1665], 'rows') | ...
+          ismember(full_connect(:,1:2), [2420 2535], 'rows') | ...
+          ismember(full_connect(:,1:2), [1926 2016], 'rows') | ...
+          ismember(full_connect(:,1:2), [2251 2135], 'rows') | ...
+          ismember(full_connect(:,1:2), [2033 1668], 'rows') | ...
+          ismember(full_connect(:,1:2), [2152 2478], 'rows') | ...
+          ismember(full_connect(:,1:2), [1665 1742], 'rows') | ...
+          ismember(full_connect(:,1:2), [2535 2420], 'rows') | ...
+          ismember(full_connect(:,1:2), [2016 1926], 'rows') | ...
+          ismember(full_connect(:,1:2), [2135 2251], 'rows');
+      full_connect(connections_to_remove,:) = [];
+      table_connections(connections_to_remove,:) = [];
+      table_dates(connections_to_remove,:) = [];
+    end
+
+
+    array_dates = table2array(table_dates);
+    idx_valid_dates = (array_dates > 18*3600) & (array_dates < 18*3600+5*60) ...
+      | isnan(array_dates);
+    table_connections(~idx_valid_dates,:) = [];
+
+    % unique connections and their different trips
+    [~, iB, iA] = unique(table_connections(:,1:2), 'rows');
+    idx_times_to_merge = accumarray(iA, (1:numel(iA)).', [], @(r){sort(r)});
+
+    % connection time by averaging connection time of all differents trips
+    new_t_connect = table_connections(iB,:);
+    for ind = 1:numel(idx_times_to_merge)
+      new_t_connect{ind,3} = round(mean(table_connections{idx_times_to_merge{ind},3}));
+    end
+    table_connections = new_t_connect;
+    % At this point table_dates is irrelevant
+
+    table_connections.Properties.VariableNames = {'uint32_from_stop_id', ...
+      'uint32_to_stop_id', 'uint32_min_transfer_time'};
+  else
+    table_connections = [table_connections, table_dates];
+    table_connections.Properties.VariableNames = {'uint32_from_stop_id', ...
+      'uint32_to_stop_id', 'uint32_min_transfer_time', 'string_connection_date'};
+  end
+
   table_dates.Properties.VariableNames = {'string_connection_date'};
-  table_connections = [table_connections, table_dates];
   table_stops.Properties.VariableNames = {'string_name_station', ...
-    'uint_s_id', 'string_short_line', 'string_adress_station', ...
+    'uint32_s_id', 'string_short_line', 'string_adress_station', ...
     'string_desc_line'};
-  table_connections.Properties.VariableNames = {'uint_from_stop_id', ...
-    'uint_to_stop_id', 'uint_min_transfer_time', 'string_connection_date'};
 elseif cmode == 1
   table_stops.Properties.VariableNames = {'string_name_station', ...
     'uint_s_id', 'string_short_line', 'string_adress_station', ...
