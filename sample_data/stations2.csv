@@ -1,25 +1,21 @@
-# header header
-# mon gentil header
-# comme tu es grand
-# comme tu es chiant
-A1,1,1
-A2,2,1
-A3,3,1
-A4,4,1
-A5,5,1
-A6,6,1
-B1,7,2
-B2,8,2
-B3,9,2
-B4,10,2
-B5,11,2
-B6,12,2
-C1,13,3
-C2,14,3
-C3,15,3
-C4,16,3
-D1,17,4
-D2,18,4
-D3,19,4
-D4,20,4
-
+string_name_station,uint32_s_id,string_short_line,string_adress_station,string_desc_line
+A1,1,1,Adresse de A1,Ligne 1 sens Aller
+A2,2,1,Adresse de A2,Ligne 1 sens Aller
+A3,3,1,Adresse de A3,Ligne 1 sens Aller
+A4,4,1,Adresse de A4,Ligne 1 sens Aller
+A5,5,1,Adresse de A5,Ligne 1 sens Aller
+A6,6,1,Adresse de A6,Ligne 1 sens Aller
+B1,7,2,Adresse de B1,Ligne 2 sens Aller
+B2,8,2,Adresse de B2,Ligne 2 sens Aller
+B3,9,2,Adresse de B3,Ligne 2 sens Aller
+B4,10,2,Adresse de B4,Ligne 2 sens Aller
+B5,11,2,Adresse de B5,Ligne 2 sens Aller
+B6,12,2,Adresse de B6,Ligne 2 sens Aller
+C1,13,3,Adresse de C1,Ligne 3 sens Aller
+C2,14,3,Adresse de C2,Ligne 3 sens Aller
+C3,15,3,Adresse de C3,Ligne 3 sens Aller
+C4,16,3,Adresse de C4,Ligne 3 sens Aller
+D1,17,4,Adresse de D1,Ligne 4 sens Aller
+D2,18,4,Adresse de D2,Ligne 4 sens Aller
+D3,19,4,Adresse de D3,Ligne 4 sens Aller
+D4,20,4,Adresse de D4,Ligne 4 sens Aller
