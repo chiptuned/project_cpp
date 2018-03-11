@@ -1,4 +1,4 @@
-string_name_station,uint32w_s_id,string_short_line,string_adress_station,string_desc_line
+string_name_station,uint32_s_id,string_short_line,string_adress_station,string_desc_line
 A,1,Ligne de la station A,Adresse de la station A, Ligne de la A (Terminus undefined -> Terminus undefined) - Aller
 B,2,Ligne de la station B,Adresse de la station B, Ligne de la B (Terminus undefined -> Terminus undefined) - Aller
 C,3,Ligne de la station C,Adresse de la station C, Ligne de la C (Terminus undefined -> Terminus undefined) - Aller
