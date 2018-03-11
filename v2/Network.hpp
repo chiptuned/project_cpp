@@ -57,7 +57,6 @@ namespace travel{
       try{
         this->read_stations(_stations_filename);
         this->read_connections(_connections_filename);
-        throw(std::exception());
       } catch (const std::exception& e) {
         std::cout << " a standard exception was caught, with message '"
                   << e.what() << std::endl;
