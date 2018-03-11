@@ -8,11 +8,11 @@
 #include "Network.hpp"
 #include "Grade.hpp"
 
-#define f1 "../sample_data/s.csv"
-#define f2 "../sample_data/c.csv"
+#define f1 "./s.csv"
+#define f2 "./c.csv"
 
-#define f3 "../sample_data/stations2.csv"
-#define f4 "../sample_data/connections2.csv"
+#define f3 "./stations2.csv"
+#define f4 "./connections2.csv"
 
 namespace travel{
   travel::Grade::Grade(bool _small){
@@ -96,9 +96,13 @@ namespace travel{
       throw(ss.str());
     }
   }
-  void travel::Grade::dijkstra(Generic_mapper& _input){
+  void travel::Grade::dijkstra(Generic_mapper& _input, bool _levenstein){
     this->connections(_input);
-    std::cout << "===========================> Grade 3 <===========================" << std::endl;
+    if(!_levenstein){
+      std::cout << "===========================> Grade 3 <===========================" << std::endl;
+    }else{
+      std::cout << "=========================> Grade 3 bis <=========================" << std::endl;
+    }
 
     travel::Network network(stations_filename, connections_filename);
 
@@ -109,12 +113,25 @@ namespace travel{
     for(auto&& it: this->ids){
       for(auto&& it2: this->ids){
         auto start_count = std::chrono::steady_clock::now();
-        auto ref = network.compute_travel(it,it2);
-        auto vec = _input.compute_travel(it,it2);
+        if(!_levenstein){
+          auto ref = network.compute_travel(it,it2);
+          auto vec = _input.compute_travel(it,it2);
+          cpt = (this->areEqual(ref, vec) ? cpt : cpt+1);
+        }else{
+          auto sta_ref = network.get_stations_hashmap();
+          auto sta = network.get_stations_hashmap();
+
+          auto ref = network.compute_travel(sta_ref.find(it)->second.name,sta_ref.find(it2)->second.name);
+          auto vec = _input.compute_travel(sta.find(it)->second.name,sta.find(it2)->second.name);
+          cpt = (this->areEqual(ref, vec) ? cpt : cpt+1);
+
+          if(!this->areEqual(ref,vec)){
+            network.compute_and_display_travel(sta_ref.find(it)->second.name,sta_ref.find(it2)->second.name);
+            _input.compute_and_display_travel(sta.find(it)->second.name,sta.find(it2)->second.name);
+          }
+        }
         auto duration = std::chrono::duration_cast< std::chrono::microseconds >(std::chrono::steady_clock::now() - start_count);
         estimated_time += static_cast<double>(duration.count())/1e6;
-
-        cpt = (this->areEqual(ref, vec) ? cpt : cpt+1);
       }
     }
 
@@ -124,8 +141,8 @@ namespace travel{
       throw(ss.str());
     }else{
       auto co_ref = network.get_connections_hashmap();
-      estimated_time = 2*(co_ref.size()*co_ref.size())*estimated_time/(this->ids.size()*this->ids.size());
-      std::cout << "Tests: seems ok.\nWould you try complete test (wait > " << this->convert_seconds(estimated_time).str() << ") ? (N/y): ";
+      estimated_time = 1.5*(co_ref.size()*co_ref.size())*estimated_time/(this->ids.size()*this->ids.size());
+      std::cout << "Tests: seems ok.\nWould you try complete test (wait ~ " << this->convert_seconds(estimated_time).str() << ") ? (N/y): ";
       auto c = 'N';
       std::cin >> c;
       if(c == 'y'){
@@ -135,12 +152,27 @@ namespace travel{
 
           for(auto&& it2: co_ref){
             count++;
-            auto ref = network.compute_travel(it.first,it2.first);
-            auto vec = _input.compute_travel(it.first,it2.first);
-            if(this->areEqual(ref, vec) == false){
-              std::stringstream ss;
-              ss << "Test failed: from " << it.first << " to " << it2.first << " unsolved" << std::flush;
-              throw(ss.str());
+            if(!_levenstein){
+              auto ref = network.compute_travel(it.first,it2.first);
+              auto vec = _input.compute_travel(it.first,it2.first);
+
+              if(this->areEqual(ref, vec) == false){
+                std::stringstream ss;
+                ss << "Test failed: from " << it.first << " to " << it2.first << " unsolved" << std::flush;
+                throw(ss.str());
+              }
+            }else{
+              auto sta_ref = network.get_stations_hashmap();
+              auto sta = network.get_stations_hashmap();
+
+              auto ref = network.compute_travel(sta_ref.find(it.first)->second.name,sta_ref.find(it2.first)->second.name);
+              auto vec = _input.compute_travel(sta.find(it.first)->second.name,sta.find(it2.first)->second.name);
+
+              if(this->areEqual(ref, vec) == false){
+                std::stringstream ss;
+                ss << "Test failed: from " << it.first << " to " << it2.first << " unsolved" << std::flush;
+                throw(ss.str());
+              }
             }
           }
           auto duration = std::chrono::duration_cast< std::chrono::microseconds >(std::chrono::steady_clock::now() - start_count);

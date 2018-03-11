@@ -42,9 +42,12 @@ int main(int argc, char** argv){
         (void) start;
         (void) end;
         travel::Network network(stations_filename, connections_filename);
-        // network.compute_and_display_travel(start, end);
+        network.compute_and_display_travel(start, end);
+        network.compute_and_display_travel(1722, 2062);
+        network.compute_and_display_travel("Gare Paris st-lazare", "Bastille");
 
-        travel::evaluate_small.dijkstra(network);
+        // travel::evaluate_small.dijkstra(network);
+        travel::evaluate.dijkstra(network, true);
 
         std::cout << "Nice" << std::endl;
       }

@@ -8,6 +8,7 @@
 #include <utility>
 #include <iostream>
 #include <algorithm>
+#include <map>
 
 #include "Generic_mapper.hpp"
 
@@ -79,62 +80,114 @@ namespace travel{
         cursor = graph_hashmap_save.find(cursor.from_id)->second;
         travel_stations.push_back(std::pair<uint64_t,uint64_t>(cursor.id,cursor.cost));
       }
+
       std::reverse(travel_stations.begin(), travel_stations.end());
+
+      return travel_stations;
+    }
+
+    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_travel(const std::string& s1, const std::string& s2) override{
+      std::map<std::pair<uint64_t,uint64_t>, uint64_t> start, end;
+      for(auto&& it: this->connections_hashmap){
+        start.insert(std::pair<std::pair<uint64_t,uint64_t>, uint64_t>(std::pair<uint64_t, uint64_t>(levenshtein_distance(s1,this->stations_hashmap.find(it.first)->second.name),it.first),it.first));
+        end.insert(std::pair<std::pair<uint64_t,uint64_t>, uint64_t>(std::pair<uint64_t, uint64_t>(levenshtein_distance(s2,this->stations_hashmap.find(it.first)->second.name),it.first),it.first));
+      }
+      return this->compute_travel(start.begin()->second, end.begin()->second);
+    }
+
+    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_and_display_travel(const std::string& s1, const std::string& s2) override{
+      auto travel_stations = this->compute_travel(s1,s2);
+      this->display_travel(travel_stations);
       return travel_stations;
     }
 
     virtual std::vector<std::pair<uint64_t,uint64_t> > compute_and_display_travel(uint64_t _start, uint64_t _end) override{
       auto travel_stations = this->compute_travel(_start, _end);
-
       this->display_travel(travel_stations);
-
       return travel_stations;
     }
 
   protected:
-    virtual void display_travel(const std::vector<std::pair<uint64_t,uint64_t> >& _travel_stations) override{
-      std::cout << "\nBest way from " << this->stations_hashmap.find(_travel_stations.front().first)->second.name
-                << " to " << this->stations_hashmap.find(_travel_stations.back().first)->second.name << " is:\n";
+    //pompé pimpé: https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
+    uint64_t levenshtein_distance(const std::string& s1, const std::string& s2) override{
+      std::string s12(s1), s22(s2);
 
-      std::pair<uint64_t,uint64_t> previous_node;
+      auto up_case = [](char c){
+        return ((c >= 'a' && c <= 'z') ? c-'a'+'A' : c);
+      };
+      std::for_each(s12.begin(), s12.end(), up_case);
+      std::for_each(s22.begin(), s22.end(), up_case);
+
+      const std::size_t len1 = s12.size(), len2 = s22.size();
+      std::vector<uint64_t> col(len2+1), prev_col(len2+1);
+
+      for (uint64_t i = 0; i < prev_col.size(); i++){
+        prev_col[i] = i;
+      }
+      for (uint64_t i = 0; i < len1; i++) {
+        col[0] = i+1;
+        for (uint64_t j = 0; j < len2; j++){
+          // note that std::min({arg1, arg2, arg3}) works only in C++11,
+          // for C++98 use std::min(std::min(arg1, arg2), arg3)
+          col[j+1] = std::min({ prev_col[1 + j] + 1, col[j] + 1, prev_col[j] + (s12[i]==s22[j] ? 0 : 1) });
+        }
+        col.swap(prev_col);
+      }
+      return prev_col[len2];
+    }
+
+    virtual void display_travel(const std::vector<std::pair<uint64_t,uint64_t> >& _travel_stations) override{
+      {
+        auto start = this->stations_hashmap.find(_travel_stations.front().first);
+        auto end = this->stations_hashmap.find(_travel_stations.back().first);
+        if(start == this->stations_hashmap.end() || end == this->stations_hashmap.end()){
+          throw("failed in the travel building");
+        }
+        std::cout << "\nBest way from " << start->second.name << " (line " << start->second.line_id << ") to " << end->second.name << " (line " << end->second.line_id << ") is:\n";
+      }
+
+      std::pair<uint64_t,uint64_t> previous_node = *(_travel_stations.begin());
       uint64_t last_cost = 0;
       bool first = true;
 
-      for(auto it = _travel_stations.begin(); it != _travel_stations.end(); ++it){
-        auto curStation = this->stations_hashmap.find(it->first)->second;
-        if(first && std::next(it) != _travel_stations.end()){
-          auto nextStation = this->stations_hashmap.find(std::next(it)->first)->second;
-          if(curStation.line_id == nextStation.line_id){
-            first = false;
-            std::cout << "\t<Take line " << curStation.line_id << "> " << curStation.line_name << std::endl;
-            std::cout << "\t\tFrom " << curStation.name;
-            last_cost = it->second;
-          }else{
-            std::cout << "\tWalk to " << nextStation.name << ", line " << nextStation.line_id << " (" << std::next(it)->second << " secs)" << std::endl;
-          }
-        }else{
-          auto prevStation = this->stations_hashmap.find(previous_node.first)->second;
-          if(!first && prevStation.line_id != curStation.line_id){
-            std::cout << " to " << prevStation.name << " (" << previous_node.second-last_cost << " secs)" << std::endl;
-            last_cost = previous_node.second;
-            std::cout << "\tWalk to " << curStation.name << ", line " << curStation.line_id << " (" << it->second-last_cost << " secs)" << std::endl;
-            last_cost = it->second;
-            if(std::next(it) != _travel_stations.end()){
-              auto nextStation = this->stations_hashmap.find(std::next(it)->first)->second;
-              if(curStation.line_id == nextStation.line_id){
-                std::cout << "\t<Take line " << curStation.line_id << "> "<< curStation.line_name << std::endl;
-                std::cout << "\t\tFrom " << curStation.name;
-              }else{
-                std::cout << "\tWalk to " << curStation.name << ", line " << curStation.line_id << " (" << std::next(it)->second-last_cost << " secs)" << std::endl;
-              }
+      if(_travel_stations.size() > 1){
+        for(auto it = _travel_stations.begin(); it != _travel_stations.end(); ++it){
+          auto curStation = this->stations_hashmap.find(it->first)->second;
+          if(first && std::next(it) != _travel_stations.end()){
+            auto nextStation = this->stations_hashmap.find(std::next(it)->first)->second;
+            if(curStation.line_id == nextStation.line_id && curStation.line_name.compare(curStation.line_name.size()-1-10, 10, nextStation.line_name.substr(nextStation.line_name.size()-1-10, 10)) == 0){
+              first = false;
+              std::cout << "\t<Take line " << curStation.line_id << "> " << curStation.line_name << std::endl;
+              std::cout << "\t\tFrom " << curStation.name;
+              last_cost = it->second;
+            }else if(curStation.line_id != nextStation.line_id){
+              std::cout << "\tWalk to " << nextStation.name << ", line " << nextStation.line_id << " (" << std::next(it)->second-last_cost << " secs)" << std::endl;
+              last_cost = std::next(it)->second;
             }
-          }else if(!first && std::next(it) == _travel_stations.end()){
-            std::cout << " to " << curStation.name << " (" << it->second-last_cost << " secs)" << std::endl;
-            last_cost = it->second;
+          }else{
+            auto prevStation = this->stations_hashmap.find(previous_node.first)->second;
+            if(!first && prevStation.line_id != curStation.line_id){
+              std::cout << " to " << prevStation.name << " (" << previous_node.second-last_cost << " secs)" << std::endl;
+              last_cost = previous_node.second;
+              std::cout << "\tWalk to " << curStation.name << ", line " << curStation.line_id << " (" << it->second-last_cost << " secs)" << std::endl;
+              last_cost = it->second;
+              if(std::next(it) != _travel_stations.end()){
+                auto nextStation = this->stations_hashmap.find(std::next(it)->first)->second;
+                if(curStation.line_id == nextStation.line_id){
+                  std::cout << "\t<Take line " << curStation.line_id << "> "<< curStation.line_name << std::endl;
+                  std::cout << "\t\tFrom " << curStation.name;
+                }else{
+                  std::cout << "\tWalk to " << curStation.name << ", line " << curStation.line_id << " (" << std::next(it)->second-last_cost << " secs)" << std::endl;
+                }
+              }
+            }else if(!first && std::next(it) == _travel_stations.end()){
+              std::cout << " to " << curStation.name << " (" << it->second-last_cost << " secs)" << std::endl;
+              last_cost = it->second;
+            }
           }
-        }
 
-        previous_node = *it;
+          previous_node = *it;
+        }
       }
       std::cout << "After " << previous_node.second << " secs, you have reached your destination!" << std::endl;
     }
@@ -211,9 +264,9 @@ namespace travel{
           }
           ls.push_back(str.substr(cur1, str.size()-cur1));
 
-          if(ls.size() != 3){
+          if(ls.size() < 3){
             std::stringstream ss;
-            ss << "Connection_parser, field missmatch on line " << cpt << " " << ls.size() << " instead of 5";
+            ss << "Connection_parser, field missmatch on line " << cpt << " " << ls.size() << " instead of 3";
             throw(ss.str());
           }
 

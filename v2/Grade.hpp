@@ -11,8 +11,8 @@ namespace travel{
     Grade(bool _small); // true: small database, false: ratp database
     void stations(const Generic_station_parser& _input);
     void connections(const Generic_connection_parser& _input);
-    void dijkstra(Generic_mapper& _input);
-    // void levenstein(const Generic_mapper&);
+    void dijkstra(Generic_mapper& _input, bool _levenstein=false);
+
   private:
     template<typename T>
     std::stringstream convert_seconds(T _secs);

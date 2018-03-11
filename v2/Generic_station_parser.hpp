@@ -25,7 +25,7 @@ namespace travel{
       return !(*this == _in);
     }
     friend std::ostream& operator<<(std::ostream& _os, const Station& _stop){
-      _os << "Station: " << _stop.name << " (line " << _stop.line_id;
+      _os << "Station: " << _stop.name << " (line " << _stop.line_id << ")";
       return _os;
     }
   };
