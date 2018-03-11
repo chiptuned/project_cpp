@@ -8,23 +8,54 @@
 #include "Network.hpp"
 #include "Grade.hpp"
 
-#define f1 "../sample_data/s.csv"
-#define f2 "../sample_data/c.csv"
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+  const std::string str1 = {
+  #include "..\\sample_data\\s_hacked.csv"
+  };
+  const std::string str2 = {
+  #include "..\\sample_data\\c_hacked.csv"
+  };
+  const std::string str3 = {
+  #include "..\\sample_data\\stations2_hacked.csv"
+  };
+  const std::string str4 = {
+  #include "..\\sample_data\\connections2_hacked.csv"
+  };
+#else
+  const std::string str1 = {
+  #include "../sample_data/s_hacked.csv"
+  };
+  const std::string str2 = {
+  #include "../sample_data/c_hacked.csv"
+  };
+  const std::string str3 = {
+  #include "../sample_data/stations2_hacked.csv"
+  };
+  const std::string str4 = {
+  #include "../sample_data/connections2_hacked.csv"
+  };
+#endif
 
-#define f3 "../sample_data/stations2.csv"
-#define f4 "../sample_data/connections2.csv"
+#define f1 "1s.csv"
+#define f2 "1c.csv"
+#define f3 "1stations2.csv"
+#define f4 "1connections2.csv"
 
 namespace travel{
   travel::Grade::Grade(bool _small){
     if(!_small){
       this->stations_filename=f1;
       this->connections_filename=f2;
+      this->stations_literal=str1;
+      this->connections_literal=str2;
       this->ids.push_back(1722);
       this->ids.push_back(2062);
       this->ids.push_back(2017);
     }else{
       this->stations_filename=f3;
       this->connections_filename=f4;
+      this->stations_literal=str3;
+      this->connections_literal=str4;
       this->ids.push_back(7);
       this->ids.push_back(1);
       this->ids.push_back(20);
@@ -33,7 +64,7 @@ namespace travel{
 
   void travel::Grade::stations(const Generic_station_parser& _input){
     std::cout << "===========================> Grade 1 <===========================" << std::endl;
-    travel::Network network(stations_filename, connections_filename);
+    travel::Network network(stations_filename, connections_filename, stations_literal, connections_literal);
 
     auto sta = _input.get_stations_hashmap();
     auto sta_ref = network.get_stations_hashmap();
@@ -64,7 +95,7 @@ namespace travel{
   void travel::Grade::connections(const Generic_connection_parser& _input){
     this->stations(_input);
     std::cout << "===========================> Grade 2 <===========================" << std::endl;
-    travel::Network network(stations_filename, connections_filename);
+    travel::Network network(stations_filename, connections_filename, stations_literal, connections_literal);
 
     auto co = _input.get_connections_hashmap();
     auto co_ref = network.get_connections_hashmap();
@@ -100,7 +131,7 @@ namespace travel{
     this->connections(_input);
     std::cout << "===========================> Grade 3 <===========================" << std::endl;
 
-    travel::Network network(stations_filename, connections_filename);
+    travel::Network network(stations_filename, connections_filename, stations_literal, connections_literal);
 
     std::cout << "First tests" << std::endl;
 
