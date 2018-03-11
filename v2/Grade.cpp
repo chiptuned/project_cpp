@@ -71,15 +71,28 @@ namespace travel{
 
     auto cpt_sta = 0;
     auto cpt_bad = 0;
+
+    auto check_station = [&cpt_bad](const Station& _a, const Station& _b){
+      if(_a.name.compare(_b.name) == 0){
+        if(_a.line_id.compare(_b.line_id) == 0){
+          if(_a.address.compare(_b.address) == 0){
+            if(_a.line_name.compare(_b.line_name) == 0){
+              return true;
+            }
+          }
+        }
+      }
+      cpt_bad++;
+      return false;
+    };
+
     for(auto&& it: sta_ref){
       auto test = sta.find(it.first);
       if(test == sta.end()){
         cpt_sta++;
         cpt_bad++;
       }else{
-        if(!(test->second == it.second)){
-          cpt_bad++;
-        }
+        check_station(test->second, it.second);
       }
     }
 
