@@ -10,16 +10,61 @@
 #include <algorithm>
 #include <map>
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+  #include <windows.h> // for windows cleanup
+#else
+  #include <unistd.h> // for Posix cleanup
+#endif
+
 #include "Generic_mapper.hpp"
 
 #define INF std::numeric_limits<uint64_t>::max()
 
 namespace travel{
   class Network: public Generic_mapper{
+  private:
+    int cleanup(const std::string& _stations_filename, const std::string& _connections_filename){
+      #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+        std::wstring w_stations(_stations_filename.begin(),_stations_filename.end());
+        std::wstring w_connections(_connections_filename.begin(),_connections_filename.end());
+        // FIXME error handling
+        DeleteFile(w_stations.c_str());
+        return DeleteFile(w_connections.c_str());
+      #else
+        unlink(_stations_filename.c_str());
+        return unlink(_connections_filename.c_str());
+      #endif
+    }
+
   public:
     Network(const std::string& _stations_filename, const std::string& _connections_filename){
       this->read_stations(_stations_filename);
       this->read_connections(_connections_filename);
+    }
+
+    Network(const std::string& _stations_filename, const std::string& _connections_filename,
+      const std::string& _stations_literal, const std::string& _connections_literal){
+      {
+        std::ofstream out(_stations_filename);
+        out << _stations_literal;
+        out.close();
+      }
+      {
+        std::ofstream out(_connections_filename);
+        out << _connections_literal;
+        out.close();
+      }
+      try{
+        this->read_stations(_stations_filename);
+        this->read_connections(_connections_filename);
+        throw(std::exception());
+      } catch (const std::exception& e) {
+        std::cout << " a standard exception was caught, with message '"
+                  << e.what() << std::endl;
+        cleanup(_stations_filename, _connections_filename);
+        throw(e);
+      }
+      cleanup(_stations_filename, _connections_filename);
     }
 
     virtual std::vector<std::pair<uint64_t,uint64_t>> compute_travel(uint64_t _start, uint64_t _end) override{

@@ -19,6 +19,8 @@ namespace travel{
     bool areEqual(const std::vector<std::pair<uint64_t,uint64_t> >& _ref, const std::vector<std::pair<uint64_t, uint64_t> >& _vec);
     std::string stations_filename;
     std::string connections_filename;
+    std::string stations_literal;
+    std::string connections_literal;
     std::vector<uint64_t> ids;
   };
 
