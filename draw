@@ -1,0 +1,19 @@
+#!/bin/bash
+
+mess=$1
+color=$2
+COLS=$(($(($(($(tput cols)-${#mess}))-4))/2))
+NC='\e[0m'
+
+line="";
+for j in `seq 1 $COLS`;
+do
+    line=$line"="
+done
+
+if [[ $((${#mess}%2)) -ne 0 ]]
+   then
+       printf "$color$line> $1 <$line=$NC\n"
+else
+    printf "$color$line> $1 <$line$NC\n"
+fi
