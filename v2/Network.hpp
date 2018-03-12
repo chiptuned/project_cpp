@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include <cstring>
 #include <sstream>
 #include <vector>
@@ -66,7 +67,74 @@ namespace travel{
       cleanup(_stations_filename, _connections_filename);
     }
 
-    virtual std::vector<std::pair<uint64_t,uint64_t>> compute_travel(uint64_t _start, uint64_t _end) override{
+    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_travel(uint64_t _start, uint64_t _end) override{
+      if(this->connections_hashmap.find(_start) == this->connections_hashmap.end()){
+        throw("Starting id unknown");
+      }else if(this->connections_hashmap.find(_end) == this->connections_hashmap.end()){
+          throw("Ending id unknown");
+      }
+
+      std::vector<std::pair<uint64_t,uint64_t>> travel_stations;
+      std::unordered_map<uint64_t,Node> graph_hashmap;
+      std::set<std::pair<uint64_t, uint64_t> > graph_set;
+      std::unordered_map<uint64_t,Node> graph_hashmap_save;
+
+      for(auto&& it: this->connections_hashmap){
+        Node new_node;
+        new_node.id = it.first;
+        new_node.from_id = _start;
+        if(it.first != _start){
+          new_node.cost = INF;
+        }else{
+          new_node.cost = 0;
+        }
+        graph_hashmap.insert(std::pair<uint64_t,Node>(new_node.id, new_node));
+        graph_set.insert(std::pair<uint64_t, uint64_t>(new_node.cost, new_node.id));
+      }
+
+      while(!graph_hashmap.empty()){
+        auto min_elem = graph_set.begin();
+        auto connected_stations = this->connections_hashmap.find(min_elem->second);
+        for(auto&& it: connected_stations->second){
+          auto weight = ((INF - min_elem->first > it.second) ? it.second+min_elem->first : INF);
+          auto node = graph_hashmap.find(it.first);
+          if(node == graph_hashmap.end()){
+            continue;
+          }
+          if(node->second.cost >= weight){
+            graph_set.erase(std::pair<uint64_t,uint64_t>(node->second.cost,node->second.id));
+
+            node->second.cost = weight;
+            node->second.from_id = min_elem->second;
+
+            graph_set.insert(std::pair<uint64_t,uint64_t>(node->second.cost,node->second.id));
+          }
+        }
+
+        auto elem = graph_hashmap.find(min_elem->second);
+        graph_hashmap_save.insert(*elem);
+        if(min_elem->second == _end){
+          break;
+        }
+
+        graph_hashmap.erase(min_elem->second);
+        graph_set.erase(min_elem);
+      }
+
+      auto cursor = graph_hashmap_save.find(_end)->second;
+
+      travel_stations.push_back(std::pair<uint64_t,uint64_t>(cursor.id,cursor.cost));
+      while(cursor.id != _start){
+        cursor = graph_hashmap_save.find(cursor.from_id)->second;
+        travel_stations.push_back(std::pair<uint64_t,uint64_t>(cursor.id,cursor.cost));
+      }
+
+      std::reverse(travel_stations.begin(), travel_stations.end());
+
+      return travel_stations;
+    }
+
+    std::vector<std::pair<uint64_t,uint64_t> > old_compute_travel(uint64_t _start, uint64_t _end){
       if(this->connections_hashmap.find(_start) == this->connections_hashmap.end()){
         throw("Starting id unknown");
       }else if(this->connections_hashmap.find(_end) == this->connections_hashmap.end()){

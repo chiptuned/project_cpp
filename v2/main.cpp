@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <chrono>
 
 #include "Network.hpp"
 #include "Grade.hpp"
@@ -42,12 +43,24 @@ int main(int argc, char** argv){
         (void) start;
         (void) end;
         travel::Network network(stations_filename, connections_filename);
-        network.compute_and_display_travel(start, end);
-        network.compute_and_display_travel(1722, 2062);
-        network.compute_and_display_travel("Gare Paris st-lazare", "Bastille");
+        /*{
+          auto start_count = std::chrono::steady_clock::now();
+          network.compute_travel(start, end);
+          auto duration = std::chrono::duration_cast< std::chrono::microseconds >(std::chrono::steady_clock::now() - start_count);
+          std::cout << "Ref_D: " << static_cast<double>(duration.count()) << std::endl;
+        }{
+          auto start_count = std::chrono::steady_clock::now();
+          network.compute_travel2(start, end);
+          auto duration = std::chrono::duration_cast< std::chrono::microseconds >(std::chrono::steady_clock::now() - start_count);
+          std::cout << "New_D: " << static_cast<double>(duration.count()) << std::endl;
+          }*/
+
+        // network.compute_and_display_travel(start, end);
+        // network.compute_and_display_travel(1722, 2062);
+        // network.compute_and_display_travel("Gare Paris st-lazare", "Bastille");
 
         // travel::evaluate_small.dijkstra(network);
-        travel::evaluate.dijkstra(network, true);
+        travel::evaluate.dijkstra(network, false);
 
         std::cout << "Nice" << std::endl;
       }

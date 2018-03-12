@@ -161,6 +161,13 @@ namespace travel{
           auto ref = network.compute_travel(it,it2);
           auto vec = _input.compute_travel(it,it2);
           cpt = (this->areEqual(ref, vec) ? cpt : cpt+1);
+
+          if(!this->areEqual(ref,vec)){
+            std::cout << "*************************** Reference ***************************" << std::endl;
+            network.compute_and_display_travel(it,it2);
+            std::cout << "*************************** Your work ***************************" << std::endl;
+            _input.compute_and_display_travel(it,it2);
+          }
         }else{
           auto sta_ref = network.get_stations_hashmap();
           auto sta = network.get_stations_hashmap();
@@ -170,7 +177,9 @@ namespace travel{
           cpt = (this->areEqual(ref, vec) ? cpt : cpt+1);
 
           if(!this->areEqual(ref,vec)){
+            std::cout << "*************************** Reference ***************************" << std::endl;
             network.compute_and_display_travel(sta_ref.find(it)->second.name,sta_ref.find(it2)->second.name);
+            std::cout << "*************************** Your work ***************************" << std::endl;
             _input.compute_and_display_travel(sta.find(it)->second.name,sta.find(it2)->second.name);
           }
         }
@@ -201,6 +210,11 @@ namespace travel{
               auto vec = _input.compute_travel(it.first,it2.first);
 
               if(this->areEqual(ref, vec) == false){
+                std::cout << "*************************** Reference ***************************" << std::endl;
+                network.compute_and_display_travel(it.first,it2.first);
+                std::cout << "*************************** Your work ***************************" << std::endl;
+                _input.compute_and_display_travel(it.first,it2.first);
+
                 std::stringstream ss;
                 ss << "Test failed: from " << it.first << " to " << it2.first << " unsolved" << std::flush;
                 throw(ss.str());
@@ -213,6 +227,11 @@ namespace travel{
               auto vec = _input.compute_travel(sta.find(it.first)->second.name,sta.find(it2.first)->second.name);
 
               if(this->areEqual(ref, vec) == false){
+                std::cout << "*************************** Reference ***************************" << std::endl;
+                network.compute_and_display_travel(sta_ref.find(it.first)->second.name,sta_ref.find(it2.first)->second.name);
+                std::cout << "*************************** Your work ***************************" << std::endl;
+                _input.compute_and_display_travel(sta.find(it.first)->second.name,sta.find(it2.first)->second.name);
+
                 std::stringstream ss;
                 ss << "Test failed: from " << it.first << " to " << it2.first << " unsolved" << std::flush;
                 throw(ss.str());
