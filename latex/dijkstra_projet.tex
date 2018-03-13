@@ -39,7 +39,7 @@
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
-\title{[4AI02] Projet C++: Algorithme de Dijkstra}
+\title{[4AI02] Projet de C++ Avancé: Algorithme de Dijkstra}
 \author{
   Géhère, Kévin\\
   \texttt{kevin.gehere@sorbonne-universite.fr}
@@ -51,12 +51,41 @@
 \begin{document}
 \maketitle
 
-\section{Introduction}
-Le but de ce projet est de vous montrer de manière sommaire mais réaliste une utilisation réelle de la Standard Template Librairy (\emph{STL}).
-Pour ce faire, vous allez implémenter l'algorithme de Dijkstra,
-un algorithme qui vise à évaluer le coût minimal pour aller d'un point A à un point B.
+\section{Temps et notation}
 
-Cet algorithme peut s'appliquer sur des graphes orientés, modèle auquel plusieurs réseaux de transports sont disponibles (RATP, SNCF, routes, etc). Cet algorithme est également une porte d'entrée pour le domaine de la théorie des graphes, ou pour la résolution du problème du plus court chemin, vu également dans l'unité d'enseignement [4AI04] Intelligence artificielle.
+Trois séances de 4H chacune sont mis à disposition pour réaliser ce projet.
+Les étapes à réaliser sont suggérés dans la feuille de route au chapitre FIXME. Le rythme n'est pas imposé étant donné que la soumission du projet est possible à tout moment lors de la période du projet.
+Des programmes de test sont fournis afin d'évaluer le code et d'estimer le niveau d'accomplissement du projet.\\
+
+Notation :
+\begin{itemize}
+\item Instantiation des classes ($+$3pts $=>$ 3$/$20);
+\item Implémentation de read\_stations ($+$3pts $=>$ 6$/$20);
+\item Implémentation de read\_connections ($+$3pts $=>$ 9$/$20);
+\item Génération du graphe ($+$4pts $=>$ 13$/$20);
+\item Estimation du meilleur chemin et affichage ($+$7pts $=>$ 20$/$20);
+\item Amélioration ($+$5pts $=>$ 25$/$20);
+\item Bonus : Proposition d'un nom et d'un logo pour votre start-up ($+$1pt)
+\item Chaque critère de la charte d'écriture (Voir Chapitre FIXME) fera perdre 1,5 point ($-1,5$pts).\\
+\end{itemize}
+
+Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs.\\
+
+Date limite du rendu du code : \textbf{Vendredi 13 avril 2018, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu contient le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par example dans un fichier \emph{lisez-moi}). \\
+
+La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes.
+
+
+\section{Introduction}
+Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente de données de trafic.
+Pour ce faire il faut implémenter un algorithme capable de planifier des temps de parcours au moyen d'une heuristique fixe, ou dynamique.
+Une base de données réaliste et fiable pour le tester est requis pour établir la validité de son implémentation et du cadre dans lequel va naître le projet.
+L'algorithme de Dijkstra et la base de données libre de la RATP sont des choix logiques car robustes.
+Après concertation, un contrat est écrit pour juger des fonctionnalités minimums ne fréinant pas l'évolutivité de la solution.
+L'équipe à reçu le cahier des charges des commerciaux qui demande les fonctionnalités minimum du projet que les ingénieurs ont traduit en contrat de programmation. La tâche est de réaliser un programme correct respectant la structure imposée. Une recherche sera nécéssaire afin de maitriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
+
+\subsection{Une résolution du problème du plus court chemin}
+Le but de ce projet est de faire une application qui dit quel est le trajet le plus court entre deux stations du métro Parisien.
 
 \begin{figure}[h]
    \centering
@@ -64,83 +93,98 @@ Cet algorithme peut s'appliquer sur des graphes orientés, modèle auquel plusie
    \caption{\label{directed_graph} Exemple de graphe orienté}
 \end{figure}
 
-La développement est dans la plupart des cas simplement un moyen de faire fonctionner une idée simple au travers d'un programme, ou bien complexe au travers d'une association de programmes.
-La plus grande difficulté d'un développeur vient donc plus du fait de trouver l'environnement le mieux adapté pour faire fonctionner cette idée que l'idée elle même,
-qui est souvent déjà présente et fonctionnelle (cas évident des mathématiques).
-Par analogie, il faut poser le sol avant de pouvoir marcher. \\
+En théorie des graphes, un graphe orienté est un ensemble de points (ici, des stations) connectés par des flèches (ici, des connexions). Dans le cadre de ce projet, chaque flèche représente une possibilité de relier deux points, dans un sens précis, et avec un coût déterminé. C'est une connection possible entre ces points.
 
-Dans le cadre de ce projet, l'accent sera mis sur les structures.\\
+Le problème du plus court chemin, dans ce système, est d'évaluer le coût minimal pour aller d'un point A à un point B. L'algorithme de Dijkstra est une méthode de calcul afin de résoudre ce problème.\\
 
-Si vous souhaitez contextualiser le projet vous pouvez vous mettre dans la situation suivante.
-Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente de données de trafic.
-Pour ce faire il vous faut implémenter une algorithme capable de planifier des temps de parcours au moyen d'une heuristique fixe ou dynamique.
-Une base de données réaliste et fiable pour le tester est réquis pour établir la validité de son implémentation et du cadre dans lequel va naître le projet.
-L'algorithme de Dijkstra et la base de données libre de la RATP sont des choix logiques car robustes.
-Après concertation, un contrat est écrit pour juger des fonctionnalités minimums ne fréinant pas l'évolutivité de la solution.
-%Vous recevez le cahier des charges des commerciaux qui vous demande les fonctionnalités minimum du projet que vous traduisez en contrat de programmation.
+Cet algorithme peut s'appliquer sur des graphes orientés, modèle auquel plusieurs réseaux de transports sont disponibles (RATP, SNCF, routes, etc), et est également une porte d'entrée pour le domaine de la théorie des graphes, dont certains algorithmes sont vus également dans l'unité d'enseignement [4AI04] Intelligence artificielle.\\
 
-\section{Objectifs}
-Un contrat en programmation est le fait qu'une classe hérite d'une classe mère virtuelle pure sans implémentation.
-Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant sont appel via un pointeur sur le contrat.
-Si la classe respecte le contrat, peu importe ses autres fonctionnalités, elle garantit d'avoir implémenter les fonctionnalités du contrat. \\
+\subsection{Méthode de développement, et outils de la \emph{STL}}
 
-La class \emph{Generic\_class} aura cet objectif pour vous évaluer (voir annexes).
-Vous devrez dériver de cette classe pour créer la votre.
+Un programme informatique est une suite d'instructions mathématiques. A ce titre il existe deux difficultés lorsqu'on veut construire un programme informatique pour répondre à un problème :
+\begin{enumerate}
+\item Quel jeu d'instructions choisir pour répondre au problème algorithmique?\\
+La solution ici à été trouvée par l'informaticien Edsger Dijkstra, répondant au problème du plus court chemin énoncée ci-dessus.
 
+\item Comment structurer, implémenter mon problème algorithmique, qui requiert ici la construction de centaines de milliers d'instructions machine, avec la méthodologie nécéssaire pour que n'importe quel humain puisse maintenir ce code et y ajouter des fonctionnalités?\\
+Cette question est en partie résolue par l'outil C++. C'est une méthodologie, permettant de générer une grande compléxité dans le jeu d'instructions (comme beaucoup d'outils informatiques), mais également d'utiliser une interface compréhensible, qui vous est donnée ici, et va permettre l'ajout de fonctionnalités de manière concise et ergonomique, en détachant les différentes fonctionnalités, permettant de fournir au final une solution élégante et ré-utilisable.
+\end{enumerate}
+
+
+Afin de résoudre ce problème, des fichiers contenant les points d'un graphe, et contenant des connexions, sont mis à votre disposition. La lecture de ces fichiers devra être réalisée, avec des conteneurs spécifiques imposés. Puis, un calcul du chemin le plus court devra être réalisée.\\
+
+Afin de travailler les connaissances vues en cours, nous allons utiliser la \emph{Standard Template Library}, une bibliothèque C++ parmi tant d'autres, mais qui a l'avantage d'être très puissante dans plusieurs modalités, notamment pour les conteneurs que celle-ci propose. Ceuc-ci représentent des tableaux associatifs, généralisation des tableaux où les indices ne sont pas forcément des entiers.\\
+
+Une table de hachage est une structure de données efficace pour représenter un tableau associatif, avec une réprésentation mémoire compacte, via le hachage des données, qui, dans ce cas, correspond au passage d'un point du graphe par le pointeur vers l'objet correspondant. Les éléments à insérer dans le conteneur ne sont pas forcément triés. Ce sont les raisons pour lesquelles nous utiliseront le conteneur \texttt{std::unordered\_map}, ressemblant au conteneur \texttt{std::map} vu en cours, avec les différences citées ci-dessus.
+
+Ces conteneurs vont garder les données du graphe fourni via des fichiers qu'il faudra lire et dont les données doivent être extraites.
+Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la méthode \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}. \\
+
+Une auto-évaluation vous est proposée au chapitre FIXME, afin de construire progressivement les fonctions nécéssaires à l'accomplissement du projet, et d'ajuster le temps nécéssaire pour le terminer.
 
 \section{Charte d'écriture}
-Dans le but d'évaluer vos connaissances le mieux possible, ce projet est décomposé en étapes clés.
-Une charte d'écriture vous est imposée, comme dans les entreprises et les projets communs de manière générale. \\
+La startup qui vous a embauché\textperiodcentered e dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et facilitier la transmission au sein de l'équipe.
 
-Celle charte, imposée (donc obligatoire) est légère, énoncée dans un ordre quelconque:
+
+Celle charte, relativement légère, est énoncée dans un ordre quelconque:
 \begin{itemize}
 \item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -O3 de g++} afin de garantir le respect de l'implémentation dans les normes C++, et d'optimiser la compilation;
 \item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
 \item \textbf{Proscription de l'utilisation des outils d'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation;
-\item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}} ou les outils de \emph{memory} comme par exemple \emph{std::unique\_ptr}, celui-ci étant inutile dans le cadre du projet;
+\item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}} ou les outils de \texttt{memory} comme par exemple \texttt{std::unique\_ptr}, celui-ci étant inutile dans le cadre du projet;
 \item \textbf{Indentation parfaite du code source du programme} afin de garantir la lisibilité et de prévenir les erreurs d'implémentation;
 \item \textbf{Minimisation de duplication du code source du programme} afin d'éviter le dangereux copier-coller est les graves problèmes de maintenance qui s'y accompagne;
-\item \textbf{Obligation d'utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, afin de garantir la lisibilité du code;
+\item \textbf{Obligation d'utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, de variables en \emph{complément\_nom}, afin de garantir la lisibilité du code;
 \item \textbf{Tout type créé commence par une majuscule}; % kézako
 \item \textbf{Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules}; on parlera ici de \emph{SCREAMING\_SNAKE\_CASE};
 \item \textbf{Membres de classes appelés via \emph{this}} afin de répèrer facilement ces appels;
-\item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, également pour faciliter la lecture;
-\item \textbf{Variables locales neutres}; % kézako
+\item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, pour faciliter la différenciation avec les autres types de variables;
+% \item \textbf{Variables locales neutres}; % kézako
 \item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture;
 \item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, pour des raisons évidentes de passage par référence;
-\item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}.
+% \item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}.
 \end{itemize}
 
 \pagebreak
 
-\section{Temps et notation}
+\section{Objectifs}
 
-Quatre séances de 4H chacune sont mis à votre disposition pour réaliser ce projet.
-Lors de chaque séance nous metterons l'accent sur une nouvelle étape à réaliser. Le rythme n'est pas imposé étant donné que vous pouvez soumettre à tout moment lors de la période du projet.
-Des programmes de test vous seront fournis afin d'évaluer votre code et d'estimer son niveau d'accomplissement.
-Les étapes seront:
+Un des buts de ce projet est de permettre l'assemblage de code de plus en plus complet, avec un écosystème compréhensible alors qu'il grossit. La méthodologie va montrer cette difficulté, et
+c'est pourquoi les objets englobent ces fonctionnalités. \\
+
+Le point le plus important dans le cadre de ce projet est de comprendre l'interface, la structure imposée. Le travail demandé, qui est d'implémenter les fonctionnalités clés, ne sera pas possible sans la compréhension de cette structure. Il est aussi judicieux de se renseigner sur les outils possibles et nécéssaires pour réussir le projet.\\
+
+Les classes doivent hériter d'une classe mère virtuelle pure sans implémentation. Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant son appel via un pointeur.
+Si la classe respecte le contrat, elle garantit d'avoir implémenter les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre suivant. \\
+
+\section{Autoévaluation ici?}
+FIXME : Ici la description des outils d'auto-évaluation
+
+\section{Feuille de route}
+
+L'équipe de développement de votre start-up vous propose une feuille de route, permettant de représenter les diverses tâches et l'avancement du projet :
+
 \begin{enumerate}
-\item Surcharge des operateurs de flux pour les données et la dérivation du contrat ($+$3pts $=>$ 3$/$20)
-\item Lecture \& affichage des stations ($+$3pts $=>$ 6$/$20)
-\item Lecture \& affichage des connections ($+$3pts $=>$ 9$/$20)
-\item Génération \& affichage du graphe ($+$4pts $=>$ 13$/$20)
-\item Estimation du meilleur chemin ($+$8pts $=>$ 21$/$20)
-\item (BONUS) heuristique dynamique ($+$6pts $=>$ 27$/$20)
+\item Instanciez une classe dérivée : faites un nouveau fichier, une inclusion de la classe parente et créez une classe qui hérite de la classe mère \texttt{Generic\_station\_parser}.\\
+Le code compile-t-il? Pourquoi?
+\item Surchargez la fonction \texttt{read\_stations} : écrivez le prototype de la fonction en ajoutant à la fin le mot clé \texttt{override}, en mettant un corps vide à cette fonction.
+Le code compile-t-il? Pourquoi?
+\item Ecrivez le corps de la fonction.
+\item Créez un fichier avec une fonction principale, instanciez votre classe et appelez la fonction \texttt{grade} FIXME.\\
+
+\emph{A ce point, vous devriez commencer la deuxième séance de TP}
+\item Changer la classe parente pour désomais utiliser la classe de connection (changer l'include aussi), le code compile t'il, pourquoi?
+\item Implémentez la/les fonction(s) manquantes
+\item a ce stade, grade2 devrait fonctionner
+\item Changer la classe parente pour désomais utiliser la classe de mapper (changer l'include aussi), le code compile t'il, pourquoi?
+\item faire les fonctions compute travel, et compute\_and\_display\_travel, avec les arguments en uint64\_t
+\item
 \end{enumerate}
 
-La non-conformité de votre code à l'un de ces critères de la charte d'écriture pour noter le projet vous fera perdre un nombre conséquent de points, à partir de deux points (2/20) par critère non respecté. Ceux-ci seront vérifiés de manière automatique.\\
-
-Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs. \\
-
-\section{Soumission et autoévaluation}
-
-La soumission du projet se fera sur l'espace Moodle dédié. Vous pourrez y soumettre un nombre illimité de projet, la dernière soumission écrasant les précédentes.
+\section{Autoévaluation}
 
 FIXME : Ici la description des outils d'auto-évaluation
 
-\appendix
-\clearpage
-\section{Generic\_class.hpp}
-\lstinputlisting[language=C++]{../src/Generic_class.hpp}
+RAJOUTER DES TRUCS, snippet de code, appendix de std::machin?
 
 \end{document}

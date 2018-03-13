@@ -9,7 +9,7 @@ all: depends a.out
 
 a.out: $(OBJ)
 	$(CXX) $(CXXFLAGS) $(CFLAGS) $^ -o $@
-	tar -cf archive_etudiant.tar $(ETU)
+	zip ../archive_etudiant.zip $(ETU)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(CFLAGS) -c $^
