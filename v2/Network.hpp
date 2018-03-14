@@ -204,7 +204,7 @@ namespace travel{
       return travel_stations;
     }
 
-    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_travel(const std::string& s1, const std::string& s2) {
+    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_travel(const std::string& s1, const std::string& s2) override {
       std::map<std::pair<uint64_t,uint64_t>, uint64_t> start, end;
       for(auto&& it: this->connections_hashmap){
         start.insert(std::pair<std::pair<uint64_t,uint64_t>, uint64_t>(std::pair<uint64_t, uint64_t>(levenshtein_distance(s1,this->stations_hashmap.find(it.first)->second.name),it.first),it.first));
@@ -213,7 +213,7 @@ namespace travel{
       return this->compute_travel(start.begin()->second, end.begin()->second);
     }
 
-    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_and_display_travel(const std::string& s1, const std::string& s2) {
+    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_and_display_travel(const std::string& s1, const std::string& s2) override {
       auto travel_stations = this->compute_travel(s1,s2);
       this->display_travel(travel_stations);
       return travel_stations;
