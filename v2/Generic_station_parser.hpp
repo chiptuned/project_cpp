@@ -23,7 +23,7 @@ namespace travel{
     }
 
   protected:
-    virtual void read_stations(const std::string& _filename)=0;
+    virtual void read_stations(const std::string& _filename) = 0;
 
   protected:
     std::unordered_map<uint64_t, Station> stations_hashmap;

@@ -22,6 +22,12 @@
 #define INF std::numeric_limits<uint64_t>::max()
 
 namespace travel{
+  struct Node{
+    uint64_t id;
+    uint64_t cost;
+    uint64_t from_id;
+  };
+
   class Network: public Generic_mapper{
   private:
     int cleanup(const std::string& _stations_filename, const std::string& _connections_filename){
@@ -198,7 +204,7 @@ namespace travel{
       return travel_stations;
     }
 
-    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_travel(const std::string& s1, const std::string& s2) override{
+    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_travel(const std::string& s1, const std::string& s2) {
       std::map<std::pair<uint64_t,uint64_t>, uint64_t> start, end;
       for(auto&& it: this->connections_hashmap){
         start.insert(std::pair<std::pair<uint64_t,uint64_t>, uint64_t>(std::pair<uint64_t, uint64_t>(levenshtein_distance(s1,this->stations_hashmap.find(it.first)->second.name),it.first),it.first));
@@ -207,7 +213,7 @@ namespace travel{
       return this->compute_travel(start.begin()->second, end.begin()->second);
     }
 
-    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_and_display_travel(const std::string& s1, const std::string& s2) override{
+    virtual std::vector<std::pair<uint64_t,uint64_t> > compute_and_display_travel(const std::string& s1, const std::string& s2) {
       auto travel_stations = this->compute_travel(s1,s2);
       this->display_travel(travel_stations);
       return travel_stations;
@@ -221,7 +227,7 @@ namespace travel{
 
   protected:
     //pompé pimpé: https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
-    uint64_t levenshtein_distance(const std::string& s1, const std::string& s2) override{
+    uint64_t levenshtein_distance(const std::string& s1, const std::string& s2) {
       std::string s12(s1), s22(s2);
 
       auto up_case = [](char c){
@@ -248,7 +254,7 @@ namespace travel{
       return prev_col[len2];
     }
 
-    virtual void display_travel(const std::vector<std::pair<uint64_t,uint64_t> >& _travel_stations) override{
+    virtual void display_travel(const std::vector<std::pair<uint64_t,uint64_t> >& _travel_stations) {
       {
         auto start = this->stations_hashmap.find(_travel_stations.front().first);
         auto end = this->stations_hashmap.find(_travel_stations.back().first);
