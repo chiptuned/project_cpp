@@ -54,7 +54,7 @@
 \section{Temps et notation}
 
 Trois séances de 4H chacune sont mis à disposition pour réaliser ce projet.
-Les étapes à réaliser sont suggérés dans la feuille de route au chapitre FIXME. Le rythme n'est pas imposé étant donné que la soumission du projet est possible à tout moment lors de la période du projet.
+Les étapes à réaliser sont suggérées dans la feuille de route au chapitre FIXME. Le rythme n'est pas imposé étant donné que la soumission du projet est possible à tout moment lors de la période du projet.
 Des programmes de test sont fournis afin d'évaluer le code et d'estimer le niveau d'accomplissement du projet.\\
 
 Notation :
@@ -82,7 +82,7 @@ Pour ce faire il faut implémenter un algorithme capable de planifier des temps 
 Une base de données réaliste et fiable pour le tester est requis pour établir la validité de son implémentation et du cadre dans lequel va naître le projet.
 L'algorithme de Dijkstra et la base de données libre de la RATP sont des choix logiques car robustes.
 Après concertation, un contrat est écrit pour juger des fonctionnalités minimums ne fréinant pas l'évolutivité de la solution.
-L'équipe à reçu le cahier des charges des commerciaux qui demande les fonctionnalités minimum du projet que les ingénieurs ont traduit en contrat de programmation. La tâche est de réaliser un programme correct respectant la structure imposée. Une recherche sera nécéssaire afin de maitriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
+L'équipe a reçu le cahier des charges des commerciaux qui demande les fonctionnalités minimum du projet que les ingénieurs ont traduit en contrat de programmation. La tâche est de réaliser un programme correct respectant la structure imposée. Une recherche sera nécéssaire afin de maitriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
 
 \subsection{Une résolution du problème du plus court chemin}
 Le but de ce projet est de faire une application qui dit quel est le trajet le plus court entre deux stations du métro Parisien.
@@ -111,24 +111,24 @@ Cette question est en partie résolue par l'outil C++. C'est une méthodologie, 
 \end{enumerate}
 
 
-Afin de résoudre ce problème, des fichiers contenant les points d'un graphe, et contenant des connexions, sont mis à votre disposition. La lecture de ces fichiers devra être réalisée, avec des conteneurs spécifiques imposés. Puis, un calcul du chemin le plus court devra être réalisée.\\
+Afin de résoudre ce problème, des fichiers contenant les points d'un graphe, et contenant des connexions, sont mis à votre disposition. La lecture de ces fichiers devra être réalisée avec des conteneurs spécifiques imposés. Puis, un calcul du chemin le plus court devra être réalisé.\\
 
-Afin de travailler les connaissances vues en cours, nous allons utiliser la \emph{Standard Template Library}, une bibliothèque C++ parmi tant d'autres, mais qui a l'avantage d'être très puissante dans plusieurs modalités, notamment pour les conteneurs que celle-ci propose. Ceuc-ci représentent des tableaux associatifs, généralisation des tableaux où les indices ne sont pas forcément des entiers.\\
+Afin de travailler les connaissances vues en cours, nous allons utiliser la \emph{Standard Template Library}, une bibliothèque C++ parmi tant d'autres, mais qui a l'avantage d'être très puissante dans plusieurs modalités, notamment pour les conteneurs que celle-ci propose. Ceux-ci représentent des tableaux associatifs, généralisation des tableaux où les indices ne sont pas forcément des entiers.\\
 
-Une table de hachage est une structure de données efficace pour représenter un tableau associatif, avec une réprésentation mémoire compacte, via le hachage des données, qui, dans ce cas, correspond au passage d'un point du graphe par le pointeur vers l'objet correspondant. Les éléments à insérer dans le conteneur ne sont pas forcément triés. Ce sont les raisons pour lesquelles nous utiliseront le conteneur \texttt{std::unordered\_map}, ressemblant au conteneur \texttt{std::map} vu en cours, avec les différences citées ci-dessus.
+Une table de hachage est une structure de données efficace pour représenter un tableau associatif, avec une réprésentation mémoire compacte, via le hachage des données qui, dans ce cas, correspond au passage d'un point du graphe par le pointeur vers l'objet correspondant. Les éléments à insérer dans le conteneur ne sont pas forcément triés. Ce sont les raisons pour lesquelles nous utiliseront le conteneur \texttt{std::unordered\_map}, ressemblant (d'un point de vue utilisateur) au conteneur \texttt{std::map} vu en cours, qui implémente lui un arbre binaire de recherche pour garantir l'ordre des données.%les différences citées ci-dessus.
 
 Ces conteneurs vont garder les données du graphe fourni via des fichiers qu'il faudra lire et dont les données doivent être extraites.
-Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la méthode \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}. \\
+Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la class \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}. On notera que \texttt{std::ifstream}, à l'instar \texttt{std::cin}, possède les propriétés de la class \texttt{std::istream} et donc naturellement une surcharge de l'opérateur de flux entrant.\\
 
 Une auto-évaluation vous est proposée au chapitre FIXME, afin de construire progressivement les fonctions nécéssaires à l'accomplissement du projet, et d'ajuster le temps nécéssaire pour le terminer.
 
 \section{Charte d'écriture}
-La startup qui vous a embauché\textperiodcentered e dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et facilitier la transmission au sein de l'équipe.
+La startup qui vous a embauché dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et facilitier la transmission au sein de l'équipe.
 
 
 Celle charte, relativement légère, est énoncée dans un ordre quelconque:
 \begin{itemize}
-\item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -O3 de g++} afin de garantir le respect de l'implémentation dans les normes C++, et d'optimiser la compilation;
+\item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -pedantic -pedantic-errors -O3 de g++} afin de garantir le respect de l'implémentation dans les normes C++, et d'optimiser la compilation;
 \item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
 \item \textbf{Proscription de l'utilisation des outils d'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation;
 \item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}} ou les outils de \texttt{memory} comme par exemple \texttt{std::unique\_ptr}, celui-ci étant inutile dans le cadre du projet;
@@ -137,7 +137,7 @@ Celle charte, relativement légère, est énoncée dans un ordre quelconque:
 \item \textbf{Obligation d'utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, de variables en \emph{complément\_nom}, afin de garantir la lisibilité du code;
 \item \textbf{Tout type créé commence par une majuscule}; % kézako
 \item \textbf{Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules}; on parlera ici de \emph{SCREAMING\_SNAKE\_CASE};
-\item \textbf{Membres de classes appelés via \emph{this}} afin de répèrer facilement ces appels;
+\item \textbf{Membres de classes appelés via \emph{this}} afin de répèrer facilement l'utilisation et la modification d'outils interne;
 \item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, pour faciliter la différenciation avec les autres types de variables;
 % \item \textbf{Variables locales neutres}; % kézako
 \item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture;
@@ -157,8 +157,26 @@ Le point le plus important dans le cadre de ce projet est de comprendre l'interf
 Les classes doivent hériter d'une classe mère virtuelle pure sans implémentation. Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant son appel via un pointeur.
 Si la classe respecte le contrat, elle garantit d'avoir implémenter les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre suivant. \\
 
-\section{Autoévaluation ici?}
+\section{Auto-évaluation}
 FIXME : Ici la description des outils d'auto-évaluation
+Parmi les fichiers de l'archive du projet se trouve la classe \texttt{Grade} au travers de \texttt{Grade.hpp} et \texttt{Grade.o}.
+En incluant le fichier binaire à la compilation et l'entête au programme principal du projet deux objets static sont automatiquement créés afin de permettre l'évaluation des différentes parties du projet.
+Pour rappel, un objet static est un objet alloué au lancement du programme et détruit à sa toute fin (ex: \texttt{std::cout}, \texttt{std::cin}). Il est de plus unique, au sens non rédéfinissable, pour l'ensemble du code à sa portée.
+Ces objets se nomme, \texttt{travel::evaluate\_small} et \texttt{travel::evaluate}.
+Le premier évaluant le réseau simple, le second évaluant le réseau RATP.
+3 méthodes sont à notées:
+\begin{itemize}
+  \item \texttt{stations(const travel::Generic\_station\_parser\&)}, qui évalue de manière exaustive la construction de la table de stations.
+  \item \texttt{connections(const travel::Generic\_connection\_parser\&)}, qui évalue de manière exaustive la construction de la table de connections.
+  \item \texttt{dijkstra(travel::Generic\_mapper\&,bool)}, qui évalue dans un premier temps 9 trajets tests, puis propose une exploration exaustive des trajets via une estimation grossière du temps de calcul.
+    \begin{itemize}
+      \item false: évaluation du projet dans sa version de base (référence de temps de calcul pour le réseau RATP ~647us/trajet, ~6mins l'ensemble).
+      \item true: évaluation du projet dans sa version de bonus, via l'utilisation de noms de stations au lieu d'id (référence de temps de calcul pour le réseau RATP ~2.9ms/trajet, ~27mins l'ensemble).
+    \end{itemize}
+\end{itemize}
+Lorsque une méthode est appelée, elle appelle automatiquement les méthodes précédentes pour garantir le matient des acquis au fur et à mesure de l'avancement du projet.
+Il n'est donc pas nécessaire d'appeler les anciens tests.
+De plus, il est à noté que la classe de test est indépendante des fichiers de l'archive et apporte toujours une résolution via les fichiers de références du projet.
 
 \section{Feuille de route}
 
@@ -170,21 +188,26 @@ Le code compile-t-il? Pourquoi?
 \item Surchargez la fonction \texttt{read\_stations} : écrivez le prototype de la fonction en ajoutant à la fin le mot clé \texttt{override}, en mettant un corps vide à cette fonction.
 Le code compile-t-il? Pourquoi?
 \item Ecrivez le corps de la fonction.
-\item Créez un fichier avec une fonction principale, instanciez votre classe et appelez la fonction \texttt{grade} FIXME.\\
+\item Créez un fichier avec une fonction principale, instanciez votre classe et appelez la méthode de \texttt{stations} de la classe \texttt{Grade}.\\
 
 \emph{A ce point, vous devriez commencer la deuxième séance de TP}
 \item Changer la classe parente pour désomais utiliser la classe de connection (changer l'include aussi), le code compile t'il, pourquoi?
-\item Implémentez la/les fonction(s) manquantes
-\item a ce stade, grade2 devrait fonctionner
+\item Implémentez la/les fonction(s) manquantes.
+\item A ce stade, la méthode \texttt{connections} de la class \texttt{Grade} devrait fonctionner.\\
+
+\emph{A ce point, vous devriez commencer la troisième séance de TP}
 \item Changer la classe parente pour désomais utiliser la classe de mapper (changer l'include aussi), le code compile t'il, pourquoi?
-\item faire les fonctions compute travel, et compute\_and\_display\_travel, avec les arguments en uint64\_t
-\item
+\item Implémentez la/les fonction(s) manquantes.
+\item A ce stage, la méthode \texttt{dijkstra} de la class \texttt{Grade} avec le second argument à \texttt{false} devrait fonctionner.
+  %faire les fonctions compute travel, et compute\_and\_display\_travel, avec les arguments en uint64\_t
+\item Bonus: implémenter une surcharge de la/les fonction(s) qui estim(ent) le trajet minimal pour assigner les stations de départ et d'arrivée via leurs noms et non plus leurs identifiants.
+\item A ce stage, la méthode \texttt{dijkstra} de la class \texttt{Grade} avec le second argument à \texttt{true} devrait fonctionner.
 \end{enumerate}
 
-\section{Autoévaluation}
+%% \section{Autoévaluation}
 
-FIXME : Ici la description des outils d'auto-évaluation
+%% FIXME : Ici la description des outils d'auto-évaluation
 
-RAJOUTER DES TRUCS, snippet de code, appendix de std::machin?
+%% RAJOUTER DES TRUCS, snippet de code, appendix de std::machin?
 
 \end{document}
