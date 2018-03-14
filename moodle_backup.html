@@ -1,0 +1,98 @@
+<h5><strong>
+Enoncé du sujet :<code>Sujet du projet</code>
+</strong></h5><h5><strong>
+Fichiers du projet à compléter : <code>Archive des fichiers du projet</code>
+</strong></h5><br><br>
+<h4><strong>
+Récapitulatif :
+</strong></h4>
+<br>
+Le projet consiste à encapsuler et rédiger un algorithme du plus court chemin, l'algorithme de Dijkstra.
+Cet algorithme célèbre est à la base de la détermination du trajet optimal d'un point A à un point B, pour le métro parisien par exemple.
+<br><br>
+Pour ce faire, deux bases de données de deux fichiers chacune sont fournis, réprésentant un réseau simple (<code>fs_sta.csv</code>,<code>fs_co.csv</code>) et le réseau RATP (<code>fv_sta</code>, <code>fv_co</code>).
+Le projet devra fonctionner avec le réseau RATP (plus complexe) mais il est préférable de commencer avec le réseau simple car il est possible de le tracer à la main pour vérifier ses trajets.
+<br><br>
+Le sujet s'articule autour de 3 classes:
+<br>
+	- Generic_mapper.hpp, qui calcule le trajet, qui dérive de
+<br>
+	- Generic_connection_parser.hpp, s'occupant de répertorier les connexions dérivant lui même de
+<br>
+	- Generic_station_parser.hpp, qui lui gère les stations.
+<br><br>
+L'implémentation doit être ascendante, on commencera à implémenter la classe pour les stations, qui ensuite seront reliés en connections, pour enfin estimer des trajets.
+<br><br>
+Une quartrième classe Grade.hpp implémente deux objets de test statique, qui pourront être appelés en fournissant une instanciation du projet.
+Cette classe retournera des codes erreurs en cas de problèmes, et sert donc à évaluer le bon fonctionnement de l'implémentation proposée.
+<br><br>
+L'objet evaluate_small évalue le reseau simple, tandis que evaluate évalue le réseau RATP. Les erreurs sont attrapables via une gestion des exceptions.
+<br><br>
+<br><br>
+<h4><strong>Quelques exemples d'implémentation avec le trajet Saint-Lazare / Bastille, du réseau RATP:</strong></h4>
+<br><br>
+<i>Test 1/ On remarque dans le fichier s.csv que Saint-Lazare à pour id le nombre 1722, et 2062 pour Bastille.</i>
+<br><br>
+<pre><b><code>% ./soluce $STATIONS_FILE $CONNECTIONS_FILE 1722 2062 </code></b>
+<div class="style-code_block ">Arg 1: stations
+Arg 2: connections
+Arg 3: start
+Arg 4: end
+
+Best way from Saint-Lazare (line 3) to Bastille (line 1) is:
+Walk to Saint-Lazare, line 14 (180 secs)
+Take line 14 (SAINT-LAZARE - OLYMPIADES) - Aller
+From Saint-Lazare to Châtelet (368 secs)
+Walk to Châtelet, line 1 (180 secs)
+Take line 1 (CHATEAU DE VINCENNES - LA DEFENSE) - Aller
+From Châtelet to Bastille (367 secs)
+
+After 1095 secs, you have reached your destination!
+</div></pre>
+<hr>
+<br>
+<i>Test 2/ evaluate.dijkstra(obj, false) // test avec les id de stations</i>
+<br><br>
+<pre><b><code>% ./soluce $STATIONS_FILE $CONNECTIONS_FILE</code></b>
+<div class="style-code_block ">Arg 1: stations
+Arg 2: connections
+
+On lance les tests:
+============================ Grade 1 ============================
+Stations: seems ok
+============================ Grade 2 ============================
+Connections: seems ok
+============================ Grade 3 ============================
+First tests
+
+Tests: seems ok
+Would you try complete test (wait ~  7 mins and 57 secs) ? (N/y): n
+</div></pre>
+<hr>
+<br>
+<i>Test 3/ evaluate.dijkstra(obj, true) // test avec les noms de stations (levensthein)</i>
+<br><br>
+<pre><b><code>% ./soluce $STATIONS_FILE $CONNECTIONS_FILE</code></b>
+<div class="style-code_block ">Arg 1: stations
+Arg 2: connections
+
+On lance les tests:
+============================ Grade 1 ============================
+Stations: seems ok
+============================ Grade 2 ============================
+Connections: seems ok
+========================== Grade 3 bis ==========================
+First tests
+
+Tests: seems ok.
+Would you try complete test (wait ~ 43 mins and 24 secs) ? (N/y): y
+0%  2 secs elapsed, wait 32 mins and 49 secs
+0%  5 secs elapsed, wait 34 mins and 18 secs
+0%  8 secs elapsed, wait 37 mins and 32 secs
+0% 11 secs elapsed, wait 36 mins and 39 secs
+0% 14 secs elapsed, wait 36 mins and 50 secs
+0% 17 secs elapsed, wait 36 mins and 16 secs
+0% 19 secs elapsed, wait 35 mins and 25 secs
+1% 22 secs elapsed, wait 34 mins and 46 secs
+1% 24 secs elapsed, wait 34 mins and 36 secs
+</div></pre>
