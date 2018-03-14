@@ -16,10 +16,10 @@
   #include "..\\sample_data\\c_hacked.csv"
   };
   const std::string str3 = {
-  #include "..\\sample_data\\stations2_hacked.csv"
+  #include "..\\sample_data\\stations_hacked.csv"
   };
   const std::string str4 = {
-  #include "..\\sample_data\\connections2_hacked.csv"
+  #include "..\\sample_data\\connections_hacked.csv"
   };
 #else
   const std::string str1 = {
@@ -29,17 +29,17 @@
   #include "../sample_data/c_hacked.csv"
   };
   const std::string str3 = {
-  #include "../sample_data/stations2_hacked.csv"
+  #include "../sample_data/stations_hacked.csv"
   };
   const std::string str4 = {
-  #include "../sample_data/connections2_hacked.csv"
+  #include "../sample_data/connections_hacked.csv"
   };
 #endif
 
 #define f1 "1s.csv"
 #define f2 "1c.csv"
-#define f3 "1stations2.csv"
-#define f4 "1connections2.csv"
+#define f3 "1stations.csv"
+#define f4 "1connections.csv"
 
 namespace travel{
   travel::Grade::Grade(bool _small){
