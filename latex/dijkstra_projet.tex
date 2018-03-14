@@ -51,8 +51,6 @@
 \begin{document}
 \maketitle
 
-\section{Temps et notation}
-
 Trois séances de 4H chacune sont mis à disposition pour réaliser ce projet.
 Les étapes à réaliser sont suggérées dans la feuille de route au chapitre \ref{sec::feuille}. Le rythme n'est pas imposé étant donné que la soumission du projet est possible à tout moment lors de la période du projet.
 Des programmes de test sont fournis afin d'évaluer le code et d'estimer le niveau d'accomplissement du projet.\\
@@ -74,7 +72,7 @@ Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs.\\
 
 Date limite du rendu du code : \textbf{Vendredi 13 avril 2018, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu contient le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par example dans un fichier \emph{lisez-moi}. \\
 
-La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant wles précédentes.
+La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes.
 
 
 \section{Introduction}
@@ -86,7 +84,7 @@ Après concertation, un contrat est écrit pour juger des fonctionnalités minim
 L'équipe a reçu le cahier des charges des commerciaux qui demande les fonctionnalités minimum du projet que les ingénieurs ont traduit en contrat de programmation. La tâche est de réaliser un programme correct respectant la structure imposée. Une recherche sera nécéssaire afin de maitriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
 
 \subsection{Une résolution du problème du plus court chemin}
-Le but de ce projet est de faire une application qui dit quel est le trajet le plus court entre deux stations du métro Parisien.
+Le but de ce projet est de faire une application qui dit quel est le trajet le plus court entre deux stations du métro parisien.
 
 \begin{figure}[h]
    \centering
@@ -119,13 +117,13 @@ Afin de travailler les connaissances vues en cours, nous allons utiliser la \emp
 \begin{figure}[h]
    \centering
    \includegraphics[width=18cm,keepaspectratio]{ratp_graph.pdf}
-   \caption{\label{directed_graph} Graphe orienté généré à partir des fichiers \texttt{c.csv} et \texttt{s.csv}, avec les données GPS des stations}
+   \caption{\label{directed_graph} Graphe orienté généré à partir des fichiers \texttt{c.csv} et \texttt{s.csv}, avec les données GPS des stations.}
 \end{figure}
 
 Une table de hachage est une structure de données efficace pour représenter un tableau associatif, avec une réprésentation mémoire compacte, via le hachage des données qui, dans ce cas, associe une information (la station) à une clé (l'identifiant de station). Les éléments à insérer dans le conteneur ne sont pas forcément triés. Ce sont les raisons pour lesquelles nous utiliseront le conteneur \texttt{std::unordered\_map}, ressemblant (d'un point de vue utilisateur) au conteneur \texttt{std::map} vu en cours, qui implémente lui un arbre binaire de recherche pour garantir l'ordre des données.
 
 Ces conteneurs vont garder les données du graphe fourni via des fichiers qu'il faudra lire et dont les données doivent être extraites.
-Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la classe \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}. On notera que \texttt{std::ifstream}, à l'instar \texttt{std::cin}, possède les propriétés de la classe \texttt{std::istream}, notamment une surcharge de l'opérateur de flux entrant.\\
+Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la classe \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}. On notera que \texttt{std::ifstream}, à l'instar de \texttt{std::cin}, possède les propriétés de la classe \texttt{std::istream}, notamment une surcharge de l'opérateur de flux entrant.\\
 
 Une auto-évaluation vous est proposée au chapitre \ref{sec::autoeval}, afin de construire progressivement les fonctions nécéssaires à l'accomplissement du projet, et d'ajuster le temps nécéssaire pour le terminer.
 
@@ -147,7 +145,7 @@ La startup qui vous a embauché dans ce projet vous impose une charte d'écritur
 \item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, pour faciliter la différenciation avec les autres types de variables;
 % \item \textbf{Variables locales neutres}; % kézako
 \item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture;
-\item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, pour des raisons évidentes de passage par référence;
+\item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, les objets seront passés par copie;
 % \item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}.
 \end{itemize}
 
@@ -161,7 +159,7 @@ c'est pourquoi les objets englobent ces fonctionnalités. \\
 Le point le plus important dans le cadre de ce projet est de comprendre l'interface, la structure imposée. Le travail demandé, qui est d'implémenter les fonctionnalités clés, ne sera pas possible sans la compréhension de cette structure. Il est aussi judicieux de se renseigner sur les outils possibles et nécéssaires pour réussir le projet.\\
 
 Les classes doivent hériter d'une classe mère virtuelle pure sans implémentation. Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant son appel via un pointeur.
-Si la classe respecte le contrat, elle garantit d'avoir implémenter les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre 6. \\
+Si la classe respecte le contrat, elle garantit d'avoir implémenté les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre 6. \\
 
 \section{Auto-évaluation}
 \label{sec::autoeval}
@@ -199,25 +197,29 @@ L'équipe de développement de votre start-up vous propose une feuille de route,
 Le code compile-t-il? Pourquoi?
 \item Surchargez la fonction \texttt{read\_stations} : écrivez le prototype de la fonction en ajoutant à la fin le mot clé \texttt{override}, en mettant un corps vide à cette fonction.\\
 Le code compile-t-il? Pourquoi?
-\item Ecrivez le corps de la/les fonction(s).
+\item Ecrivez le corps de la fonction \texttt{read\_stations}.
 \item Créez un fichier avec une fonction principale, instanciez votre classe et appelez la méthode \texttt{stations} de la classe \texttt{Grade}.\\
 
-\emph{A ce point, vous devriez commencer la deuxième séance de TP.}
+\emph{A ce point, vous devriez avoir soumis une version fonctionnelle de votre projet sur Moodle, et ne pas encore avoir eu la deuxième séance de TP.}\\
+
 \item Changez votre classe pour qu'elle hérite de la classe mère \texttt{Generic\_connection\_parser}.\\
 Le code compile-t-il, pourquoi?
-\item Implémentez la/les fonction(s) manquantes.
+\item Implémentez la fonction \texttt{read\_connections}.
 \item Instanciez votre classe et appelez la méthode \texttt{connections} de la classe \texttt{Grade}.\\
 
-\emph{A ce point, vous devriez commencer la troisième séance de TP.}
+\emph{A ce point, vous devriez avoir soumis une nouvelle version fonctionnelle de votre projet sur Moodle, et ne pas encore avoir eu la troisième séance de TP.}\\
+
 \item Changez votre classe pour qu'elle hérite de la classe mère \texttt{Generic\_mapper}.\\
 Le code compile-t-il, pourquoi?
-\item Implémentez la fonction \texttt{compute\_travel}, ayant comme arguments d'entrée des nombres correspondant aux identifiants de station. Cette fonction rend un vecteur
-\item Implémentez la fonction permettant d'afficher le chemin calculé par la fonction précédent pour relier les deux stations que vous voulez relier. La notation est dépendante de la clarté de l'affichage : Le client doit suivre facilement des instructions claires pour se déplacer.
+\item Implémentez la fonction \texttt{compute\_travel}, ayant comme arguments d'entrée des nombres correspondant aux identifiants de station. Cette fonction rend un vecteur de \texttt{std::pair}, contenant l'identifiant de la station et le coût associé de la connexion.
+
+\item Implémentez la fonction \texttt{compute\_and\_display\_travel}, permettant d'afficher le chemin calculé par la fonction précédent pour relier les deux stations que vous voulez relier. La notation est dépendante de la clarté de l'affichage : Le client doit suivre facilement des instructions claires pour se déplacer.
 \item Instanciez votre classe et appelez la méthode \texttt{dijkstra} de la classe \texttt{Grade}, avec l'argument booléen à \texttt{false}.\\
 
-\emph{A ce point, vous avez débloqué les 20 premiers points de la notation sur le code du projet.}
-\item Implémentez une surcharge de la/les fonction(s) qui estime(nt) le trajet minimal pour relier les stations via leurs noms, et non plus leurs identifiants.
-\item A ce stage, la méthode \texttt{dijkstra} de la class \texttt{Grade} avec le second argument à \texttt{true} devrait fonctionner.
+\emph{A ce point, vous avez débloqué l'accès aux 20 premiers points de la notation sur le code du projet.}\\
+
+\item Implémentez une surcharge des fonctions qui estiment le trajet minimal pour relier les stations via leurs noms, et non plus leurs identifiants.
+\item Instanciez votre classe et appelez la méthode \texttt{dijkstra} de la classe \texttt{Grade}, avec l'argument booléen à \texttt{true}.
 \end{enumerate}
 
 \end{document}
