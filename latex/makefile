@@ -3,6 +3,7 @@ all: sujet
 
 sujet: dijkstra_projet.tex directed_graph.pdf ratp_graph.pdf
 	pdflatex -jobname $(OUTPUT) -shell-escape $^
+	pdflatex -jobname $(OUTPUT) -shell-escape $^
 	mv $(OUTPUT).pdf ../
 
 directed_graph.pdf: directed_graph.svg

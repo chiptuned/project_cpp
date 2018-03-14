@@ -54,7 +54,7 @@
 \section{Temps et notation}
 
 Trois séances de 4H chacune sont mis à disposition pour réaliser ce projet.
-Les étapes à réaliser sont suggérées dans la feuille de route au chapitre FIXME. Le rythme n'est pas imposé étant donné que la soumission du projet est possible à tout moment lors de la période du projet.
+Les étapes à réaliser sont suggérées dans la feuille de route au chapitre \ref{sec::feuille}. Le rythme n'est pas imposé étant donné que la soumission du projet est possible à tout moment lors de la période du projet.
 Des programmes de test sont fournis afin d'évaluer le code et d'estimer le niveau d'accomplissement du projet.\\
 
 Notation :
@@ -66,7 +66,7 @@ Notation :
 \item Estimation du meilleur chemin et affichage ($+$7pts $=>$ 20$/$20);
 \item Amélioration ($+$5pts $=>$ 25$/$20);
 \item Bonus : Proposition d'un nom et d'un logo pour votre start-up ($+$1pt)
-\item Chaque critère de la charte d'écriture (Voir Chapitre FIXME) fera perdre 1,5 point ($-1,5$pts).\\
+\item Chaque critère de la charte d'écriture (Voir Chapitre \ref{sec::charte}) fera perdre 1,5 point ($-1,5$pts).\\
 \end{itemize}
 
 Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs.\\
@@ -120,9 +120,10 @@ Une table de hachage est une structure de données efficace pour représenter un
 Ces conteneurs vont garder les données du graphe fourni via des fichiers qu'il faudra lire et dont les données doivent être extraites.
 Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la class \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}. On notera que \texttt{std::ifstream}, à l'instar \texttt{std::cin}, possède les propriétés de la class \texttt{std::istream} et donc naturellement une surcharge de l'opérateur de flux entrant.\\
 
-Une auto-évaluation vous est proposée au chapitre FIXME, afin de construire progressivement les fonctions nécéssaires à l'accomplissement du projet, et d'ajuster le temps nécéssaire pour le terminer.
+Une auto-évaluation vous est proposée au chapitre \ref{sec::autoeval}, afin de construire progressivement les fonctions nécéssaires à l'accomplissement du projet, et d'ajuster le temps nécéssaire pour le terminer.
 
 \section{Charte d'écriture}
+\label{sec::charte}
 La startup qui vous a embauché dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et facilitier la transmission au sein de l'équipe.
 
 
@@ -158,7 +159,7 @@ Les classes doivent hériter d'une classe mère virtuelle pure sans implémentat
 Si la classe respecte le contrat, elle garantit d'avoir implémenter les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre suivant. \\
 
 \section{Auto-évaluation}
-FIXME : Ici la description des outils d'auto-évaluation
+\label{sec::autoeval}
 Parmi les fichiers de l'archive du projet se trouve la classe \texttt{Grade} au travers de \texttt{Grade.hpp} et \texttt{Grade.o}.
 En incluant le fichier binaire à la compilation et l'entête au programme principal du projet deux objets static sont automatiquement créés afin de permettre l'évaluation des différentes parties du projet.
 Pour rappel, un objet static est un objet alloué au lancement du programme et détruit à sa toute fin (ex: \texttt{std::cout}, \texttt{std::cin}). Il est de plus unique, au sens non rédéfinissable, pour l'ensemble du code à sa portée.
@@ -179,7 +180,7 @@ Il n'est donc pas nécessaire d'appeler les anciens tests.
 De plus, il est à noté que la classe de test est indépendante des fichiers de l'archive et apporte toujours une résolution via les fichiers de références du projet.
 
 \section{Feuille de route}
-
+\label{sec::feuille}
 L'équipe de développement de votre start-up vous propose une feuille de route, permettant de représenter les diverses tâches et l'avancement du projet :
 
 \begin{enumerate}
