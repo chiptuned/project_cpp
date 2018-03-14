@@ -71,9 +71,9 @@ Notation :
 
 Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs.\\
 
-Date limite du rendu du code : \textbf{Vendredi 13 avril 2018, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu contient le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par example dans un fichier \emph{lisez-moi}). \\
+Date limite du rendu du code : \textbf{Vendredi 13 avril 2018, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu contient le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par example dans un fichier \emph{lisez-moi}. \\
 
-La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes.
+La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant wles précédentes.
 
 
 \section{Introduction}
@@ -89,7 +89,7 @@ Le but de ce projet est de faire une application qui dit quel est le trajet le p
 
 \begin{figure}[h]
    \centering
-   \includegraphics{directed_graph.pdf}
+   \includegraphics[width=5cm,keepaspectratio]{directed_graph.pdf}
    \caption{\label{directed_graph} Exemple de graphe orienté}
 \end{figure}
 
@@ -124,10 +124,8 @@ Une auto-évaluation vous est proposée au chapitre \ref{sec::autoeval}, afin de
 
 \section{Charte d'écriture}
 \label{sec::charte}
-La startup qui vous a embauché dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et facilitier la transmission au sein de l'équipe.
+La startup qui vous a embauché dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et facilitier la transmission au sein de l'équipe. Celle charte est énoncée dans un ordre quelconque:\\
 
-
-Celle charte, relativement légère, est énoncée dans un ordre quelconque:
 \begin{itemize}
 \item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -pedantic -pedantic-errors -O3 de g++} afin de garantir le respect de l'implémentation dans les normes C++, et d'optimiser la compilation;
 \item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
@@ -136,7 +134,7 @@ Celle charte, relativement légère, est énoncée dans un ordre quelconque:
 \item \textbf{Indentation parfaite du code source du programme} afin de garantir la lisibilité et de prévenir les erreurs d'implémentation;
 \item \textbf{Minimisation de duplication du code source du programme} afin d'éviter le dangereux copier-coller est les graves problèmes de maintenance qui s'y accompagne;
 \item \textbf{Obligation d'utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, de variables en \emph{complément\_nom}, afin de garantir la lisibilité du code;
-\item \textbf{Tout type créé commence par une majuscule}; % kézako
+\item \textbf{Tout type créé commence par une majuscule}, par convention;
 \item \textbf{Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules}; on parlera ici de \emph{SCREAMING\_SNAKE\_CASE};
 \item \textbf{Membres de classes appelés via \emph{this}} afin de répèrer facilement l'utilisation et la modification d'outils interne;
 \item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, pour faciliter la différenciation avec les autres types de variables;
@@ -156,7 +154,7 @@ c'est pourquoi les objets englobent ces fonctionnalités. \\
 Le point le plus important dans le cadre de ce projet est de comprendre l'interface, la structure imposée. Le travail demandé, qui est d'implémenter les fonctionnalités clés, ne sera pas possible sans la compréhension de cette structure. Il est aussi judicieux de se renseigner sur les outils possibles et nécéssaires pour réussir le projet.\\
 
 Les classes doivent hériter d'une classe mère virtuelle pure sans implémentation. Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant son appel via un pointeur.
-Si la classe respecte le contrat, elle garantit d'avoir implémenter les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre suivant. \\
+Si la classe respecte le contrat, elle garantit d'avoir implémenter les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre 6. \\
 
 \section{Auto-évaluation}
 \label{sec::autoeval}
