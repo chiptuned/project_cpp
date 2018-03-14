@@ -170,8 +170,8 @@ Le premier évaluant le réseau simple, le second évaluant le réseau RATP.
   \item \texttt{connections(const travel::Generic\_connection\_parser\&)}, qui évalue de manière exaustive la construction de la table de connections.
   \item \texttt{dijkstra(travel::Generic\_mapper\&,bool)}, qui évalue dans un premier temps 9 trajets tests, puis propose une exploration exaustive des trajets via une estimation grossière du temps de calcul.
     \begin{itemize}
-      \item false: évaluation du projet dans sa version de base (référence de temps de calcul pour le réseau RATP ~647us/trajet, ~6mins l'ensemble).
-      \item true: évaluation du projet dans sa version de bonus, via l'utilisation de noms de stations au lieu d'id (référence de temps de calcul pour le réseau RATP ~2.9ms/trajet, ~27mins l'ensemble).
+      \item false: évaluation du projet dans sa version de base (référence de temps de calcul pour le réseau RATP ~324us/trajet, ~6mins de test).
+      \item true: évaluation du projet dans sa version de bonus, via l'utilisation de noms de stations au lieu d'id (référence de temps de calcul pour le réseau RATP ~1.5ms/trajet, ~27mins de test).
     \end{itemize}
 \end{itemize}
 Lorsque une méthode est appelée, elle appelle automatiquement les méthodes précédentes pour garantir le matient des acquis au fur et à mesure de l'avancement du projet.
