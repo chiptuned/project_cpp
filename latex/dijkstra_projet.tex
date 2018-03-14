@@ -1,11 +1,18 @@
 \documentclass[9pts]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+\usepackage[a4paper,top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
 
 \usepackage{listings}
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{caption}
+\usepackage{fancyhdr}
+
+%% \usepackage[a4paper,margin=2.5cm,bottom=2cm,headheight=1cm]{geometry}
+\pagestyle{fancy}
+\fancyhead[LO,RE]{\includegraphics[scale=0.5]{./LOGO_SCIENCES_SU_med.jpg}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -49,6 +56,11 @@
 }
 
 \begin{document}
+\makeatletter
+ 
+\let\ps@plain=\ps@fancy
+ 
+\makeatother
 \maketitle
 
 Trois séances de 4H chacune sont mis à disposition pour réaliser ce projet.
@@ -75,6 +87,8 @@ Date limite du rendu du code : \textbf{Vendredi 13 avril 2018, 20h00}. Chaque mi
 La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes.
 
 \pagebreak
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[LO,RE]{\includegraphics[scale=0.3]{./LOGO_SCIENCES_SU_med.jpg}}
 
 \section{Introduction}
 Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente de données de trafic.
