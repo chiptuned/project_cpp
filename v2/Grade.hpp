@@ -8,15 +8,15 @@
 namespace travel{
   class Grade{
   public:
-    Grade(bool _small); // true: small database, false: ratp database
-    void stations(const Generic_station_parser& _input);
-    void connections(const Generic_connection_parser& _input);
-    void dijkstra(Generic_mapper& _input, bool _levenstein=false);
+    Grade(bool); // true: small database, false: ratp database
+    void stations(const Generic_station_parser&);
+    void connections(const Generic_connection_parser&);
+    void dijkstra(Generic_mapper&, bool=false);
 
   private:
     template<typename T>
-    std::stringstream convert_seconds(T _secs);
-    bool areEqual(const std::vector<std::pair<uint64_t,uint64_t> >& _ref, const std::vector<std::pair<uint64_t, uint64_t> >& _vec);
+    std::stringstream convert_seconds(T);
+    bool areEqual(const std::vector<std::pair<uint64_t,uint64_t> >&, const std::vector<std::pair<uint64_t, uint64_t> >&);
     std::string stations_filename;
     std::string connections_filename;
     std::string stations_literal;
