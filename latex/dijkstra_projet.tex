@@ -65,7 +65,7 @@
 \makeatother
 \maketitle
 
-Trois séances de 4H chacune sont mis à disposition pour réaliser ce projet.
+Trois séances de 4H sont mises à disposition pour réaliser ce projet.
 Les étapes à réaliser sont suggérées dans la feuille de route au chapitre \ref{sec::feuille}. Le rythme n'est pas imposé étant donné que la soumission du projet est possible à tout moment lors de la période du projet.
 Des programmes de test sont fournis afin d'évaluer le code et d'estimer le niveau d'accomplissement du projet.\\
 
@@ -78,18 +78,18 @@ Notation :
 \item Estimation du meilleur chemin et affichage ($+$7pts $=>$ 20$/$20);
 \item Amélioration ($+$5pts $=>$ 25$/$20);
 \item Bonus : Proposition d'un nom et d'un logo pour votre start-up ($+$1pt)
-\item Chaque critère de la charte d'écriture (Voir Chapitre \ref{sec::charte}) fera perdre 1,5 point ($-1,5$pts).\\
+\item Chaque critère non respecté de la charte d'écriture (Voir Chapitre \ref{sec::charte}) fera perdre 1,5 point ($-1,5$pts).
 \item Une mauvaise gestion des exceptions fera perdre 2 points ($-2$pts).\\
 \end{itemize}
 
 Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs.\\
 
-Date limite du rendu du code : \textbf{Vendredi 13 avril 2018, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu contient le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par example dans un fichier \emph{lisez-moi}. \\
+Date limite du rendu du code : \textbf{Vendredi 13 avril 2018, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu doit contenir le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par exemple dans un fichier \emph{lisez-moi}. \\
 
 La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes.
 
 \pagebreak
-\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\headrulewidth}{0.5pt}
 \fancyhead[LO,RE]{\includegraphics[scale=0.06]{./faculte_sciences_sorbonne_logo.png}}
 \fancyhead[RO,LE]{\includegraphics[scale=0.17]{./master-SPI-logo.jpg}}
 \fancyfoot[C]{\thepage}
@@ -99,19 +99,19 @@ Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente d
 Pour ce faire il faut implémenter un algorithme capable de planifier des temps de parcours au moyen d'une heuristique fixe, ou dynamique.
 Une base de données réaliste et fiable pour le tester est requis pour établir la validité de son implémentation et du cadre dans lequel va naître le projet.
 L'algorithme de Dijkstra et la base de données libre de la RATP sont des choix logiques car robustes.
-Après concertation, un contrat est écrit pour juger des fonctionnalités minimums ne fréinant pas l'évolutivité de la solution.
-L'équipe a reçu le cahier des charges des commerciaux qui demande les fonctionnalités minimum du projet que les ingénieurs ont traduit en contrat de programmation. La tâche est de réaliser un programme correct respectant la structure imposée. Une recherche sera nécéssaire afin de maitriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
+Après concertation, un contrat est écrit pour juger des fonctionnalités minimums ne ralentissant pas l'évolutivité de la solution.
+L'équipe a reçu le cahier des charges des commerciaux qui demande les fonctionnalités minimales du projet, que les ingénieurs ont traduit en contrat de programmation. La tâche est de réaliser un programme correct respectant la structure imposée. Une recherche sera nécéssaire afin de maîtriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
 
 \subsection{Une résolution du problème du plus court chemin}
-Le but de ce projet est de faire une application qui dit quel est le trajet le plus court entre deux stations du métro parisien.
+Le but de ce projet est de faire une application qui établit le trajet le plus court entre deux stations du réseau de métro parisien.
 
 \begin{figure}[h]
    \centering
-   \includegraphics[width=9cm,keepaspectratio]{directed_graph.pdf}
+   \includegraphics[width=7.5cm,keepaspectratio]{directed_graph.pdf}
    \caption{\label{directed_graph} Exemple de graphe orienté}
 \end{figure}
 
-En théorie des graphes, un graphe orienté est un ensemble de points (ici, des stations) connectés par des flèches (ici, des connexions). Dans le cadre de ce projet, chaque flèche représente une possibilité de relier deux points, dans un sens précis, et avec un coût déterminé. C'est une connection possible entre ces points.
+En théorie des graphes, un graphe orienté est un ensemble de points (ici, des stations) connectés par des liens orientés (ici, des connexions). Dans le cadre de ce projet, chaque lien représente une possibilité de relier deux points, dans un sens précis, et avec un coût déterminé. C'est une connection possible entre ces points.
 
 Le problème du plus court chemin, dans ce système, est d'évaluer le coût minimal pour aller d'un point A à un point B. L'algorithme de Dijkstra est une méthode de calcul afin de résoudre ce problème.\\
 
@@ -119,10 +119,10 @@ Cet algorithme peut s'appliquer sur des graphes orientés, modèle auquel plusie
 
 \subsection{Méthode de développement, et outils de la \emph{STL}}
 
-Un programme informatique est une suite d'instructions mathématiques. A ce titre il existe deux difficultés lorsqu'on veut construire un programme informatique pour répondre à un problème :
+Un programme informatique est une suite d'instructions mathématiques. A ce titre il existe deux difficultés lorsque l'on veut construire un programme informatique pour répondre à un problème :
 \begin{enumerate}
 \item Quel jeu d'instructions choisir pour répondre au problème algorithmique?\\
-La solution ici à été trouvée par l'informaticien Edsger Dijkstra, répondant au problème du plus court chemin énoncée ci-dessus.
+La solution ici a été trouvée par l'informaticien Edsger Dijkstra, répondant au problème du plus court chemin énoncée ci-dessus.
 
 \item Comment structurer, implémenter mon problème algorithmique, qui requiert ici la construction de centaines de milliers d'instructions machine, avec la méthodologie nécéssaire pour que n'importe quel humain puisse maintenir ce code et y ajouter des fonctionnalités?\\
 Cette question est en partie résolue par l'outil C++. C'est une méthodologie, permettant de générer une grande compléxité dans le jeu d'instructions (comme beaucoup d'outils informatiques), mais également d'utiliser une interface compréhensible, qui vous est donnée ici, et va permettre l'ajout de fonctionnalités de manière concise et ergonomique, en détachant les différentes fonctionnalités, permettant de fournir au final une solution élégante et ré-utilisable.
@@ -178,32 +178,32 @@ c'est pourquoi les objets englobent ces fonctionnalités. \\
 Le point le plus important dans le cadre de ce projet est de comprendre l'interface, la structure imposée. Le travail demandé, qui est d'implémenter les fonctionnalités clés, ne sera pas possible sans la compréhension de cette structure. Il est aussi judicieux de se renseigner sur les outils possibles et nécéssaires pour réussir le projet.\\
 
 Les classes doivent hériter d'une classe mère virtuelle pure sans implémentation. Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant son appel via un pointeur.
-Si la classe respecte le contrat, elle garantit d'avoir implémenté les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre 6. \\
+Si la classe respecte le contrat, elle garantit d'avoir implémenté les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre \ref{sec::feuille}. \\
 
 \section{Auto-évaluation}
 \label{sec::autoeval}
-Parmi les fichiers de l'archive du projet se trouve la classe \texttt{Grade} au travers de \texttt{Grade.hpp} et \texttt{Grade.o}.\\
+Parmi les fichiers de l'archive du projet se trouve la classe \texttt{Grade} au travers du fichier d'entête \texttt{Grade.hpp} et du fichier objet \texttt{Grade.o}.\\
 
-Ce fichier objet, compilé via le compilateur g++ sous un ordinateur Linux, permet une auto-évaluation.\\
+Ce fichier objet, compilé via le compilateur g++ avec un ordinateur sous Unix, permet une auto-évaluation.\\
 
 En incluant le fichier binaire à la compilation et à l'entête au programme principal du projet, deux objets statiques sont automatiquement créés. Ceux-ci permettent l'évaluation des différentes parties du projet.
 Pour rappel, un objet statique est un objet alloué au lancement du programme et détruit à sa toute fin (par exemple : \texttt{std::cout}, \texttt{std::cin}). Il est non rédéfinissable, pour l'ensemble du code à sa portée.\\
 
 Ces deux objets se nomment ici \texttt{travel::evaluate\_small} et \texttt{travel::evaluate}. Le premier permet d'évaluer le réseau simple, le second évaluant le réseau RATP.\\
 
-Trois méthodes vous sont disponibles :
+Trois méthodes sont disponibles :
 \begin{itemize}
   \item \texttt{stations(const travel::Generic\_station\_parser\&)}, qui évalue de manière exhaustive la construction de la table de stations.
   \item \texttt{connections(const travel::Generic\_connection\_parser\&)}, qui évalue de manière exhaustive la construction de la table de connections.
   \item \texttt{dijkstra(travel::Generic\_mapper\&,bool)}, qui évalue dans un premier temps quelques trajets tests, puis propose une exploration exhaustive des trajets via une estimation grossière du temps de calcul.
     \begin{itemize}
-      \item Si l'argument booléen est vrai : L'évaluation du projet est faite dans sa version de fin de séances de TP (le temps de calcul pour le réseau RATP est d'environ 300us/trajet, ~6mins de test).
-      \item Si l'argument booléen est faux : L'évaluation du projet est faite dans sa version améliorée, via l'utilisation de noms de stations au lieu des identifiants de stations (le temps de calcul pour le réseau RATP 1.5ms/trajet, ~27mins de test).
+      \item Si l'argument booléen est vrai : L'évaluation du projet est faite dans sa version de fin de séances de TP. Le temps de calcul pour le réseau RATP est d'environ 0.3ms/trajet, pour 6 minutes de test.
+      \item Si l'argument booléen est faux : L'évaluation du projet est faite dans sa version améliorée, via l'utilisation de noms de stations. Le temps de calcul pour le réseau RATP est d'environ 1.5ms/trajet, pour 27 minutes de test.
     \end{itemize}
 \end{itemize}
 Lorsque une méthode est appelée, elle appelle automatiquement les méthodes précédentes pour garantir le maintien des acquis au fur et à mesure de l'avancement du projet ; Il n'est donc pas nécessaire d'appeler les anciens tests.\\
 
-De plus, il est à noter que la classe de test est totalement indépendante des fichiers de l'archive et apporte toujours une résolution via les fichiers de références du projet. En définitive, des appels à cette classe seraient appréciés, mais ne sont pas du tout obligatoires dans le cadre du projet.
+De plus, il est à noter que la classe de test est totalement indépendante des classes abstraites et apporte toujours une résolution via les fichiers de références du projet. En définitive, des appels à cette classe seraient appréciés, mais ne sont pas du tout obligatoires dans le cadre du projet.
 
 \pagebreak
 
@@ -232,7 +232,7 @@ Le code compile-t-il, pourquoi?
 Le code compile-t-il, pourquoi?
 \item Implémentez la fonction \texttt{compute\_travel}, ayant comme arguments d'entrée des nombres correspondant aux identifiants de station. Cette fonction rend un vecteur de \texttt{std::pair}, contenant l'identifiant de la station et le coût associé de la connexion.
 
-\item Implémentez la fonction \texttt{compute\_and\_display\_travel}, permettant d'afficher le chemin calculé par la fonction précédent pour relier les deux stations que vous voulez relier. La notation est dépendante de la clarté de l'affichage : Le client doit suivre facilement des instructions claires pour se déplacer.
+\item Implémentez la fonction \texttt{compute\_and\_display\_travel}, permettant d'afficher le chemin calculé par la fonction précédent pour relier les deux stations que vous voulez relier. La notation est dépendante de la clarté de l'affichage, étant donné que le client doit suivre facilement des instructions claires pour se déplacer.
 \item Instanciez votre classe et appelez la méthode \texttt{dijkstra} de la classe \texttt{Grade}, avec l'argument booléen à \texttt{false}.\\
 
 \emph{A ce point, vous avez débloqué l'accès aux 20 premiers points de la notation sur le code du projet.}\\
@@ -255,6 +255,9 @@ Le code compile-t-il, pourquoi?
 \pagebreak
 \section{Pour rappel:}
 \begin{center}
-  \includegraphics{./xkcd.png}
+  \vspace*{\fill}
+  \includegraphics[scale=0.7]{./xkcd.png}
+  \vspace*{\fill}
+  \vspace*{30mm}
 \end{center}
 \end{document}
