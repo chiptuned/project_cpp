@@ -1,6 +1,6 @@
 function [] = make_gtfs_files(db, fn1, fn2, keep_gps, keeping_lines);
 % maybe add a gps coord toogle?
-verbose = 0;
+verbose = 1;
 
 msg1 = ['BEWARE, to work with the RATP database, you need at least ', ...
     '3,3Go of free memory (including db, which is the RATP ', ...
@@ -266,8 +266,6 @@ if keep_gps
   var_names_table_stops = [var_names_table_stops, ...
     'double_stop_lat', 'double_stop_lon'];
 end
-var_names_table_stops
-pause;
 table_stops.Properties.VariableNames = var_names_table_stops;
 
 t_export_data = toc(t_start_t_export_data);
