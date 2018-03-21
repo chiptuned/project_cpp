@@ -30,7 +30,7 @@ function db = load_ratp_database()
   % transfers.txt
   % feed_info.txt
 
-  % Formats are crafted to match RATP GTFS database.
+  % Formats are crafted to match RATP GTFS database. VERY important.
   db.agency = readtable(fullfile(folder_db, 'agency.txt'), ...
     'Format', '%u %s %s %s %s %s');
   db.stops = readtable(fullfile(folder_db, 'stops.txt'), ...
@@ -39,15 +39,15 @@ function db = load_ratp_database()
     'Format', '%u32 %u8 %q %q %q %u8 %q %q %q');
   db.trips = readtable(fullfile(folder_db, 'trips.txt'), ...
     'Format', '%u32 %u32 %u64 %q %q %u8 %q');
+
   % for stop_times, it is faster to store duration in char array then cast
   db.stop_times = readtable(fullfile(folder_db, 'stop_times.txt'), ...
-    'Format', '%u64 %q %q %u32 %u8 %q %q');
-
-  % this duration methods seems not to be supported in Win 2017b
-  times = array2table(seconds(duration(db.stop_times{:,2:3})), ...
-    'VariableNames',db.stop_times.Properties.VariableNames(2:3));
-
-  db.stop_times = [db.stop_times(:,1), times, db.stop_times(:,4:end)];
+    'Format', '%u64 %c%c%c%c%c%c%c%c %c%c%c%c%c%c%c%c %u32 %u8 %c %c');
+  var_names = db.stop_times.Properties.VariableNames(1:7);
+  departure_times = string(db.stop_times{:,2:9});
+  db.stop_times = table(db.stop_times{:,1}, departure_times, db.stop_times{:,18});
+  clear departure_times
+  db.stop_times.Properties.VariableNames = var_names([1,3,4]);
 
   db.calendar = readtable(fullfile(folder_db, 'calendar.txt'), ...
     'Format', '%u32 %u8 %u8 %u8 %u8 %u8 %u8 %u8 %u32 %u32');
