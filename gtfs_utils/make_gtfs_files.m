@@ -1,4 +1,4 @@
-function [] = make_gtfs_files(db, fn1, fn2, cmode);
+function [] = make_gtfs_files(db, fn1, fn2, keep_gps, keeping_lines);
 % maybe add a gps coord toogle?
 verbose = 0;
 
@@ -13,8 +13,25 @@ warning(msg2);
 % do something nicer with this, like put an argument keeping_lines:
 % if it's a string, if it's metro, rer, bus, keep the good lines
 % if its a cell array keep the lines in the variable
-keeping_lines = [{'1'}; {'2'}; {'3'}; {'4'}; {'5'}; {'6'}; {'7'}; {'8'}; ...
+metro_lines = [{'1'}; {'2'}; {'3'}; {'4'}; {'5'}; {'6'}; {'7'}; {'8'}; ...
 {'9'}; {'10'}; {'11'}; {'12'}; {'13'}; {'14'}; {'3B'}; {'7B'}];
+if nargin < 5
+  keeping_lines = 'metro';
+end
+if nargin < 4
+  keep_gps = 0;
+end
+if nargin < 3
+  fn1 = 'stations.csv';
+  fn2 = 'connections.csv';
+end
+if nargin < 1
+  error('arguments needed. type "help make_gtfs_files".')
+end
+
+if strcmp(keeping_lines,'metro')
+  keeping_lines = metro_lines;
+end
 
 % seconds added for each duration of connections to avoid some zeros
 offset_connect = 30;
@@ -71,12 +88,11 @@ all_stops(:,[2,5]) = table2cell(db.routes(loc,3:4));
 [~, loc] = ismember(stops_idx,db.stops{:,1});
 all_stops(:,3:4) = table2cell(db.stops(loc,3:4));
 
-if cmode == 0
-  all_stops = all_stops(:,[3,1,2]);
-else
-  % remove all_stop commas
-  all_stops(:,2:end) = strrep(all_stops(:,2:end),',', '');
-  all_stops = all_stops(:,[3,1,2,4,5]);
+% remove all_stop commas
+all_stops(:,2:end) = strrep(all_stops(:,2:end),',', '');
+all_stops = all_stops(:,[3,1,2,4,5]);
+if keep_gps
+  all_stops(:,6:7) = table2cell(db.stops(loc,5:6));
 end
 t_generation_stops = toc(t_start_t_stops);
 if verbose
@@ -242,15 +258,18 @@ table_stops = cell2table(all_stops);
 
 table_connections.Properties.VariableNames = {'uint32_from_stop_id', ...
   'uint32_to_stop_id', 'uint32_min_transfer_time'};
-table_stops.Properties.VariableNames = {'string_name_station', ...
+
+var_names_table_stops = {'string_name_station', ...
   'uint32_s_id', 'string_short_line', 'string_adress_station', ...
   'string_desc_line'};
+if keep_gps
+  var_names_table_stops = [var_names_table_stops, ...
+    'double_stop_lat', 'double_stop_lon'];
+end
+var_names_table_stops
+pause;
+table_stops.Properties.VariableNames = var_names_table_stops;
 
-% % Adding string_connection_date
-% connection_date = table([double(times(:,1)), nan(size(times_stop_tran)-size(timediff))];
-% table_connections = [table_connections, connection_date)];
-% table_connections.Properties.VariableNames = {'uint32_from_stop_id', ...
-%   'uint32_to_stop_id', 'uint32_min_transfer_time', 'string_connection_date'};
 t_export_data = toc(t_start_t_export_data);
 if verbose
   t_export_data

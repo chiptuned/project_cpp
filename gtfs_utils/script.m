@@ -9,7 +9,7 @@ end
 date = [fullfile('..', 'sample_data')];
 file_stations = fullfile(date, 's.csv');
 file_connections = fullfile(date, 'c.csv');
-make_gtfs_files(db, file_stations, file_connections, 5);
+make_gtfs_files(db, file_stations, file_connections);
 
 pts = [table2array(db.stops(:,'stop_lat')), table2array(db.stops(:,'stop_lon'))];
 figure;
