@@ -1,10 +1,10 @@
 uint32_from_stop_id,uint32_to_stop_id,uint32_min_transfer_time
 9,10,84
-10,5,502
+10,5,493
 10,9,84
 8,4,183
 3,1,217
-8,3,103
+8,3,91
 7,3,186
 3,8,103
 6,2,80
@@ -12,7 +12,7 @@ uint32_from_stop_id,uint32_to_stop_id,uint32_min_transfer_time
 8,10,167
 2,1,85
 2,6,80
-6,9,250
+6,9,278
 3,7,186
 5,1,173
 4,8,183
