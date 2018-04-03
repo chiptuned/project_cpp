@@ -1,0 +1,46 @@
+#!/bin/bash
+
+for i in */*.unsummed; do
+    mark=0
+    ref=0
+    bonus=0
+    malus=0
+
+    output="${i%%.*}.txt"
+
+    # Parseur des notes
+    while read line
+    do
+        left=$(cut -d':' -f2 <<< $line | cut -d'/' -f1 | sed "s/ //")
+        right=$(cut -d':' -f2 <<< $line | cut -d'/' -f2 | sed "s/ //")
+        mark=$(bc -l <<< "$mark+$left")
+        ref=$(bc -l <<< "$ref+$right")
+    done <<< $(grep -i "^note:" $i)
+
+    # Parseur des bonus
+    while read line
+    do
+        left=$(cut -d':' -f2 <<< $line | cut -d'/' -f1 | sed "s/ //")
+        bonus=$(bc -l <<< "$bonus+$left")
+    done <<< $(grep -i "^bonus:" $i)
+
+    # Parseur des malus
+    while read line
+    do
+        left=$(cut -d':' -f2 <<< $line | cut -d'/' -f1 | sed "s/ //")
+        malus=$(bc -l <<< "$malus+$left")
+    done <<< $(grep -i "^malus:" $i)
+
+    # Calcul de la note
+    val=$(bc -l <<< "scale=2; $mark+$bonus-$malus")
+    if [[ $(bc -l <<< "$val<0") -eq 1 ]]
+    then
+        val=0
+    fi
+
+    touch $output
+    sed -nr "1,3"p $i > $output
+    echo "Note globale: $val/$ref" >> $output
+    sed -nr "5,$"p $i >> $output
+    # sed -r "s|(.*globale.*)|\1 $val/$ref|" $i > $output
+done

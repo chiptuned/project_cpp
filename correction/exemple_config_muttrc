@@ -1,0 +1,12 @@
+set editor=/usr/bin/emacs
+set pager=/usr/bin/less
+
+set imap_user="adresse@truc.fr"
+set imap_pass="MDP"
+
+set smtp_url="smtp://$imap_user@smtp.inserm.fr:PORT/"
+set from=$imap_user
+set realname="NOM PRENOM"
+set smtp_pass=$imap_pass
+set ssl_starttls=yes
+set ssl_force_tls=yes

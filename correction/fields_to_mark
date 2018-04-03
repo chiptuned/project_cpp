@@ -1,0 +1,21 @@
+Instanciation des classes;3;n
+Implémentation de read_stations;3;n
+Implémentation de read_connections;3;n
+Génération du graphe;4;n
+Estimation du meilleur chemin et affichage;7;n
+Amélioration;5;b
+Nom et logo;1;b
+gestion exceptions;2;m
+Utilisation des drapeaux de compilation;1.5;m
+Utilisation des fonctionnalités du C++ 11 maximum;1.5;m
+Proscription de l’utilisation des outils d’allocation dynamique;1.5;m
+Mémoire dynamique via les conteneurs de la STL ou les outils de memory;1.5;m
+Indentation parfaite du code source du programme;1.5;m
+Minimisation de duplication du code source du programme;1.5;m
+Obligation d’utilisation de la convention snake case, avec des noms de fonctions en verbe complément;1.5;m
+Tout type créé commence par une majuscule;1.5;m
+Les constantes déclarées via define sont écrites intégralement en majuscules;1.5;m
+Membres de classes appelés via this;1.5;m
+Variables d’entrées précédées d’un underscore;1.5;m
+Utilisation du mot clef const lorsque l’entrée ne doit pas être modifiée;1.5;m
+Utilisation systématique de référence ou de pointeur lors du passage d’un objet;1.5;m

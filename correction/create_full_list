@@ -1,0 +1,6 @@
+#!/bin/bash
+
+file=$1
+seg=$2
+
+sed -r "s|([^$seg]+)$seg([^$seg]+)$seg([^$seg]+)|\1$seg\2$seg\3$seg\2.\1@etu.upmc.fr|" $file > full_list

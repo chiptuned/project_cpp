@@ -1,0 +1,45 @@
+#!/bin/bash
+
+file=$1
+fields=$3
+
+cut -d"$2" -f3 $file | sort -u | { while read folder;
+                                   do
+                                       mkdir -p $folder
+                                   done; }
+
+IFS=$2
+while read nom prenom folder addr
+do
+    tmp="$folder/$nom$prenom.unsummed"
+    if [ -f $tmp ]
+    then
+       echo "SKIP: $tmp already exist"
+    else
+        touch $tmp
+        echo "Nom: $nom" > $tmp
+        echo "Prenom: $prenom" >> $tmp
+        echo "Addr: $addr" >> $tmp
+        echo "Note globale: " >> $tmp
+        echo "" >> $tmp
+
+        while read field mark type
+        do
+            case $type in
+                n)
+                    printf "$field: \nNote: 0/$mark\nComs: \n\n" >> $tmp
+                    ;;
+                b)
+                    printf "$field: \nBonus: 0/$mark\nComs: \n\n" >> $tmp
+                    ;;
+                m)
+                    printf "$field: \nMalus: 0/$mark\nComs: \n\n" >> $tmp
+                    ;;
+                *)
+                    echo "Type de notation inconnu: ($type)"
+                    exit 1
+                    ;;
+            esac
+        done < $fields
+    fi
+done < $file
