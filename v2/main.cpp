@@ -43,12 +43,15 @@ int main(int argc, char** argv){
         (void) start;
         (void) end;
         travel::Network network(stations_filename, connections_filename);
-        /*{
+        {
+          auto N = 1e5;
           auto start_count = std::chrono::steady_clock::now();
-          network.compute_travel(start, end);
+          for(auto i = 0; i < N;i++){
+            network.compute_travel(start, end);
+          }
           auto duration = std::chrono::duration_cast< std::chrono::microseconds >(std::chrono::steady_clock::now() - start_count);
-          std::cout << "Ref_D: " << static_cast<double>(duration.count()) << std::endl;
-        }{
+          std::cout << "Ref_D: " << static_cast<double>(duration.count())/N << "µs/loop " << std::endl;
+        }/*{
           auto start_count = std::chrono::steady_clock::now();
           network.compute_travel2(start, end);
           auto duration = std::chrono::duration_cast< std::chrono::microseconds >(std::chrono::steady_clock::now() - start_count);

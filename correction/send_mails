@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Usage ./prog ENVOIE pour vraiment envoyer
+
+title="[4AI02] Correction projet C++ avancée"
+
+bcc="kevin.gehere@sorbonne-universite.fr vincent.fraillon-maison@sorbonne-universite.fr"
+sigFile="/home/lilk/signature_mail"
+
+fake="Kevin.GEHere@etu.upmc.fr"
+
+for i in */*txt; do
+    echo "Treating $i ..."
+    adr=$(sed -nr "3p" $i| cut -d":" -f2 | sed -r "s/ //")
+    echo $adr
+
+    printf "Bonjour,\nVoici la correction de votre projet.\n\n" > mess
+    cat $i $sigFile >> mess
+
+    # sécurité
+    case $1 in
+        ENVOIE)
+            mutt -e "set crypt_use_gpgme=no" -s "$title" -b $bcc $adr < mess
+            ;;
+        *)
+            mutt -e "set crypt_use_gpgme=no" -s "$title" $fake < mess
+            ;;
+    esac
+    rm -f mess
+done
