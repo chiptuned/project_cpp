@@ -62,6 +62,10 @@ namespace travel{
     }
   }
 
+  // FIXME(vincent) : Output le nombre de stations/connections lues
+  // et correctes, afin de renseigner sur les possibles erreurs de
+  // dépendances à la création des objets statiques dans Grade.hpp
+  
   void travel::Grade::stations(const Generic_station_parser& _input){
     std::cout << "===========================> Grade 1 <===========================" << std::endl;
     travel::Network network(stations_filename, connections_filename, stations_literal, connections_literal);
