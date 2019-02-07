@@ -1,4 +1,4 @@
-function [] = make_gtfs_files(db, fn1, fn2, keep_gps, keeping_lines);
+function [] = make_gtfs_files(db, fn1, fn2, keep_gps, keeping_lines)
 % maybe add a gps coord toogle?
 verbose = 1;
 

@@ -26,8 +26,8 @@ gen_c = readtable(file_connections, ...
 from_to_array = table2array(gen_c(:,1:2));
 stops_array = [double(table2array(db.stops(:,{'stop_id'}))), ...
     table2array(db.stops(:,{'stop_lat', 'stop_lon'}))];
-%rand_scale = 6E-4;
-rand_scale = 0;
+rand_scale = 6E-4;
+%rand_scale = 0;
 stops_array(:,2:3) = stops_array(:,2:3)+rand(size(stops_array(:,2:3)))*rand_scale;
 
 uniq_from_to = unique(from_to_array, 'rows');
