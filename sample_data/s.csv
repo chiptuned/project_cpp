@@ -4,7 +4,7 @@ Villiers,1630,3,Parc de Monceau - 75117,(GALLIENI <-> PONT DE LEVALLOIS - BECON)
 Volontaires,1632,12,25 rue des Volontaires - 75115,(MAIRIE D'ISSY <-> FRONT POPULAIRE) - Aller
 Voltaire (Léon Blum),1633,9,Boulevard Voltaire - 75111,(PONT DE SEVRES <-> MAIRIE DE MONTREUIL) - Aller
 Wagram,1634,3,Place Monseigneur Loutil - 75117,(GALLIENI <-> PONT DE LEVALLOIS - BECON) - Aller
-Danube,1635,7B,Rhin et Danube (9 place de) - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Aller
+Danube,1635,7B,9 place Rhin et Danube - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Aller
 Trocadéro,1637,9,Place du Trocédéro - 75116,(PONT DE SEVRES <-> MAIRIE DE MONTREUIL) - Aller
 Varenne,1638,13,13 boulevard des Invalides - 75107,(CHATILLON - MONTROUGE <-> ST-DENIS-UNIVERSITE/LES COURTILLES) - Aller
 Villejuif-Léo Lagrange,1639,7,Rue du Dauphin - 94076,(LA COURNEUVE - 8 MAI 1945 <-> VILLEJUIF-L. ARAGON / MAIRIE D'IVRY) - Aller
@@ -96,7 +96,7 @@ Porte de Vincennes,1751,1,99 Cours de Vincennes - 75120,(CHATEAU DE VINCENNES <-
 Porte des Lilas,1752,3B,Rue de Belleville - 75120,(PORTE DES LILAS <-> GAMBETTA) - Aller
 Porte des Lilas,1753,11,Rue de Belleville - 75120,(MAIRIE DES LILAS <-> CHATELET) - Aller
 Porte Maillot,1755,1,Palais des Congrès - 75117,(CHATEAU DE VINCENNES <-> LA DEFENSE) - Aller
-Pré-Saint-Gervais,1756,7B,Serrurier (52 boulevard) - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Aller
+Pré-Saint-Gervais,1756,7B,52 boulevard Serrurier - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Aller
 Pyramides,1757,7,Rue de l'Echelle - 75101,(LA COURNEUVE - 8 MAI 1945 <-> VILLEJUIF-L. ARAGON / MAIRIE D'IVRY) - Aller
 Pyrénées,1758,11,401 rue des Pyrénées - 75120,(MAIRIE DES LILAS <-> CHATELET) - Aller
 Quai de la Rapée,1759,5,Quai de la Rapée - 75112,(BOBIGNY - PABLO PICASSO <-> PLACE D'ITALIE) - Aller
@@ -271,7 +271,7 @@ Boulogne Pont de Saint-Cloud,2005,10,Musée Albert Kahn - 92012,(BOULOGNE - PONT
 Bourse,2007,3,Rue Notre-Dame des Victoires - 75102,(GALLIENI <-> PONT DE LEVALLOIS - BECON) - Aller
 Bréguet-Sabin,2008,5,Boulevard Richard Lenoir - 75111,(BOBIGNY - PABLO PICASSO <-> PLACE D'ITALIE) - Aller
 Brochant,2009,13,Marché des Batignolles - 75117,(CHATILLON - MONTROUGE <-> ST-DENIS-UNIVERSITE/LES COURTILLES) - Aller
-Buttes-Chaumont,2013,7B,Botzaris (28 rue) - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Aller
+Buttes-Chaumont,2013,7B,28 rue Botzaris - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Aller
 Buzenval,2014,9,51 rue de Buzenval - 75120,(PONT DE SEVRES <-> MAIRIE DE MONTREUIL) - Aller
 Cadet,2015,7,Terre-plein face au 65 rue La Fayette - 75109,(LA COURNEUVE - 8 MAI 1945 <-> VILLEJUIF-L. ARAGON / MAIRIE D'IVRY) - Aller
 Cambronne,2016,6,2 Boulevard Garibaldi Côté des N° pairs - 75115,(NATION <-> CHARLES DE GAULLE - ETOILE) - Aller
@@ -308,12 +308,12 @@ Bastille,2063,5,Rue de la Roquette - 75104,(BOBIGNY - PABLO PICASSO <-> PLACE D'
 Bel-Air,2065,6,34 boulevard de Picpus - 75112,(NATION <-> CHARLES DE GAULLE - ETOILE) - Aller
 Belleville,2066,11,Terre-plein face au 1 boulevard de la Villette - 75119,(MAIRIE DES LILAS <-> CHATELET) - Aller
 Bérault,2067,1,98 avenue de Paris - 94080,(CHATEAU DE VINCENNES <-> LA DEFENSE) - Aller
-Bercy,2068,6,Place du Bataillon du Pacifique - 75112,(NATION <-> CHARLES DE GAULLE - ETOILE) - Aller
+Bercy,2068,6,Rue de Bercy - 75112,(NATION <-> CHARLES DE GAULLE - ETOILE) - Aller
 Bir-Hakeim (Grenelle),2069,6,Tour Eiffel - 75115,(NATION <-> CHARLES DE GAULLE - ETOILE) - Aller
 Blanche,2071,2,Terre-plein face au 59 boulevard de Clichy - 75118,(NATION <-> PORTE DAUPHINE) - Aller
 Bobigny-Pantin (Raymond Queneau),2072,5,7 rue de Paris - 93008,(BOBIGNY - PABLO PICASSO <-> PLACE D'ITALIE) - Aller
 Boissière,2073,6,57 avenue Kléber - 75116,(NATION <-> CHARLES DE GAULLE - ETOILE) - Aller
-Bolivar,2075,7B,Simon Bolivar (125 avenue) - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Aller
+Bolivar,2075,7B,125 avenue Simon Bolivar - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Aller
 Gare de l'Est (Verdun),2076,5,Sortie - 75110,(BOBIGNY - PABLO PICASSO <-> PLACE D'ITALIE) - Aller
 Couronnes,2079,2,Belleville (37 boulevard de) - 75111,(NATION <-> PORTE DAUPHINE) - Aller
 Crimée,2080,7,Rue de Crimée - 75119,(LA COURNEUVE - 8 MAI 1945 <-> VILLEJUIF-L. ARAGON / MAIRIE D'IVRY) - Aller
@@ -341,15 +341,15 @@ Bastille,2112,5,Rue de la Roquette - 75104,(BOBIGNY - PABLO PICASSO <-> PLACE D'
 Bel-Air,2114,6,34 boulevard de Picpus - 75112,(NATION <-> CHARLES DE GAULLE - ETOILE) - Retour
 Belleville,2115,11,Terre-plein face au 1 boulevard de la Villette - 75119,(MAIRIE DES LILAS <-> CHATELET) - Retour
 Bérault,2116,1,98 avenue de Paris - 94080,(CHATEAU DE VINCENNES <-> LA DEFENSE) - Retour
-Bercy,2117,6,Place du Bataillon du Pacifique - 75112,(NATION <-> CHARLES DE GAULLE - ETOILE) - Retour
+Bercy,2117,6,Rue de Bercy - 75112,(NATION <-> CHARLES DE GAULLE - ETOILE) - Retour
 Bir-Hakeim (Grenelle),2118,6,Tour Eiffel - 75115,(NATION <-> CHARLES DE GAULLE - ETOILE) - Retour
 Blanche,2120,2,Terre-plein face au 59 boulevard de Clichy - 75118,(NATION <-> PORTE DAUPHINE) - Retour
 Bobigny-Pantin (Raymond Queneau),2121,5,7 rue de Paris - 93008,(BOBIGNY - PABLO PICASSO <-> PLACE D'ITALIE) - Retour
 Boissière,2122,6,57 avenue Kléber - 75116,(NATION <-> CHARLES DE GAULLE - ETOILE) - Retour
-Bolivar,2124,7B,Simon Bolivar (125 avenue) - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Retour
+Bolivar,2124,7B,125 avenue Simon Bolivar - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Retour
 Gare de l'Est (Verdun),2125,5,Sortie - 75110,(BOBIGNY - PABLO PICASSO <-> PLACE D'ITALIE) - Retour
 Couronnes,2128,2,Belleville (37 boulevard de) - 75111,(NATION <-> PORTE DAUPHINE) - Retour
-Buttes-Chaumont,2132,7B,Botzaris (28 rue) - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Retour
+Buttes-Chaumont,2132,7B,28 rue Botzaris - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Retour
 Buzenval,2133,9,51 rue de Buzenval - 75120,(PONT DE SEVRES <-> MAIRIE DE MONTREUIL) - Retour
 Cadet,2134,7,Terre-plein face au 65 rue La Fayette - 75109,(LA COURNEUVE - 8 MAI 1945 <-> VILLEJUIF-L. ARAGON / MAIRIE D'IVRY) - Retour
 Cambronne,2135,6,2 Boulevard Garibaldi Côté des N° pairs - 75115,(NATION <-> CHARLES DE GAULLE - ETOILE) - Retour
@@ -560,7 +560,7 @@ Porte de Vincennes,2429,1,99 Cours de Vincennes - 75120,(CHATEAU DE VINCENNES <-
 Porte des Lilas,2430,3B,Rue de Belleville - 75120,(PORTE DES LILAS <-> GAMBETTA) - Retour
 Porte des Lilas,2431,11,Rue de Belleville - 75120,(MAIRIE DES LILAS <-> CHATELET) - Retour
 Porte Maillot,2433,1,Palais des Congrès - 75117,(CHATEAU DE VINCENNES <-> LA DEFENSE) - Retour
-Pré-Saint-Gervais,2434,7B,Serrurier (52 boulevard) - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Retour
+Pré-Saint-Gervais,2434,7B,52 boulevard Serrurier - 75119,(PRE-SAINT-GERVAIS <-> LOUIS BLANC) - Retour
 Pyramides,2435,7,Rue de l'Echelle - 75101,(LA COURNEUVE - 8 MAI 1945 <-> VILLEJUIF-L. ARAGON / MAIRIE D'IVRY) - Retour
 Pyrénées,2436,11,401 rue des Pyrénées - 75120,(MAIRIE DES LILAS <-> CHATELET) - Retour
 Quai de la Rapée,2437,5,Quai de la Rapée - 75112,(BOBIGNY - PABLO PICASSO <-> PLACE D'ITALIE) - Retour
@@ -660,8 +660,8 @@ Bibliothèque-François Mitterrand,1166826,14,Face au 62 rue du Chevaleret - 751
 Bibliothèque-François Mitterrand,1166827,14,Face au 62 rue du Chevaleret - 75113,(SAINT-LAZARE <-> OLYMPIADES) - Retour
 Cour Saint-Emilion,1166828,14,Rue François Truffaut - 75112,(SAINT-LAZARE <-> OLYMPIADES) - Aller
 Cour Saint-Emilion,1166829,14,Rue François Truffaut - 75112,(SAINT-LAZARE <-> OLYMPIADES) - Retour
-Bercy,1166830,14,Place du Bataillon du Pacifique - 75112,(SAINT-LAZARE <-> OLYMPIADES) - Aller
-Bercy,1166831,14,Place du Bataillon du Pacifique - 75112,(SAINT-LAZARE <-> OLYMPIADES) - Retour
+Bercy,1166830,14,Rue de Bercy - 75112,(SAINT-LAZARE <-> OLYMPIADES) - Aller
+Bercy,1166831,14,Rue de Bercy - 75112,(SAINT-LAZARE <-> OLYMPIADES) - Retour
 Gare de Lyon,1166832,14,Rue de Bercy - 75112,(SAINT-LAZARE <-> OLYMPIADES) - Aller
 Gare de Lyon,1166833,14,Rue de Bercy - 75112,(SAINT-LAZARE <-> OLYMPIADES) - Retour
 Châtelet,1166834,14,Théâtre du Châtelet - 75101,(SAINT-LAZARE <-> OLYMPIADES) - Aller
