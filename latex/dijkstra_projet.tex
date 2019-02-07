@@ -148,16 +148,16 @@ Une auto-évaluation vous est proposée au chapitre \ref{sec::autoeval}, afin de
 
 \section{Charte d'écriture}
 \label{sec::charte}
-La startup qui vous a embauché dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et facilitier la transmission au sein de l'équipe. Celle charte est énoncée dans un ordre quelconque:\\
+La startup qui vous a embauché dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et faciliter la transmission au sein de l'équipe. Cette charte est énoncée dans un ordre quelconque:\\
 
 \begin{itemize}
 \item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -pedantic -pedantic-errors -O3 de g++} afin de garantir le respect de l'implémentation dans les normes C++, et d'optimiser la compilation;
-\item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
+\item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours. ; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
 \item \textbf{Proscription de l'utilisation des outils d'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation;
-\item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}} ou les outils de \texttt{memory} comme par exemple \texttt{std::unique\_ptr}, celui-ci étant inutile dans le cadre du projet;
+\item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}};
 \item \textbf{Indentation parfaite du code source du programme} afin de garantir la lisibilité et de prévenir les erreurs d'implémentation;
-\item \textbf{Minimisation de duplication du code source du programme} afin d'éviter le dangereux copier-coller est les graves problèmes de maintenance qui s'y accompagne;
-\item \textbf{Obligation d'utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, de variables en \emph{complément\_nom}, afin de garantir la lisibilité du code;
+\item \textbf{Minimisation de duplication du code source du programme} afin d'éviter le dangereux copier-coller et les graves problèmes de maintenance induits par ce comportement;
+\item \textbf{Utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, de variables en \emph{complément\_nom}, afin de garantir la lisibilité du code;
 \item \textbf{Tout type créé commence par une majuscule}, par convention;
 \item \textbf{Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules}; on parlera ici de \emph{SCREAMING\_SNAKE\_CASE};
 \item \textbf{Membres de classes appelés via \emph{this}} afin de répèrer facilement l'utilisation et la modification d'outils interne;
@@ -166,6 +166,7 @@ La startup qui vous a embauché dans ce projet vous impose une charte d'écritur
 \item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture;
 \item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, les objets seront passés par copie;
 % \item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}.
+\item \textbf{Utilisation du drapeau de compilation -fsyntax-only lors de la compilation de fichiers entête}, afin de forcer le compilateur à recompiler les fichiers entête à chaque modification. La compilation de fichiers entête n'est pas indispensable au bon déroulement du projet.
 \end{itemize}
 
 \pagebreak
