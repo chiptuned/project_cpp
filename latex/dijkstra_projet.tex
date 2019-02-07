@@ -10,6 +10,7 @@
 \usepackage{appendix}
 \usepackage{inconsolata}
 % \usepackage{fontspec}
+\usepackage{titling}
 
 \renewcommand{\ttdefault}{cmtt}
 
@@ -31,9 +32,9 @@
 \definecolor{types}{rgb}{0.17,0.57,0.68}
 \lstdefinestyle{mystyle}{
   captionpos=b,
-  %numbers=left, %Nummerierung
-  %numberstyle=\tiny, % kleine Zeilennummern
-  frame=lines, % Oberhalb und unterhalb des Listings ist eine Linie
+  %numbers=left,
+  %numberstyle=\tiny,
+  frame=lines,
   showspaces=false,
   showtabs=false,
   breaklines=true,
@@ -48,14 +49,9 @@
 }
 \lstset{style=mystyle}
 
+\setlength{\droptitle}{1em}
 \title{[4AI02] Projet de C++ Avancé: Algorithme de Dijkstra}
-\author{
-  Géhère, Kévin\\
-  \texttt{kevin.gehere@sorbonne-universite.fr}
-  \and
-  Fraillon, Vincent\\
-  \texttt{vincent.fraillon-maison@sorbonne-universite.fr}
-}
+\date{9 Avril 2019}
 
 \begin{document}
 \makeatletter
@@ -78,13 +74,13 @@ Notation :
 \item Estimation du meilleur chemin et affichage ($+$7pts $=>$ 20$/$20);
 \item Amélioration ($+$5pts $=>$ 25$/$20);
 \item Bonus : Proposition d'un nom et d'un logo pour votre start-up ($+$1pt)
-\item Chaque critère non respecté de la charte d'écriture (Voir Chapitre \ref{sec::charte}) fera perdre 1,5 point ($-1,5$pts).
+\item Un critère non respecté de la charte d'écriture (Voir Chapitre \ref{sec::charte}) fera perdre jusqu'a 1 point ($-1$pt).
 \item Une mauvaise gestion des exceptions fera perdre 2 points ($-2$pts).\\
 \end{itemize}
 
 Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs.\\
 
-Date limite du rendu du code : \textbf{Vendredi 13 avril 2018, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu doit contenir le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par exemple dans un fichier \emph{lisez-moi}. \\
+Date limite du rendu du code : \textbf{Vendredi 17 mai 2019, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu doit contenir le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par exemple dans un fichier \emph{lisez-moi}. \\
 
 La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes.
 
