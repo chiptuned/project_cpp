@@ -184,7 +184,7 @@ Si la classe respecte le contrat, elle garantit d'avoir implémenté les fonctio
 \label{sec::autoeval}
 Parmi les fichiers de l'archive du projet se trouve la classe \texttt{Grade} au travers du fichier d'entête \texttt{Grade.hpp} et du fichier objet \texttt{Grade.o}.\\
 
-Ce fichier objet, compilé via le compilateur g++ avec un ordinateur sous Unix, permet une auto-évaluation.\\
+Ce fichier objet, compilé via le compilateur g++ avec un ordinateur sous Unix, permet une auto-évaluation.
 
 En incluant le fichier binaire à la compilation et à l'entête au programme principal du projet, deux objets statiques sont automatiquement créés. Ceux-ci permettent l'évaluation des différentes parties du projet.
 Pour rappel, un objet statique est un objet alloué au lancement du programme et détruit à sa toute fin (par exemple : \texttt{std::cout}, \texttt{std::cin}). Il est non rédéfinissable, pour l'ensemble du code à sa portée.\\
@@ -205,6 +205,8 @@ Lorsque une méthode est appelée, elle appelle automatiquement les méthodes pr
 
 De plus, il est à noter que la classe de test est totalement indépendante des classes abstraites et apporte toujours une résolution via les fichiers de références du projet. En définitive, des appels à cette classe seraient appréciés, mais ne sont pas du tout obligatoires dans le cadre du projet.
 
+N'oubliez pas que l'interface vous est imposée, et que vous ne devez pas modifier ces fichiers. La correction sera faite avec seulement l'implémentation de votre classe. Si celle-ci ne se base pas sur l'interface donnée, le code ne sera pas fonctionnel, et vous serez pénalisé.
+
 \pagebreak
 
 \section{Feuille de route}
@@ -213,11 +215,13 @@ L'équipe de développement de votre start-up vous propose une feuille de route,
 
 \begin{enumerate}
 \item Instanciez une classe dérivée : faites un nouveau fichier, une inclusion de la classe parente et créez une classe qui hérite de la classe mère \texttt{Generic\_station\_parser}.\\
-Le code compile-t-il? Pourquoi?
-\item Surchargez la fonction \texttt{read\_stations} : écrivez le prototype de la fonction en ajoutant à la fin le mot clé \texttt{override}, en mettant un corps vide à cette fonction.\\
-Le code compile-t-il? Pourquoi?
-\item Ecrivez le corps de la fonction \texttt{read\_stations}.
-\item Créez un fichier avec une fonction principale, instanciez votre classe et appelez la méthode \texttt{stations} de la classe \texttt{Grade}.\\
+Compilez votre fichier de classe. Celui-ci ne doit pas générer d'erreur, même avec les restrictions de compilation imposées dans la charte d'écriture.
+
+\item Créez un fichier avec une fonction principale, et instanciez un objet de votre classe. Le code compile-t-il? Pourquoi?
+
+\item Surchargez la fonction \texttt{Generic\_station\_parser::read\_stations} : Dans la déclaration de la classe, écrivez le prototype de cette fonction \texttt{protected} en ajoutant à la fin le mot clé \texttt{override}. Implémentez cette fonction.
+
+\item Dans votre fonction principale, instanciez votre classe et appelez la méthode \texttt{stations} de la classe \texttt{Grade}. Vous utiliserez l'objet statique mis a disposition dans cette classe, selon la base de données utilisée.\\
 
 \emph{A ce point, vous devriez avoir soumis une version fonctionnelle de votre projet sur Moodle, et ne pas encore avoir eu la deuxième séance de TP.}\\
 
@@ -237,7 +241,8 @@ Le code compile-t-il, pourquoi?
 
 \emph{A ce point, vous avez débloqué l'accès aux 20 premiers points de la notation sur le code du projet.}\\
 
-\item Implémentez une surcharge des fonctions qui estiment le trajet minimal pour relier les stations via leurs noms, et non plus leurs identifiants.
+\item Implémentez une surcharge des fonctions qui estiment le trajet minimal pour relier les stations via leurs noms, et non plus leurs identifiants. Il serait convenable d'être résistant aux erreurs (casse, mauvaise orthographe, etc) lors de la saisie des noms par l'utilisateur.
+
 \item Instanciez votre classe et appelez la méthode \texttt{dijkstra} de la classe \texttt{Grade}, avec l'argument booléen à \texttt{true}.
 \end{enumerate}
 
