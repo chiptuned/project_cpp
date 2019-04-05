@@ -255,6 +255,13 @@ namespace travel{
     }
 
     virtual void display_travel(const std::vector<std::pair<uint64_t,uint64_t> >& _travel_stations) {
+      /*{
+        std::cout << "vector : [ ";
+        for(auto&& it: _travel_stations){
+          std::cout << '{' << it.first << ", " << it.second << "} ";
+        }
+        std::cout << ']' << std::endl;
+      }*/
       {
         auto start = this->stations_hashmap.find(_travel_stations.front().first);
         auto end = this->stations_hashmap.find(_travel_stations.back().first);

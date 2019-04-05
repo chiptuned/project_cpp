@@ -11,6 +11,7 @@
 \usepackage{inconsolata}
 % \usepackage{fontspec}
 \usepackage{titling}
+\usepackage{hyperref}
 
 \renewcommand{\ttdefault}{cmtt}
 
@@ -110,6 +111,9 @@ En théorie des graphes, un graphe orienté est un ensemble de points (ici, des 
 
 Le problème du plus court chemin, dans ce système, est d'évaluer le coût minimal pour aller d'un point A à un point B. L'algorithme de Dijkstra est une méthode de calcul afin de résoudre ce problème.\\
 
+\label{sec::path_vector_example}
+Par exemple, dans le graphe de la Figure 1, le chemin le plus court entre le noeud B et le noeud G passe par les noeuds A et C, pour un coût cumulé de 85$+$217$+$186$=$488. Ce chemin peut être exprimé comme une liste de noeuds et le coût cumulé du chemin, ici, {\color{blue} $best\_path = [\{B, 0\}, \{A, 85\}, \{C, 302\}, \{D, 488\}]$};
+
 Cet algorithme peut s'appliquer sur des graphes orientés, modèle auquel plusieurs réseaux de transports sont disponibles (RATP, SNCF, routes, etc), et est également une porte d'entrée pour le domaine de la théorie des graphes et de la théorie de la décision.\\
 
 \subsection{Méthode de développement, et outils de la \emph{STL}}
@@ -194,10 +198,13 @@ Trois méthodes sont disponibles :
   \item \texttt{dijkstra(travel::Generic\_mapper\&,bool)}, qui évalue dans un premier temps quelques trajets tests, puis propose une exploration exhaustive des trajets via une estimation grossière du temps de calcul.
     \begin{itemize}
       \item Si l'argument booléen est vrai : L'évaluation du projet est faite dans sa version de fin de séances de TP. Le temps de calcul pour le réseau RATP est d'environ 0.3ms/trajet, pour 6 minutes de test.
-      \item Si l'argument booléen est faux : L'évaluation du projet est faite dans sa version améliorée, via l'utilisation de noms de stations. Le temps de calcul pour le réseau RATP est d'environ 1.5ms/trajet, pour 27 minutes de test.
+      \item Si l'argument booléen est faux : L'évaluation du projet est faite dans sa version améliorée, via l'utilisation de noms de stations. Le temps de calcul pour le réseau RATP est cinq fois plus long.
     \end{itemize}
 \end{itemize}
-Lorsque une méthode est appelée, elle appelle automatiquement les méthodes précédentes pour garantir le maintien des acquis au fur et à mesure de l'avancement du projet ; Il n'est donc pas nécessaire d'appeler les anciens tests.\\
+
+Attention : La dernière méthode \texttt{dijkstra(travel::Generic\_mapper\&,bool)} va vérifier la validité des trajets, et ceci dans une certain format. Ce format est d'avoir en liste de noeuds le premier noeud et le dernier noeud dans le trajet, et un coût cumulé associé à chaque noeud, comme dans l'exemple de la section \ref{sec::path_vector_example}.\\
+
+Lorsque une méthode est appelée, elle appelle automatiquement les méthodes précédentes pour garantir le maintien des acquis au fur et à mesure de l'avancement du projet ; Il n'est donc pas nécessaire d'appeler les anciens tests.
 
 De plus, il est à noter que la classe de test est totalement indépendante des classes abstraites et apporte toujours une résolution via les fichiers de références du projet. En définitive, des appels à cette classe seraient appréciés, mais ne sont pas du tout obligatoires dans le cadre du projet.
 
