@@ -73,16 +73,15 @@ Notation :
 \item Génération du graphe ($+$4pts $=>$ 13$/$20);
 \item Estimation du meilleur chemin et affichage ($+$7pts $=>$ 20$/$20);
 \item Amélioration ($+$5pts $=>$ 25$/$20);
-\item Bonus : Proposition d'un nom et d'un logo pour votre start-up ($+$1pt)
-\item Un critère non respecté de la charte d'écriture (Voir Chapitre \ref{sec::charte}) fera perdre jusqu'a 1 point ($-1$pt).
+\item Les critères non respectés de la charte d'écriture (Voir Chapitre \ref{sec::charte}) fera perdre jusqu'a 1 point par critère ($-1$pt).
 \item Une mauvaise gestion des exceptions fera perdre 2 points ($-2$pts).\\
 \end{itemize}
 
-Tout point au dessus de 20 sera utilisé comme bonus pour les 4 premiers TPs.\\
+Les points au dessus de 20 pourront être utilisés comme bonus.\\
 
 Date limite du rendu du code : \textbf{Vendredi 17 mai 2019, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu doit contenir le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par exemple dans un fichier \emph{lisez-moi}. \\
 
-La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes.
+La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes. Il est fortement encouragé de soumettre à chaque étape de résolution du projet.
 
 \pagebreak
 \renewcommand{\headrulewidth}{0.5pt}
@@ -93,10 +92,10 @@ La soumission du projet se fera sur l'espace Moodle dédié. La soumission multi
 \section{Introduction}
 Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente de données de trafic.
 L'équipe de développement vous demande d'implémenter un algorithme capable de planifier des temps de parcours au moyen d'une heuristique fixe, ou dynamique.
-Une base de données réaliste et fiable pour le tester est requis pour établir la validité de son implémentation et du cadre dans lequel va naître le projet.
-L'algorithme de Dijkstra et la base de données libre de la RATP sont des choix logiques car robustes.
-Après concertation, un contrat est écrit pour juger des fonctionnalités minimales ne ralentissant pas l'évolutivité de la solution.
-L'équipe a reçu le cahier des charges des commerciaux qui demande les fonctionnalités du projet, que les ingénieurs ont traduit en contrat de programmation. La tâche est de réaliser un programme correct respectant la structure imposée. Une recherche sera nécéssaire afin de maîtriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
+Une base de données réaliste et fiable pour le tester est requise. Celle-ci permettera d'établir la validité de l'algorithme, et du cadre dans lequel va naître le projet.
+L'algorithme de Dijkstra et la base de données de la RATP sont des choix logiques car robustes.
+Après concertation, un contrat de programmation est écrit, afin de juger des fonctionnalités minimales ne ralentissant pas l'évolutivité de la solution.
+La tâche est de réaliser un programme respectant la structure imposée. Une recherche sera nécéssaire afin de maîtriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
 
 \subsection{Une résolution du problème du plus court chemin}
 Le but de ce projet est de faire une application qui établit le trajet le plus court entre deux stations du réseau de métro parisien.
@@ -107,11 +106,11 @@ Le but de ce projet est de faire une application qui établit le trajet le plus 
    \caption{\label{directed_graph} Exemple de graphe orienté}
 \end{figure}
 
-En théorie des graphes, un graphe orienté est un ensemble de points (ici, des stations) connectés par des liens orientés (ici, des connexions). Dans le cadre de ce projet, chaque lien représente une possibilité de relier deux points, dans un sens précis, et avec un coût déterminé. C'est une connection possible entre ces points.
+En théorie des graphes, un graphe orienté est un ensemble de points (ici, des entrées de stations de métro) connectés par des liens orientés (ici, les connexions entre les stations, en secondes). Dans le cadre de ce projet, chaque lien représente une possibilité de relier deux points, dans un sens précis, et avec un coût déterminé. C'est une connection possible entre ces points.
 
 Le problème du plus court chemin, dans ce système, est d'évaluer le coût minimal pour aller d'un point A à un point B. L'algorithme de Dijkstra est une méthode de calcul afin de résoudre ce problème.\\
 
-Cet algorithme peut s'appliquer sur des graphes orientés, modèle auquel plusieurs réseaux de transports sont disponibles (RATP, SNCF, routes, etc), et est également une porte d'entrée pour le domaine de la théorie des graphes, dont certains algorithmes sont vus également dans l'unité d'enseignement [4AI04] Intelligence artificielle.\\
+Cet algorithme peut s'appliquer sur des graphes orientés, modèle auquel plusieurs réseaux de transports sont disponibles (RATP, SNCF, routes, etc), et est également une porte d'entrée pour le domaine de la théorie des graphes et de la théorie de la décision.\\
 
 \subsection{Méthode de développement, et outils de la \emph{STL}}
 
@@ -138,18 +137,18 @@ Afin de travailler les connaissances vues en cours, nous allons utiliser la \emp
 Une table de hachage est une structure de données efficace pour représenter un tableau associatif, avec une réprésentation mémoire compacte, via le hachage des données qui, dans ce cas, associe une information (la station) à une clé (l'identifiant de station). Les éléments à insérer dans le conteneur ne sont pas forcément triés. Ce sont les raisons pour lesquelles nous utiliseront le conteneur \texttt{std::unordered\_map}, ressemblant (d'un point de vue utilisateur) au conteneur \texttt{std::map} vu en cours, qui implémente lui un arbre binaire de recherche pour garantir l'ordre des données.
 
 Ces conteneurs vont garder les données du graphe fourni via des fichiers qu'il faudra lire et dont les données doivent être extraites.
-Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la classe \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}. On notera que \texttt{std::ifstream}, à l'instar de \texttt{std::cin}, possède les propriétés de la classe \texttt{std::istream}, notamment une surcharge de l'opérateur de flux entrant.\\
+Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la classe \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}.\\
 
 Une auto-évaluation vous est proposée au chapitre \ref{sec::autoeval}, afin de construire progressivement les fonctions nécéssaires à l'accomplissement du projet, et d'ajuster le temps nécéssaire pour le terminer.
 
 \section{Charte d'écriture}
 \label{sec::charte}
-La startup qui vous a embauché dans ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et faciliter la transmission au sein de l'équipe. Cette charte est énoncée dans un ordre quelconque:\\
+Ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code et faciliter sa transmission. Cette charte est énoncée dans un ordre quelconque:\\
 
 \begin{itemize}
 \item \textbf{Utilisation des drapeaux de compilation -Wall -Wextra -Werror -pedantic -pedantic-errors -O3 de g++} afin de garantir le respect de l'implémentation dans les normes C++, et d'optimiser la compilation;
-\item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours. ; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
-\item \textbf{Proscription de l'utilisation des outils d'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation;
+\item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours. Le drapeau de compilation \emph{std=c++11} pourra être utilisé; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
+\item \textbf{Minimisation de l'utilisation des outils d'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation. Ce projet est faisable sans allocation dynamique, cela sera apprécié et simplifiera votre projet;
 \item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}};
 \item \textbf{Indentation parfaite du code source du programme} afin de garantir la lisibilité et de prévenir les erreurs d'implémentation;
 \item \textbf{Minimisation de duplication du code source du programme} afin d'éviter le dangereux copier-coller et les graves problèmes de maintenance induits par ce comportement;
@@ -162,7 +161,7 @@ La startup qui vous a embauché dans ce projet vous impose une charte d'écritur
 \item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture;
 \item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, les objets seront passés par copie;
 % \item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}.
-\item \textbf{Utilisation du drapeau de compilation -fsyntax-only lors de la compilation de fichiers entête}, afin de forcer le compilateur à recompiler les fichiers entête à chaque modification. La compilation de fichiers entête n'est pas indispensable au bon déroulement du projet.
+% \item \textbf{Utilisation du drapeau de compilation -fsyntax-only lors de la compilation de fichiers entête}, afin de forcer le compilateur à recompiler les fichiers entête à chaque modification. La compilation de fichiers entête n'est pas indispensable au bon déroulement du projet.
 \end{itemize}
 
 \pagebreak
