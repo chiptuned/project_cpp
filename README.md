@@ -34,3 +34,14 @@ Le projet remplaçant des anciens TP le but est de les accompagner au début et 
 <hr>
 
 Une solution compilée est fournie, notamment en incorporant les données dans des littéraux de std::string afin d'encapsuler la base de données et la solution dans un seul fichier objet. Par convention, un std::string ne doit pas dépasser 2^16 éléments, mais les compilateurs testés géraient ce fait.
+
+<hr>
+Liste des applications nécéssaires à la compilation des éléments du projet :
+  - make
+  - pdflatex
+  - inkscape
+  - zip
+  - g++
+
+Liste des application nécéssaires à la mise à jour de la base de données :
+  - MATLAB 2018+
