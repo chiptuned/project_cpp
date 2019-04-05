@@ -48,3 +48,4 @@ for ind = 1:size(uniq_from_to,1)
 end
 axis equal;
 
+printpdf(fh, fullfile('..', 'latex', 'ratp_graph'))
