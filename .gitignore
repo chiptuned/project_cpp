@@ -3,11 +3,40 @@ gtfs_utils/RATP_GTFS_FULL.zip
 gtfs_utils/db/
 gtfs_utils/*.csv
 
-# Grade object files
-Grade*
-
 # Student and teacher version
 v
 etu*
 correction*
 archive*
+
+v2/main\.o
+
+v2/a\.out
+
+v2/\.depends
+
+sample_data/stations_hacked\.csv
+
+sample_data/s_hacked\.csv
+
+sample_data/connections_hacked\.csv
+
+sample_data/c_hacked\.csv
+
+*.pdf
+
+latex/dijkstra_projet\.synctex\.gz
+
+latex/dijkstra_projet\.out
+
+latex/dijkstra_projet\.log
+
+latex/C\+\+AvancéTPprojet\.log
+
+latex/C\+\+AvancéTPprojet\.aux
+
+latex/dijkstra_projet\.aux
+
+latex/dijkstra_projet\.fdb_latexmk
+
+latex/dijkstra_projet\.fls
