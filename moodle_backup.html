@@ -1,7 +1,7 @@
 <h5><strong>
-Enoncé du sujet :<code>Sujet du projet</code>
+Enoncé du sujet : <code>Sujet du projet</code></a>
 </strong></h5><h5><strong>
-Fichiers du projet à compléter : <code>Archive des fichiers du projet</code>
+Fichiers du projet à compléter : <code>Archive des fichiers du projet</code></a>
 </strong></h5><br><br>
 <h4><strong>
 Récapitulatif :
@@ -10,8 +10,8 @@ Récapitulatif :
 Le projet consiste à encapsuler et rédiger un algorithme du plus court chemin, l'algorithme de Dijkstra.
 Cet algorithme célèbre est à la base de la détermination du trajet optimal d'un point A à un point B, pour le métro parisien par exemple.
 <br><br>
-Pour ce faire, deux bases de données de deux fichiers chacune sont fournis, réprésentant un réseau simple (<code>fs_sta.csv</code>,<code>fs_co.csv</code>) et le réseau RATP (<code>fv_sta</code>, <code>fv_co</code>).
-Le projet devra fonctionner avec le réseau RATP (plus complexe) mais il est préférable de commencer avec le réseau simple car il est possible de le tracer à la main pour vérifier ses trajets.
+Pour ce faire, deux bases de données de deux fichiers chacune sont fournis, réprésentant un réseau simple (<code>stations.csv</code>,<code> connections.csv</code>) et le réseau RATP (<code>s.csv</code>, <code>c.csv</code>).
+Le projet devra fonctionner avec le réseau RATP (plus dense) mais il est préférable de commencer avec le réseau simple car il est possible de le tracer à la main pour vérifier ses trajets.
 <br><br>
 Le sujet s'articule autour de 3 classes:
 <br>
@@ -24,16 +24,15 @@ Le sujet s'articule autour de 3 classes:
 L'implémentation doit être ascendante, on commencera à implémenter la classe pour les stations, qui ensuite seront reliés en connections, pour enfin estimer des trajets.
 <br><br>
 Une quartrième classe Grade.hpp implémente deux objets de test statique, qui pourront être appelés en fournissant une instanciation du projet.
-Cette classe retournera des codes erreurs en cas de problèmes, et sert donc à évaluer le bon fonctionnement de l'implémentation proposée.
-<br><br>
+Cette classe retournera des codes erreurs en cas de problèmes, et sert donc à évaluer le bon fonctionnement de l'implémentation proposée. L'utilisation de cette classe est facultative et ne rentre pas dans l'évaluation, elle sert uniquement d'aide afin que vous puissez vérifier votre implémentation.<br><br>
 L'objet evaluate_small évalue le reseau simple, tandis que evaluate évalue le réseau RATP. Les erreurs sont attrapables via une gestion des exceptions.
 <br><br>
 <br><br>
 <h4><strong>Quelques exemples d'implémentation avec le trajet Saint-Lazare / Bastille, du réseau RATP:</strong></h4>
+<br>
+<i>Test 1/ On remarque dans le fichier s.csv que Saint-Lazare à pour id le nombre 1722, et 2062 pour Bastille. Si l'on a crée un programme qui prend quatre arguments, le fichier de stations, celui de connections, l'identitifant de station de départ, et celui d'arrivée, on peut avoir un programme se comportant comme ceci :</i>
 <br><br>
-<i>Test 1/ On remarque dans le fichier s.csv que Saint-Lazare à pour id le nombre 1722, et 2062 pour Bastille.</i>
-<br><br>
-<pre><b><code>% ./soluce $STATIONS_FILE $CONNECTIONS_FILE 1722 2062 </code></b>
+<pre><b><code>% ./mon_programme "FICHIER_STATIONS" "FICHIER_CONNECTIONS" 1722 2062 </code></b>
 <div class="style-code_block ">Arg 1: stations
 Arg 2: connections
 Arg 3: start
@@ -53,7 +52,7 @@ After 1095 secs, you have reached your destination!
 <br>
 <i>Test 2/ evaluate.dijkstra(obj, false) // test avec les id de stations</i>
 <br><br>
-<pre><b><code>% ./soluce $STATIONS_FILE $CONNECTIONS_FILE</code></b>
+<pre><b><code>%</code></b><b><code> ./mon_programme "FICHIER_STATIONS" "FICHIER_CONNECTIONS" </code></b><b><code></code></b>
 <div class="style-code_block ">Arg 1: stations
 Arg 2: connections
 
@@ -70,10 +69,10 @@ Would you try complete test (wait ~  7 mins and 57 secs) ? (N/y): n
 </div></pre>
 <hr>
 <br>
-<i>Test 3/ evaluate.dijkstra(obj, true) // test avec les noms de stations (levensthein)</i>
+<i>Test 3/ evaluate.dijkstra(obj, true) // test avec les noms de stations</i>
 <br><br>
-<pre><b><code>% ./soluce $STATIONS_FILE $CONNECTIONS_FILE</code></b>
-<div class="style-code_block ">Arg 1: stations
+<pre><b><code></code></b><pre><b><code>%</code></b><b><code> ./mon_programme "FICHIER_STATIONS" "FICHIER_CONNECTIONS" </code></b><b><code></code></b>
+</pre><div class="style-code_block ">Arg 1: stations
 Arg 2: connections
 
 On lance les tests:
@@ -96,3 +95,5 @@ Would you try complete test (wait ~ 43 mins and 24 secs) ? (N/y): y
 1% 22 secs elapsed, wait 34 mins and 46 secs
 1% 24 secs elapsed, wait 34 mins and 36 secs
 </div></pre>
+
+Une fois de plus, l'implémentation proposée est un exemple, votre projet pouvant se comporter légèrement différement si nécéssaire.
