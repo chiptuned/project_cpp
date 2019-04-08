@@ -1,6 +1,6 @@
 CXX=g++
 CXXFLAGS=-std=c++11
-CFLAGS=-Wall -Wextra -Werror -pedantic -pedantic-errors -O3
+CFLAGS=-Wall -Wextra -Werror -pedantic -pedantic-errors -O3 -Wno-overlength-strings
 SRC= *.cpp
 ETU=Grade.hpp Grade.o Generic*
 DATA= ../sample_data/connections.csv ../sample_data/stations.csv \

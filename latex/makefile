@@ -1,4 +1,4 @@
-OUTPUT = C++AvancéTPprojet
+OUTPUT = CppAvanceTPprojet
 all: sujet
 
 sujet: dijkstra_projet.tex directed_graph.pdf ratp_graph.pdf
