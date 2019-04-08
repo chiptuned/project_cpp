@@ -1,5 +1,15 @@
 # Projet C++
 
+Ce projet à été conçu afin de faire travailler les étudiants sur la STL. La position est de les forcer à respecter une interface pour concevoir un moteur complet d’une application qui peuvent valoriser s’il le veulent.
+
+Concrètement, on leur demande d’écrire un parseur csv, et d’implémenter un algorithme de pathfinding. Celui-ci peut être modifié au fil des années, par exemple Dijkstra, A*, etc.
+
+Un jeu de données test et une base de données RATP sont mises à disposition. La base RATP provient de leur base de données GTFS, modifiée/simplifiée afin d’obtenir un graphe orienté en tant qu’exemple jouet, afin de limiter la gestion d’erreur nécessaire pour les algorithmes de parcours.
+
+On leur impose une interface, ils doivent donc créer une classe network héritant de Generic_mapper avec les fonctions read_stations et read_connections surchargées. Elles doivent rester protected. Ensuite les étudiants implémentent leur algorithme de pathfinding dans compute_travel, et un affichage facilement compréhensible avec compute_and_display_travel.
+
+<hr>
+
 Le projet consiste à parser un csv avec des stations de métro, un autre csv avec les connections, mettre les données dans une table de hachage, et résoudre un Djikstra.
 
 Les stations étant identifiées par leur ID, les étudiants qui auront fini peuvent implémenter une distance de Levensthein afin d'appeler la station de métro par son nom en résistant aux erreurs.
@@ -10,7 +20,17 @@ L'accent au point de vue pédagogique est mis sur une certaine contextualisation
 
 <hr>
 
-Le projet à été fourni en 2018 avec plusieurs fichiers objets pour plusieurs systèmes.
+Des exemples de résolution sont postées sur la page d'accueil Moodle du projet. Le fichier objet Grade.o est fourni afin qu’ils vérifient leur code.
+
+Les étudiant ont tendance à s'emmêler les pinceaux et à perdre du temps avec Grade.o et Grade.hpp. Il doivent assimiler que c’est simplement une aide et que ce n’est pas nécessaire dans leur projet. Une erreur souvent rencontrée avec Grade est l’utilisation de l’objet statique Grade::evaluate, dans un exécutable ou le lien n’as pas été correctement fait avec Grade.o. Dans ce cas, ils peuvent avoir un résultat “seems ok” alors que leur code n’est pas comparé.
+
+Lors de l’édition de liens, il est impératif de lier Grade.o avant main.o, car l’objet statique Grade::evaluate est crée dans le header Grade.hpp, erreur parfois commise par les étudiants.
+
+Enfin, la fonction compute_travel présente dans Grade.o effectue ses opérations et renvoie un plus court chemin dans un certain format, que les étudiants doivent respecter s’il veulent obtenir un résultat positif avec la comparaison de la correction. Il semble que cela n’est en rien obligatoire et des étudiants peuvent implémenter parfaitement la consigne tout en ayant un résultat différent.
+
+<hr>
+
+Le projet à été fourni en 2018 et 2019 avec plusieurs fichiers objets pour plusieurs systèmes.
 
 1/ clang_macos : Compilé avec g++, qui est un symlink du compilateur clang par défaut, avec les flags -std=c++11 -Wall -Wextra -pedantic -O3, sur un Macbook Pro sur High Sierra.
 
