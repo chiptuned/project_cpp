@@ -80,7 +80,7 @@ Notation :
 
 Les points au dessus de 20 pourront être utilisés comme bonus.\\
 
-Date limite du rendu du code : \textbf{Vendredi 17 mai 2019, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu doit contenir le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par exemple dans un fichier \emph{lisez-moi}. \\
+Date limite du rendu du code : \textbf{Vendredi 24 mai 2019, 20h00}. Chaque minute de retard fera perdre un point sur la note du projet. Un rendu doit contenir le code nécéssaire pour pouvoir compiler le projet en une seule commande, de même pour l'éxécution. Ces commandes peuvent être définies par exemple dans un fichier \emph{lisez-moi}. \\
 
 La soumission du projet se fera sur l'espace Moodle dédié. La soumission multiple est possible, la dernière soumission écrasant les précédentes. Il est fortement encouragé de soumettre à chaque étape de résolution du projet.
 
@@ -95,7 +95,7 @@ Vous êtes membre d'une start-up qui veut se lancer sur le marché de la vente d
 L'équipe de développement vous demande d'implémenter un algorithme capable de planifier des temps de parcours au moyen d'une heuristique fixe, ou dynamique.
 Une base de données réaliste et fiable pour le tester est requise. Celle-ci permettera d'établir la validité de l'algorithme, et du cadre dans lequel va naître le projet.
 L'algorithme de Dijkstra et la base de données de la RATP sont des choix logiques car robustes.
-Après concertation, un contrat de programmation est écrit, afin de juger des fonctionnalités minimales ne ralentissant pas l'évolutivité de la solution.
+Après concertation, un contrat de programmation est écrit, afin de juger des fonctionnalités minimales permettant l'évolutivité de la solution.
 La tâche est de réaliser un programme respectant la structure imposée. Une recherche sera nécéssaire afin de maîtriser l'algorithme de Dijkstra, afin de pouvoir l'implémenter.
 
 \subsection{Une résolution du problème du plus court chemin}
@@ -124,24 +124,24 @@ Un programme informatique est une suite d'instructions mathématiques. A ce titr
 La solution ici a été trouvée par l'informaticien Edsger Dijkstra, répondant au problème du plus court chemin énoncée ci-dessus.
 
 \item Comment structurer, implémenter mon problème algorithmique, qui requiert ici la construction de centaines de milliers d'instructions machine, avec la méthodologie nécéssaire pour que n'importe quel humain puisse maintenir ce code et y ajouter des fonctionnalités?\\
-Cette question est en partie résolue par l'outil C++. C'est une méthodologie, permettant de générer une grande compléxité dans le jeu d'instructions (comme beaucoup d'outils informatiques), mais également d'utiliser une interface compréhensible, qui vous est donnée ici, et va permettre l'ajout de fonctionnalités de manière concise et ergonomique, en détachant les différentes fonctionnalités, permettant de fournir au final une solution élégante et ré-utilisable.
+Cette question est en partie résolue par l'outil C++. C'est une méthodologie, permettant de générer une grande compléxité dans le jeu d'instructions (comme beaucoup d'outils informatiques), mais également d'utiliser une interface compréhensible, qui vous est donnée ici, et va permettre l'ajout de fonctionnalités de manière concise et ergonomique.
 \end{enumerate}
 
 
 Afin de résoudre ce problème, des fichiers contenant les points d'un graphe, et contenant des connexions, sont mis à votre disposition. La lecture de ces fichiers devra être réalisée avec des conteneurs spécifiques imposés. Puis, un calcul du chemin le plus court devra être réalisé.\\
 
-Afin de travailler les connaissances vues en cours, nous allons utiliser la \emph{Standard Template Library}, une bibliothèque C++ parmi tant d'autres, mais qui a l'avantage d'être très puissante dans plusieurs modalités, notamment pour les conteneurs que celle-ci propose. Ceux-ci représentent des tableaux associatifs, généralisation des tableaux où les indices ne sont pas forcément des entiers.\\
+Afin de travailler les connaissances vues en cours, nous allons utiliser la \emph{Standard Template Library}, une bibliothèque C++ parmi tant d'autres, mais qui a l'avantage d'être très puissante dans plusieurs modalités, notamment pour les conteneurs que celle-ci propose. Ceux-ci représentent des tableaux associatifs, généralisation des tableaux où les indices peuvent ne pas être des entiers.\\
 
 \begin{figure}[h]
    \centering
    \includegraphics[width=18cm,keepaspectratio]{ratp_graph.pdf}
-   \caption{\label{directed_graph} Graphe orienté généré à partir des fichiers \texttt{c.csv} et \texttt{s.csv}, avec les données GPS des stations.}
+   \caption{\label{ratp_graph} Graphe orienté généré à partir des fichiers \texttt{c.csv} et \texttt{s.csv}, avec les données GPS des stations.}
 \end{figure}
 
-Une table de hachage est une structure de données efficace pour représenter un tableau associatif, avec une réprésentation mémoire compacte, via le hachage des données qui, dans ce cas, associe une information (la station) à une clé (l'identifiant de station). Les éléments à insérer dans le conteneur ne sont pas forcément triés. Ce sont les raisons pour lesquelles nous utiliseront le conteneur \texttt{std::unordered\_map}, ressemblant (d'un point de vue utilisateur) au conteneur \texttt{std::map} vu en cours, qui implémente lui un arbre binaire de recherche pour garantir l'ordre des données.
+Une table de hachage est une structure de données efficace pour représenter un tableau associatif, avec une réprésentation mémoire compacte, via le hachage des données qui, dans ce cas, associe une information (la station) à une clé (l'identifiant de station). Les éléments à insérer dans le conteneur ne sont pas triés. Ce sont les raisons pour lesquelles nous utiliseront le conteneur \texttt{std::unordered\_map}, similaire d'un point de vue utilisateur au conteneur \texttt{std::map} vu en cours, qui implémente lui un arbre binaire de recherche pour garantir l'ordre des données.
 
 Ces conteneurs vont garder les données du graphe fourni via des fichiers qu'il faudra lire et dont les données doivent être extraites.
-Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la classe \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction membre \texttt{getline}.\\
+Dans ce cas précis, l'utilisation de la bibliothèque standard est fortement conseillé, via la classe \texttt{std::ifstream}, prenant en argument le nom du fichier à lire. Une des différentes méthodes pour lire une ligne est d'utiliser la fonction \texttt{std::getline} définie dans \texttt{<string>}.\\
 
 Une auto-évaluation vous est proposée au chapitre \ref{sec::autoeval}, afin de construire progressivement les fonctions nécéssaires à l'accomplissement du projet, et d'ajuster le temps nécéssaire pour le terminer.
 
@@ -154,15 +154,16 @@ Ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code e
 \item \textbf{Utilisation des fonctionnalités du C++ 11 maximum} afin d'utiliser les ressources du cours. Le drapeau de compilation \emph{std=c++11} pourra être utilisé; %https://msdn.microsoft.com/fr-fr/library/hh567368.aspx
 \item \textbf{Minimisation de l'utilisation des outils d'allocation dynamique} : \emph{new}, \emph{new[]}, \emph{delete} et \emph{delete[]}, afin d'optimiser la sécurité, la lisibilité, et de tirer parti du concept \emph{RAII} : l'acquisition d'une ressource est une initialisation. Ce projet est faisable sans allocation dynamique, cela sera apprécié et simplifiera votre projet;
 \item \textbf{Mémoire dynamique via les conteneurs de la \emph{STL}};
+\item \textbf{Variables nommées par leur utilité}, ayant un sens, reflétant leur fonction dans le programme, et permettant d'éviter les commentaires redondants;
 \item \textbf{Indentation parfaite du code source du programme} afin de garantir la lisibilité et de prévenir les erreurs d'implémentation;
 \item \textbf{Minimisation de duplication du code source du programme} afin d'éviter le dangereux copier-coller et les graves problèmes de maintenance induits par ce comportement;
 \item \textbf{Utilisation de la convention \emph{snake\_case}}, avec des noms de fonctions en \emph{verbe\_complément}, de variables en \emph{complément\_nom}, afin de garantir la lisibilité du code;
 \item \textbf{Tout type créé commence par une majuscule}, par convention;
 \item \textbf{Les constantes déclarées via \emph{define} sont écrites intégralement en majuscules}; on parlera ici de \emph{SCREAMING\_SNAKE\_CASE};
 \item \textbf{Membres de classes appelés via \emph{this}} afin de répèrer facilement l'utilisation et la modification d'outils interne;
-\item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, pour faciliter la différenciation avec les autres types de variables;
+%\item \textbf{Variables d'entrées précédées d'un underscore \emph{\_}}, pour faciliter la différenciation avec les autres types de variables;
 % \item \textbf{Variables locales neutres}; % kézako
-\item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit pas être modifiée}, afin de garantir ses droits d'accès en lecture/écriture;
+\item \textbf{Utilisation du mot clef \emph{const} lorsque l'entrée ne doit rester la même}, afin de garantir ses droits d'accès en lecture/écriture;
 \item \textbf{Utilisation systématique de référence ou de pointeur lors du passage d'un objet}, les objets seront passés par copie;
 % \item \textbf{Respect du typage lors des comparaisons au moyen de \emph{static\_cast$<$Type$>$(var)} si nécessaire}.
 % \item \textbf{Utilisation du drapeau de compilation -fsyntax-only lors de la compilation de fichiers entête}, afin de forcer le compilateur à recompiler les fichiers entête à chaque modification. La compilation de fichiers entête n'est pas indispensable au bon déroulement du projet.
@@ -173,18 +174,18 @@ Ce projet vous impose une charte d'écriture afin de pouvoir maintenir le code e
 \section{Objectifs}
 
 Un des buts de ce projet est de permettre l'assemblage de code de plus en plus complet, avec un écosystème compréhensible alors qu'il grossit. La méthodologie va montrer cette difficulté, et
-c'est pourquoi les objets englobent ces fonctionnalités. Le point le plus important dans le cadre de ce projet est de comprendre l'interface, la structure imposée. Le travail demandé, qui est d'implémenter les fonctionnalités clés, ne sera pas possible sans la compréhension de cette structure. Il est aussi judicieux de se renseigner sur les outils possibles et nécéssaires pour réussir le projet.\\
+c'est pourquoi les objets englobent ces fonctionnalités. Le point le plus important dans le cadre de ce projet est de comprendre l'interface, la structure imposée. Le travail demandé, qui est d'implémenter les fonctionnalités clés, nécéssite la compréhension de cette structure. Il est aussi judicieux de se renseigner sur les outils possibles et nécéssaires pour réussir le projet.\\
 
 Les classes doivent hériter d'une classe mère virtuelle pure sans implémentation. Ce principe permet de rajouter des fonctionnalités à une classe sans l'altérer et en garantissant son appel via un pointeur.
-Si la classe respecte le contrat, elle garantit d'avoir implémenté les fonctionnalités nécéssaires à la validité du programme. Cela n'empeche pas de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre \ref{sec::feuille}. \\
+Si la classe respecte le contrat, elle garantit d'avoir implémenté les fonctionnalités nécéssaires à la validité du programme. Cela permet de pouvoir améliorer et ajouter diverses fonctionnalités supplémentaires, notamment celle proposée en amélioration dans le chapitre \ref{sec::feuille}. \\
 
 \section{Auto-évaluation}
 \label{sec::autoeval}
-Parmi les fichiers de l'archive du projet se trouve la classe \texttt{Grade} au travers du fichier d'entête \texttt{Grade.hpp} et du fichier objet \texttt{Grade.o}. C'est une aide, l'utilisation de \texttt{Grade} est optionelle et ne rentre pas dans l'évaluation du projet.\\
+Parmi les fichiers de l'archive du projet se trouve la classe \texttt{Grade} au travers du fichier d'entête \texttt{Grade.hpp} et du fichier objet \texttt{Grade.o}. C'est une aide, l'utilisation de \texttt{Grade} est optionelle et ne fait pas partie de l'évaluation du projet.\\
 
 Ce fichier objet, compilé via le compilateur g++ avec un ordinateur sous Unix, permet une auto-évaluation.
 
-En incluant le fichier binaire à la compilation et à l'entête au programme principal du projet, deux objets statiques sont automatiquement créés. Ceux-ci permettent l'évaluation des différentes parties du projet.
+En incluant le fichier binaire à la compilation, et l'entête au programme principal du projet, deux objets statiques seront disponibles. Ceux-ci permettent l'évaluation des différentes parties du projet.
 Pour rappel, un objet statique est un objet alloué au lancement du programme et détruit à sa toute fin (par exemple : \texttt{std::cout}, \texttt{std::cin}). Il est non rédéfinissable, pour l'ensemble du code à sa portée.\\
 
 Ces deux objets se nomment ici \texttt{travel::evaluate\_small} et \texttt{travel::evaluate}. Le premier permet d'évaluer le réseau simple, le second évaluant le réseau RATP.\\
@@ -192,7 +193,7 @@ Ces deux objets se nomment ici \texttt{travel::evaluate\_small} et \texttt{trave
 Trois méthodes sont disponibles :
 \begin{itemize}
   \item \texttt{stations(const travel::Generic\_station\_parser\&)}, qui évalue de manière exhaustive la construction de la table de stations.
-  \item \texttt{connections(const travel::Generic\_connection\_parser\&)}, qui évalue de manière exhaustive la construction de la table de connections.
+  \item \texttt{connections(const travel::Generic\_connection\_parser\&)}, qui évalue de manière exhaustive la construction de la table de stations et de connections.
   \item \texttt{dijkstra(travel::Generic\_mapper\&,bool)}, qui évalue dans un premier temps quelques trajets tests, puis propose une exploration exhaustive des trajets via une estimation grossière du temps de calcul.
     \begin{itemize}
       \item Si l'argument booléen est vrai : L'évaluation du projet est faite dans sa version de fin de séances de TP. Le temps de calcul pour le réseau RATP est d'environ 0.3ms/trajet, pour 6 minutes de test.
@@ -200,23 +201,23 @@ Trois méthodes sont disponibles :
     \end{itemize}
 \end{itemize}
 
-Attention : La dernière méthode \texttt{dijkstra(travel::Generic\_mapper\&,bool)} va vérifier la validité des trajets, et ceci dans une certain format. Ce format est d'avoir en liste de noeuds le premier noeud et le dernier noeud dans le trajet, et un coût cumulé associé à chaque noeud, comme dans l'exemple de la section \ref{sec::path_vector_example}.\\
+Attention : La dernière méthode \texttt{dijkstra(travel::Generic\_mapper\&,bool)} va vérifier la validité des trajets, et ceci dans un certain format. Ce format est d'avoir une liste de noeuds, le premier noeud et le dernier noeud du trajet étant dans cette liste, et avec un coût cumulé associé à chaque noeud, comme dans l'exemple de la section \ref{sec::path_vector_example}.\\
 
-Lorsque une méthode est appelée, elle appelle automatiquement les méthodes précédentes pour garantir le maintien des acquis au fur et à mesure de l'avancement du projet ; Il n'est donc pas nécessaire d'appeler les anciens tests.
+Lorsque une méthode est appelée, elle appelle automatiquement les méthodes précédentes pour garantir le maintien des acquis au fur et à mesure de l'avancement du projet ; Il est donc facultatif d'appeler les anciens tests.
 
-De plus, il est à noter que la classe de test est totalement indépendante des classes abstraites et apporte toujours une résolution via les fichiers de références du projet. En définitive, des appels à cette classe seraient appréciés, mais ne sont pas du tout obligatoires dans le cadre du projet.
+De plus, il est à noter que la classe de test est totalement indépendante des classes abstraites et apporte toujours une résolution via les fichiers de références du projet. En définitive, les appels à cette classe seront appréciés, mais sont facultatifs dans le cadre du projet.
 
-N'oubliez pas que l'interface vous est imposée, et que vous ne devez pas modifier ces fichiers. La correction sera faite avec seulement l'implémentation de votre classe. Si celle-ci ne se base pas sur l'interface donnée, le code ne sera pas fonctionnel, et vous serez pénalisé.
+L'interface est imposée, et que vous ne devez pas modifier ces fichiers. La correction sera faite avec seulement l'implémentation de votre classe. Le code doit donc être fonctionnel avec les fichiers récupérés, au risque d'être pénalisé sinon.
 
 \pagebreak
 
 \section{Feuille de route}
 \label{sec::feuille}
-L'équipe de développement de votre start-up vous propose une feuille de route, permettant de représenter les diverses tâches et l'avancement du projet :
+L'équipe de développement vous propose une feuille de route, permettant de représenter les diverses tâches et l'avancement du projet. Dans le cadre des TP, cette feuille de route est facultative, mais est conseillé afin de vous guider :
 
 \begin{enumerate}
 \item Instanciez une classe dérivée : faites un nouveau fichier, une inclusion de la classe parente et créez une classe qui hérite de la classe mère \texttt{Generic\_station\_parser}.\\
-Compilez votre fichier de classe. Celui-ci ne doit pas générer d'erreur, même avec les restrictions de compilation imposées dans la charte d'écriture.
+Compilez votre fichier de classe. Celui-ci doit générer aucune erreur, même avec les restrictions de compilation imposées dans la charte d'écriture.
 
 \item Créez un fichier avec une fonction principale, et instanciez un objet de votre classe. Le code compile-t-il? Pourquoi?
 
@@ -224,14 +225,14 @@ Compilez votre fichier de classe. Celui-ci ne doit pas générer d'erreur, même
 
 \item Dans votre fonction principale, instanciez votre classe et appelez la méthode \texttt{stations} de la classe \texttt{Grade}. Vous utiliserez l'objet statique mis a disposition dans cette classe, selon la base de données utilisée.\\
 
-\emph{A ce point, vous devriez avoir soumis une version fonctionnelle de votre projet sur Moodle, et ne pas encore avoir eu la deuxième séance de TP.}\\
+\emph{A ce point, vous devriez avoir soumis une version fonctionnelle de votre projet sur Moodle, avant la deuxième séance de TP.}\\
 
 \item Changez votre classe pour qu'elle hérite de la classe mère \texttt{Generic\_connection\_parser}.\\
 Le code compile-t-il, pourquoi?
 \item Implémentez la fonction \texttt{read\_connections}.
 \item Instanciez votre classe et appelez la méthode \texttt{connections} de la classe \texttt{Grade}.\\
 
-\emph{A ce point, vous devriez avoir soumis une nouvelle version fonctionnelle de votre projet sur Moodle, et ne pas encore avoir eu la troisième séance de TP.}\\
+\emph{A ce point, vous devriez avoir soumis une nouvelle version fonctionnelle de votre projet sur Moodle, avant la troisième séance de TP.}\\
 
 \item Changez votre classe pour qu'elle hérite de la classe mère \texttt{Generic\_mapper}.\\
 Le code compile-t-il, pourquoi?
